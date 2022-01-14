@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- el onclick se comfigura en el archivo JuntaActivity.kt en la funcion showOpcionesSolidario -->
+    <item android:id="@+id/option_1"
+        android:title="NO APLICA" />
+    <item android:id="@+id/option_2"
+        android:title="DA" />
+    <item android:id="@+id/option_3"
+        android:title="RECIBE" />
+</menu>

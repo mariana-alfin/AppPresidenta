@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/borde_celda.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/redondo_verde_1.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/redondo_verde_2.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/calculadora_activity.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/copy.xml" value="0.23981481481481481" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/drop_down_36.xml" value="0.26875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/editarJunta.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/editarjunta.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/ic_app_foreground.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/ic_edita_junta.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/ic_help_24.xml" value="0.2109375" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.221875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/miembro.xml" value="0.2671875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/presidenta.xml" value="0.2671875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/sec_24.xml" value="0.2671875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/tesorera.xml" value="0.2671875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/verJunta.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/verJuntas.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable-v24/verjunta.xml" value="0.3769230769230769" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/borde.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/borde_redondeado_verde.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/borde_rows.xml" value="0.67" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/border.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/call_24.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/camera.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/esquinas_redondeadas.xml" value="0.1125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/fondoAzul.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/fondo_azul.xml" value="0.221875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/fondo_blanco.xml" value="0.221875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/fondo_verde.xml" value="0.221875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/group.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_app_background.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_clientas_grupo.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.2203125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_editar_junta.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_editar_junta_n.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_editar_junta_v.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_grupo.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_grupo_n.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_grupo_v.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_grupos.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.2203125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_iconos_def_g_02.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_inicio_g.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_inicio_v.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_logo_app.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_no_pago.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_no_pago_r.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.221875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_pago_g.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_pago_v.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_pagos.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_pagos_nb.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_ver_junta.xml" value="0.2677083333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ic_ver_junta_v.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/ima.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/inicio.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/myrect.xml" value="0.24351851851851852" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/no_pago.xml" value="0.2203125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/nopaga.xml" value="0.2203125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/pagos.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/redondo_verde.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/save.xml" value="0.24351851851851852" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/drawable/si_pago.xml" value="0.2203125" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/Home.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/activity_calculadora.xml" value="0.20572916666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/activity_detalle_cliente.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/activity_inicio_app.xml" value="0.21197916666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/activity_navegacion.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/calculadora_activity.xml" value="0.20572916666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/content_calculadora.xml" value="0.20572916666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/fragment_notifications.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/historial_activity.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/home.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/inicio_fragment.xml" value="0.22" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/junta_activity.xml" value="0.296875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/mi_grupo_activity.xml" value="0.2515625" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/mi_grupo_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/pagos_fragment.xml" value="0.20572916666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/layout/pagos_notifications.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/context_menu.xml" value="0.296875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/main_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/menu_junta.xml" value="0.2786458333333333" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/opciones_solidario.xml" value="0.2526041666666667" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/popup_menu.xml" value="0.296875" />
+        <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/xml/network_security_config.xml" value="0.36666666666666664" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

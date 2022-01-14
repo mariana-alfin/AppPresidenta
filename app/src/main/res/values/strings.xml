@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Presidenta ALFIN</string>
+    <string name="title_activity_navegacion">Navegacion</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_dashboard">Mi Grupo </string>
+    <string name="title_notifications">Pagos</string>
+    <string name="ingresar">Ingresar</string>
+    <string name="usuario">Usuario</string>
+    <string name="title_activity_calculadora">calculadora_activity</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <!--EXPERSIONES REGULARES -->
+
+    <string name="rexUSUARIO">[0-9]*</string>
+    <string name="rexCELULAR">[0-9]{10}+</string>
+
+    <!--url -->
+    <string name="urlLogin">https://api.micartera.test.alfin.com.mx/api/customer-validations</string>
+    <string name="urlDatosCredito">https://api.micartera.test.alfin.com.mx/api/credit-group-status</string>
+    <string name="urlMiembrosGrupo">https://api.micartera.test.alfin.com.mx/api/group-members-pays</string>
+    <string name="urlPagosGrupo">https://api.micartera.test.alfin.com.mx/api/group-pays</string>
+
+    <!--headers peticion -->
+    <string name="content_type">application/json</string>
+    <string name="header_email">apicartera@alfin.com</string>
+    <string name="header_password">password</string>
+    <string name="header_api_key">1df6a7c1-3057-4dcd-a73a-26bbc46bc860</string>
+
+    <!--mensajes -->
+    <string name="noConexion">No es posible mostrar información \n No cuenta con conexión a Internet</string>
+    <string name="error">Ocurrio un error</string>
+</resources>
