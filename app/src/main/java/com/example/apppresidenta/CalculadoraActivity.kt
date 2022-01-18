@@ -34,12 +34,13 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         for (i in 1..numPagos){
             listPagos.add("$i")
         }
-       /* val actionBar: ActionBar? = supportActionBar
-        actionBar?.title = "Calculadora"
-        actionBar?.setLogo(R.mipmap.ic_app)
-        actionBar?.setDisplayShowHomeEnabled(true)
-        actionBar?.setDisplayUseLogoEnabled(true)
-        */
+            val actionBar: ActionBar? = supportActionBar
+            actionBar?.title = "Calculadora"
+            actionBar?.setLogo(R.mipmap.icono_app)
+            actionBar?.setDisplayShowHomeEnabled(true)
+            actionBar?.setDisplayUseLogoEnabled(true)
+
+
 
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this,"true")

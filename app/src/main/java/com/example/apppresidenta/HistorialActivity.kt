@@ -22,7 +22,7 @@ class HistorialActivity : AppCompatActivity() {
 
         val actionBar: ActionBar? = supportActionBar
         actionBar?.title = "Mi Historial"
-        actionBar?.setLogo(R.mipmap.ic_app)
+        actionBar?.setLogo(R.mipmap.icono_app)
         actionBar?.setDisplayShowHomeEnabled(true)
         actionBar?.setDisplayUseLogoEnabled(true)
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
