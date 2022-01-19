@@ -22,6 +22,10 @@ import com.example.apppresidenta.FuncionesGlobales
 import com.example.apppresidenta.R
 import com.example.apppresidenta.ValGlobales
 import com.example.apppresidenta.databinding.MiGrupoActivityBinding
+import com.example.apppresidenta.utils.GeneralUtils.Companion.enviarMensajeWhatsApp
+import com.example.apppresidenta.utils.GeneralUtils.Companion.llamarContacto
+import com.example.apppresidenta.utils.GeneralUtils.Companion.mostrarAlertInstalarApp
+import com.example.apppresidenta.utils.GeneralUtils.Companion.validarAplicacionInstalada
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -232,6 +236,14 @@ class MiGrupoFragment : Fragment() {
         txtL.textSize = fontTh
         trEn.addView(txtL)
 
+        val txtM = TextView(activity)
+        txtM.text = "Mensaje"
+        txtM.setPadding(5, 0, 0, 0)
+        txtM.setTextColor(Color.WHITE)
+        txtM.setTypeface(null, Typeface.BOLD_ITALIC)
+        txtM.textSize = fontTh
+        trEn.addView(txtM)
+
         tabla.addView(
             trEn,
             TableLayout.LayoutParams(
@@ -287,15 +299,25 @@ class MiGrupoFragment : Fragment() {
             call.setColorFilter(Color.GREEN)
             call.setPadding(5, 10, 5, 10)
 
+            val mensaje = ImageView(activity)
+            mensaje.setImageResource(R.drawable.ic_whats)
+            mensaje.setColorFilter(Color.GREEN)
+            mensaje.setPadding(5, 10, 5, 10)
+
             txtN.text =  cte.getString("customer_name")
             txtP.text = formatPesos.format(cte.getDouble("pay"))
-            call.setOnClickListener{ llamarCliente(cte.getString("cell_phone"))}
+            //call.setOnClickListener{ llamarCliente(cte.getString("cell_phone"))}
+            call.setOnClickListener{ llamarContacto(context,cte.getString("cell_phone"))}
+            mensaje.setOnClickListener{
+                validacionesEnvioWhats(cte.getString("cell_phone")
+                    ,cte.getString("customer_name")) }
 
             linea.addView(txtN)
             linea.setOnClickListener { detalleCliente(cte.getInt("credit_id"),  cte.getString("customer_name") ) }
             tr1.addView(linea)
             tr1.addView(txtP)
             tr1.addView(call)
+            tr1.addView(mensaje)
 
             tabla.addView(
                 tr1,
@@ -308,8 +330,18 @@ class MiGrupoFragment : Fragment() {
         mostrarFormato(true)
     }
 
-    private fun llamarCliente(string: String) {
+    /*private fun llamarCliente(string: String) {
         Toast.makeText(activity, "Llamar al $string", Toast.LENGTH_SHORT).show()
+    }*/
+
+    private fun validacionesEnvioWhats(telefono : String, nombreclienta : String) {
+
+        if (!validarAplicacionInstalada(getString(R.string.packagename_whats),context)) {
+            mostrarAlertInstalarApp(context,getString(R.string.packagename_whats))
+            return
+        }
+
+        enviarMensajeWhatsApp(context, getString(R.string.mensaje_whats) +" "+ nombreclienta,telefono)
     }
 
     private fun mostrarFormato(esMostrar: Boolean) {

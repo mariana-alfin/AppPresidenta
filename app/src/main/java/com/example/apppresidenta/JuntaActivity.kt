@@ -2,10 +2,9 @@ package com.example.apppresidenta
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.Html
@@ -22,17 +21,22 @@ import com.google.android.gms.auth.api.credentials.*
 import com.google.android.gms.auth.api.credentials.HintRequest.*
 import android.text.method.DigitsKeyListener
 import android.view.Menu
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.apppresidenta.utils.GeneralUtils
+import com.example.apppresidenta.utils.PermisosUtils
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 
 
-class JuntaActivity : AppCompatActivity() {
+class JuntaActivity : CameraBaseActivity() {
     //FORMATO EN PESOS MXM
     private val mx = Locale("es", "MX")
     private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
@@ -50,9 +54,11 @@ class JuntaActivity : AppCompatActivity() {
 
     var listClientes: MutableMap<Int, CteIds> = mutableMapOf(0 to CteIds(1, 1))
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.junta_activity)
+
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this, "true")
 
@@ -60,6 +66,10 @@ class JuntaActivity : AppCompatActivity() {
           val esEditar = parametros!!.getBoolean("esEdicion", false)
           val semana = parametros.getInt("numPago", 1)
           val fechaPago = parametros.getString("fechaPago", "")
+
+        if(esEditar){
+            solicitarUsoUbicacion(this)
+        }
 
         //solo pruebas
         /*val esEditar = false
@@ -97,10 +107,11 @@ class JuntaActivity : AppCompatActivity() {
     }
 
     //FUNCIONES DE CADA OPTION
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.iCamara -> {
-                tomarFoto()
+                solicitarUsarCamara(this)
                 true
             }
             R.id.iCopy -> {
@@ -152,9 +163,9 @@ class JuntaActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnGuardar).visibility = valor
     }
 
-    private fun tomarFoto() {
+    /*private fun tomarFoto() {
         Toast.makeText(this, "TOMAR FOTOGRAFIA", Toast.LENGTH_SHORT).show()
-    }
+    }*/
 
     private fun showOpcionesSolidario(v: View,menuRes: Int,idTxt: Int,idSelect: Int,idtxtPago: Int,montoCuota: Double) { //idtxtPago,mCuota
         //se obtiene el txt por el id

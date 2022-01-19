@@ -31,4 +31,26 @@
     <!--mensajes -->
     <string name="noConexion">No es posible mostrar información \n No cuenta con conexión a Internet</string>
     <string name="error">Ocurrio un error</string>
+
+    <!--Strings para GeneralUtils.kt-->
+    <!--Instalacion de Apps-->
+    <string name="instalacion_app">Para poder continuar es necesario tener instalada la aplicacion.</string>
+    <string name="play_store">https://play.google.com/store/apps/details?id=</string>
+
+    <!--Mensajes para Permisos-->
+    <string name="permisos_denegados">Permisos denegados</string>
+    <string name="mensaje_permisos_denegados">Para poder continuar es necesario que se acepten los permisos</string>
+
+    <!--Mensaje para habilitar GPS-->
+    <string name="estatus_gps">Para poder continuar, activa la ubicacion del dispositivo.</string>
+    <!--Fin Strings para GeneralUtils-->
+
+    <!--Strings para WhatsApp-->
+    <string name="packagename_whats">com.whatsapp</string>
+    <string name="mensaje_whats">Hola estimada</string>
+    <!--Fin Strings para WhatsApp-->
+
+    <!--Strings para Camara-->
+    <string name="extension_foto">.jpeg</string>
+    <!--Strings para Camara-->
 </resources>
