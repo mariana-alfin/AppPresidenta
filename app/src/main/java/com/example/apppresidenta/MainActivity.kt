@@ -1,40 +1,23 @@
 package com.example.apppresidenta
 
 import android.content.Intent
-import android.opengl.Visibility
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.android.volley.*
+import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.AuthFailureError
+import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
 import org.json.JSONTokener
-
-import com.android.volley.toolbox.StringRequest
-import java.util.*
-import kotlin.collections.HashMap
-import com.android.volley.RequestQueue
-
-import com.android.volley.AuthFailureError
-
-import com.android.volley.VolleyError
-
-import org.json.JSONException
-import java.io.UnsupportedEncodingException
-import org.json.JSONArray
-
-
-
 
 
 class MainActivity : AppCompatActivity() {

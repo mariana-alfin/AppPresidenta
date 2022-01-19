@@ -1,7 +1,7 @@
 package com.example.apppresidenta
 
 import android.content.Intent
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 
 class FuncionesGlobales {

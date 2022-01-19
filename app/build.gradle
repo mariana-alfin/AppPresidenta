@@ -49,4 +49,7 @@ dependencies {
 
     //Implementacion de la dependencia para la ubicacion de Google Play Services
     implementation 'com.google.android.gms:play-services-location:15.0.1'
+
+    //Dependecia para guarda en sesion
+    implementation 'androidx.preference:preference:1.1.1'
 }

@@ -2,17 +2,15 @@ package com.example.apppresidenta
 
 import android.graphics.Color
 import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.text.InputType
-import android.text.method.DigitsKeyListener
+import androidx.preference.PreferenceManager
 import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
-import com.example.apppresidenta.R.drawable.borde_redondeado_verde
+import androidx.appcompat.app.AppCompatActivity
 import com.example.apppresidenta.R.drawable.redondo_verde
 
 class HistorialActivity : AppCompatActivity() {

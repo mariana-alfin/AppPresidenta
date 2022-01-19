@@ -50,10 +50,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".InicioApp"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme"

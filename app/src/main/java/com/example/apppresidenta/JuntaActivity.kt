@@ -6,34 +6,28 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.text.Html
 import android.text.InputType
+import android.text.method.DigitsKeyListener
 import android.view.Gravity
-import android.widget.*
-import android.widget.TableLayout.*
-import java.text.NumberFormat
-import java.util.*
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TableLayout
-import com.google.android.gms.auth.api.credentials.*
-import com.google.android.gms.auth.api.credentials.HintRequest.*
-import android.text.method.DigitsKeyListener
-import android.view.Menu
+import android.widget.*
+import android.widget.TableLayout.LayoutParams
+import android.widget.TableLayout.generateViewId
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.utils.GeneralUtils
-import com.example.apppresidenta.utils.PermisosUtils
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
+import java.text.NumberFormat
+import java.util.*
 
 
 class JuntaActivity : CameraBaseActivity() {

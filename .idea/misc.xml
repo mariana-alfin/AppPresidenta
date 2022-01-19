@@ -6,7 +6,10 @@
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/borde_celda.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/redondo_verde_1.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/redondo_verde_2.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_inicio_app.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/calculadora_activity.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/junta_activity.xml" value="0.20416666666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/mipmap-anydpi-v26/ic_app.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/mipmap-anydpi-v26/ic_app_round.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.22135416666666666" />
@@ -97,17 +100,6 @@
         <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/opciones_solidario.xml" value="0.2526041666666667" />
         <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/menu/popup_menu.xml" value="0.296875" />
         <entry key="..\:/AndroidStudioProjects/AppPresidenta/app/src/main/res/xml/network_security_config.xml" value="0.36666666666666664" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/drawable/call_24.xml" value="0.1125" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/drawable/splash_screen.xml" value="0.1125" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/layout/activity_navegacion.xml" value="0.12" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/layout/mi_grupo_activity.xml" value="0.22" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/layout/pagos_notifications.xml" value="0.2" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/menu/main_menu.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/menu/menu_junta.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/menu/opciones_solidario.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documentos/App-Presidentas/app/src/main/res/xml/provider_paths.xml" value="0.12590579710144928" />
       </map>
     </option>
   </component>

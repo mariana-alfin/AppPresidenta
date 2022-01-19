@@ -1,13 +1,10 @@
 package com.example.apppresidenta.ui.inicio
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.text.Html
 import android.view.*
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -17,13 +14,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.*
+import com.example.apppresidenta.FuncionesGlobales
+import com.example.apppresidenta.R
+import com.example.apppresidenta.ValGlobales
 import com.example.apppresidenta.databinding.InicioFragmentBinding
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 

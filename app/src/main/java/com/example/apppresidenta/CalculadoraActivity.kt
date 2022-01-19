@@ -218,7 +218,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
         val l4 = LinearLayout(this)
         l4.setBackgroundResource(R.drawable.borde_celda)
-        l4.setPadding(leftRigth, topBottom, leftRigth, 6)
+        l4.setPadding(leftRigth, topBottom, leftRigth, 4)
         l4.gravity = gravityTxtC
         val spinnerPagos = Spinner(this)
         // Create an ArrayAdapter using a simple spinner layout and languages array
@@ -257,7 +257,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
         val l5 = LinearLayout(this)
         l5.setBackgroundResource(R.drawable.borde_celda)
-        l5.setPadding(leftRigth, topBottom, leftRigth, topBottom)
+        l5.setPadding(leftRigth, topBottom, leftRigth, topBottom+1)
         l5.gravity = gravityTxt
         val pl = TextView(this)
         pl.text = "Prestamo Liquidado"
@@ -267,7 +267,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
         val l6 = LinearLayout(this)
         l6.setBackgroundResource(R.drawable.borde_celda)
-        l6.setPadding(0, topBottom, 0, 6)
+        l6.setPadding(0, topBottom, 0, 4)
         l6.gravity = gravityTxtC
         val spinnerPL = Spinner(this)
         val opciones2 = ArrayAdapter(this, android.R.layout.simple_spinner_item, listOpciones)
@@ -431,7 +431,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         // setup the alert builder
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Selecciona el número de pagos realizados a tiempo")
-        builder.setItems(list.toTypedArray()) { dialog, which ->
+        builder.setItems(list.toTypedArray()) { _, which ->
             //Toast.makeText(this,"Valor = $which", Toast.LENGTH_SHORT).show()
             txtPagos.text = "${which+1}"
             /*
@@ -456,7 +456,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         }
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
-        builder.setItems(opciones) { dialog, which ->
+        builder.setItems(opciones) { _, which ->
             //Toast.makeText(this,"Valor = $which", Toast.LENGTH_SHORT).show()
             txt.text = "${which + 1}"
 
