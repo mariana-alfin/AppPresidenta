@@ -99,7 +99,6 @@ class MiGrupoFragment : Fragment() {
         val detalle = Intent(activity, DetalleClienteActivity::class.java)
         //enviamos datos
         detalle.putExtra("idCliente", idCliente)
-        detalle.putExtra("nombreCliente", nombre)
         startActivity(detalle)
     }
     private fun datosDelGrupo() {
@@ -143,8 +142,10 @@ class MiGrupoFragment : Fragment() {
                         }
                     } catch (e: Exception) {
                         //dialogNo.setMessage("Ocurrio un error catch $e") //PRUEBAS
-                        dialogNo.setMessage(getString(R.string.error))
-                      //  dialogNo.show()
+                            if (e.message != null){
+                                dialogNo.show()
+                            }
+                        dialogNo.show()
                     }
                 },/*
                 Response.ErrorListener {

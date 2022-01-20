@@ -135,8 +135,11 @@ class PagosFragment : Fragment() {
                         }
                     } catch (e: Exception) {
                         //dialogNo.setMessage("Ocurrio un error catch $e") //PRUEBAS
-                        dialogNo.setMessage(getString(R.string.error))
-                        dialogNo.show()
+                        if (e.message != null){
+                            dialogNo.show()
+                        }
+                        //dialogNo.setMessage(getString(R.string.error))
+                        //dialogNo.show()
                     }
                 },
                 Response.ErrorListener { error ->

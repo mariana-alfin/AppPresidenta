@@ -290,20 +290,20 @@ class JuntaActivity : CameraBaseActivity() {
         val fontTh = 16F
         val fontTr = 14F
         val trEn = TableRow(this)
-
+        trEn.setPadding(0,10,0,10)
         val cliente = TextView(this)
         cliente.text = "Cliente"
-        cliente.setPadding(0, 20, 20, 20)
+        //cliente.setPadding(0, 20, 20, 20)
         cliente.gravity = Gravity.CENTER
         cliente.setTextColor(Color.WHITE)
         cliente.setTypeface(null, Typeface.BOLD_ITALIC)
         cliente.textSize = fontTh
-        cliente.maxWidth = 200
+        cliente.maxWidth = 100
         trEn.addView(cliente)
 
         val cuota = TextView(this)
         cuota.text = "Cuota"
-        cuota.setPadding(0, 20, 20, 20)
+        //cuota.setPadding(0, 20, 20, 20)
         cuota.gravity = Gravity.CENTER
         cuota.setTextColor(Color.WHITE)
         cuota.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -312,7 +312,7 @@ class JuntaActivity : CameraBaseActivity() {
 
         val pago = TextView(this)
         pago.text = "Pago"
-        pago.setPadding(0, 20, 0, 20)
+        //pago.setPadding(0, 20, 0, 20)
         pago.gravity = Gravity.CENTER
         pago.setTextColor(Color.WHITE)
         pago.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -321,7 +321,7 @@ class JuntaActivity : CameraBaseActivity() {
 
         val sol = TextView(this)
         sol.text = "Solidario"
-        sol.setPadding(0, 20, 0, 20)
+        //sol.setPadding(0, 20, 0, 20)
         sol.gravity = Gravity.CENTER
         sol.setTextColor(Color.WHITE)
         sol.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -330,7 +330,7 @@ class JuntaActivity : CameraBaseActivity() {
 
         val so = TextView(this)
         so.text = "______"
-        so.setPadding(0, 20, 0, 20)
+        //so.setPadding(0, 20, 0, 20)
         so.gravity = Gravity.CENTER
         so.setTextColor(resources.getColor(R.color.Verde2))
         so.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -340,7 +340,7 @@ class JuntaActivity : CameraBaseActivity() {
         trEn.gravity = Gravity.CENTER
         trEn.setBackgroundResource(R.drawable.redondo_verde)
         tabla.addView(
-            trEn, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            trEn//, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         )
         val numClientes = jsonClientes.length()
         //val ctsList: MutableMap<String, String> = mutableMapOf()
@@ -351,23 +351,33 @@ class JuntaActivity : CameraBaseActivity() {
             //SE GENERA EL OBJETO CLIENTE DEL ARREGLO
             val cte: JSONObject = jsonClientes.getJSONObject(i)
             val tr = TableRow(this)
+            tr.setPadding(0,10,0,10)
             if (i != numClientes) {
                 tr.setBackgroundResource(R.drawable.borde)
             } else {
                 tr.setBackgroundResource(R.drawable.borde_redondeado_verde)
             }
+            val lc = LinearLayout(this)
+            //lc.setPadding(10, 0, 5, 0)
+            val chk = CheckBox(this)
+            chk.gravity = Gravity.CENTER_VERTICAL
+            //lc.addView(chk)
+            //tr.addView(lc)
 
             val l = LinearLayout(this)
             val cliente = TextView(this)
-            cliente.setPadding(10, 0, 5, 0)
+            cliente.setPadding(0, 10, 0, 10)
+            //cliente.setPadding(0, 20, 0, 20)
             cliente.setTextColor(resources.getColor(R.color.Azul1))
             cliente.textSize = (fontTr - 1)
-            cliente.maxWidth = 300
+            cliente.maxWidth = 200
+            l.addView(chk)
 
             val couta = TextView(this)
             val mCuota = cte.getDouble("pay")
             couta.text = formatPesos.format(mCuota)
-            couta.setPadding(0, 20, 15, 20)
+            //couta.setPadding(0, 20, 15, 20)
+            //couta.setPadding(0, 10, 0, 10)
             couta.setTextColor(resources.getColor(R.color.Azul1))
             couta.textSize = fontTr
 
@@ -379,7 +389,8 @@ class JuntaActivity : CameraBaseActivity() {
             pago.inputType =
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
             pago.keyListener = DigitsKeyListener.getInstance(".0123456789")
-            pago.setPadding(5, 20, 10, 15)
+            //pago.setPadding(5, 20, 10, 15)
+            //pago.setPadding(0, 10, 0, 10)
             pago.setTextColor(resources.getColor(R.color.Azul1))
             pago.textSize = fontTr
             pago.gravity = Gravity.CENTER
@@ -393,7 +404,8 @@ class JuntaActivity : CameraBaseActivity() {
             sol.setTypeface(null, Typeface.BOLD)
             sol.textSize = (fontTr + 1)
             sol.setTextColor(resources.getColor(R.color.Verde5))
-            sol.setPadding(3, 10, 10, 10)
+            //sol.setPadding(3, 10, 10, 10)
+            //sol.setPadding(0, 10, 0, 10)
             sol.gravity = Gravity.CENTER
 
             val checlSol = ImageView(this)
@@ -404,6 +416,7 @@ class JuntaActivity : CameraBaseActivity() {
             lS.setOnClickListener { v: View ->
                 showOpcionesSolidario(v, R.menu.opciones_solidario, idT, idS, idtxtPago, mCuota)
             }
+
             //CUANDO ES COPIA DE MONTOS SE ASIGNA EL MONTO DE LA CUOTA AL PAGO Y SE PONE NO APLICA AL SOLIDARIO
             if (esCopia) {
                 pago.setText(cte.getString("pay"))// cte.getString("pay")
@@ -432,10 +445,8 @@ class JuntaActivity : CameraBaseActivity() {
             tr.addView(lS)
 
             tr.gravity = Gravity.CENTER
-            tabla.addView(
-                tr, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            )
-            tabla.isShrinkAllColumns = false
+            tabla.addView(tr)
+            //tabla.isShrinkAllColumns = false
         }
         if (!esCopia) {
             mostrarFormato(true)

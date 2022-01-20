@@ -21,6 +21,7 @@
     <string name="urlDatosCredito">https://api.micartera.test.alfin.com.mx/api/credit-group-status</string>
     <string name="urlMiembrosGrupo">https://api.micartera.test.alfin.com.mx/api/group-members-pays</string>
     <string name="urlPagosGrupo">https://api.micartera.test.alfin.com.mx/api/group-pays</string>
+    <string name="urlDetalleCliente">https://api.micartera.test.alfin.com.mx/api/customer-credit-status</string>
 
     <!--headers peticion -->
     <string name="content_type">application/json</string>

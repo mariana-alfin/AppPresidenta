@@ -156,7 +156,9 @@ class InicioFragment : Fragment() {
                     }
 
                 } catch (e: Exception) {
-                    dialogNo.show()
+                    if (e.message != null){
+                        dialogNo.show()
+                    }
                 }
 
             },
