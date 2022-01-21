@@ -43,7 +43,7 @@
     <string name="mensaje_permisos_denegados">Para poder continuar es necesario que se acepten los permisos</string>
 
     <!--Mensaje para habilitar GPS-->
-    <string name="estatus_gps">Para poder continuar, activa la ubicacion del dispositivo.</string>
+    <string name="estatus_gps">Para poder continuar, es necesario activar la ubicacion.</string>
     <!--Fin Strings para GeneralUtils-->
 
     <!--Strings para WhatsApp-->
