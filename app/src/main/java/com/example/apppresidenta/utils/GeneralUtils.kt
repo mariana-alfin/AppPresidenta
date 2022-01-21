@@ -1,5 +1,6 @@
 package com.example.apppresidenta.utils
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -57,15 +58,13 @@ class GeneralUtils {
             alert.show()
         }
 
-        fun mostrarAlertActivacionGPS(contexto: Context?) {
+        fun mostrarAlertActivacionGPS(contexto: Context?,actividad: Activity) {
             val alert = AlertDialog.Builder(contexto)
             alert.setMessage(contexto?.getString(R.string.estatus_gps))
             alert.setPositiveButton(android.R.string.ok) { _, _ ->
-                val intent = Intent()
-                intent.action = Settings.ACTION_LOCATION_SOURCE_SETTINGS
-                contexto?.startActivity(intent)
+                //En caso de que el usuario no acepte prender la ubicacion se cierra la actividad de la junta
+                actividad.finish()
             }
-            alert.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
             alert.show()
         }
 
