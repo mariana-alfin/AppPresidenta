@@ -15,8 +15,6 @@ import com.example.apppresidenta.utils.GeneralUtils.Companion.mostrarAlertActiva
 import com.example.apppresidenta.utils.PermisosUtils
 import java.io.File
 
-private const val DOCUMENT_TAG = "document_tag"
-
 open class CameraBaseActivity : UbicacionActivity() {
 
     private val permisosAValidar =
