@@ -3,6 +3,7 @@ package com.example.apppresidenta.ui.miGrupo
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
@@ -209,6 +210,7 @@ class MiGrupoFragment : Fragment() {
         val fontTh = 16F
         val fontTr = 15F
         trEn.setBackgroundResource(R.drawable.redondo_verde)
+        trEn.setPadding(0,20,0,20)
         val linea = LinearLayout(activity)
         val txtN = TextView(activity)
         txtN.text = "Integrantes"
@@ -230,15 +232,15 @@ class MiGrupoFragment : Fragment() {
         trEn.addView(txtP)
 
         val txtL = TextView(activity)
-        txtL.text = "Llamar"
-        txtL.setPadding(0, 0, 5, 0)
+        txtL.text = "Contacto"
+        txtL.setPadding(50, 0, 5, 0)
         txtL.setTextColor(Color.WHITE)
         txtL.setTypeface(null, Typeface.BOLD_ITALIC)
         txtL.textSize = fontTh
         trEn.addView(txtL)
 
         val txtM = TextView(activity)
-        txtM.text = "Mensaje"
+        txtM.text = "   "
         txtM.setPadding(5, 0, 0, 0)
         txtM.setTextColor(Color.WHITE)
         txtM.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -275,7 +277,13 @@ class MiGrupoFragment : Fragment() {
 
             val linea = LinearLayout(activity)
             val view = ImageView(activity)
-            view.setImageResource(R.drawable.ic_pago_v)
+            view.setImageResource(R.drawable.ic_si_pago)
+
+            if(cte.getInt("due") != 0){
+                view.setImageResource(R.drawable.ic_no_pago)
+                view.setColorFilter(Color.RED)
+            }
+
             view.setPadding(10,10,5,10)
             linea.addView(view)
 
@@ -286,7 +294,7 @@ class MiGrupoFragment : Fragment() {
             txtN.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             txtN.setPadding(5, 10, 5, 10)
             txtN.gravity = Gravity.LEFT
-            txtN.maxWidth = 380
+            txtN.maxWidth = 250
 
 
             val txtP = TextView(activity)
@@ -297,13 +305,10 @@ class MiGrupoFragment : Fragment() {
 
             val call = ImageView(activity)
             call.setImageResource(R.drawable.call_24)
-            call.setColorFilter(Color.GREEN)
-            call.setPadding(5, 10, 5, 10)
 
             val mensaje = ImageView(activity)
             mensaje.setImageResource(R.drawable.ic_whats)
             mensaje.setColorFilter(Color.GREEN)
-            mensaje.setPadding(5, 10, 5, 10)
 
             txtN.text =  cte.getString("customer_name")
             txtP.text = formatPesos.format(cte.getDouble("pay"))
@@ -356,7 +361,6 @@ class MiGrupoFragment : Fragment() {
         }
         progressBar.visibility = valorLoadi
         binding.txtCargando.visibility = valorLoadi
-        binding.txtMiGrupo.visibility = valor
         binding.tblMiGpo.visibility = valor
     }
 
@@ -431,7 +435,7 @@ class MiGrupoFragment : Fragment() {
                 }
                 2 -> {
                     nombre = "Delgadillo Lara Martha"
-                    view.setImageResource(R.drawable.ic_no_pago_r)
+                    //view.setImageResource(R.drawable.ic_no_pago_r)
                 }
                 3 -> {
                     nombre = "Valenzuela Sanches Martha"
@@ -441,7 +445,7 @@ class MiGrupoFragment : Fragment() {
                 }
                 5 -> {
                     nombre = "Campos Maysen Sonia"
-                    view.setImageResource(R.drawable.ic_no_pago_r)
+                   // view.setImageResource(R.drawable.ic_no_pago_r)
                 }
                 6 -> {
                     nombre = "Rosas Carmona Connie"

@@ -1,8 +1,13 @@
 package com.example.apppresidenta
 
 import android.content.Intent
+import android.text.InputFilter
+import android.widget.EditText
 import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FuncionesGlobales {
     companion object {
@@ -25,6 +30,7 @@ class FuncionesGlobales {
             editor.remove("CREDITO_ID")
             editor.remove("PRESIDENTA")
             editor.remove("SESION_ACTIVA")
+            editor.remove("MONTO_SEMANAL")
             editor.apply()
             //REDIRECCIONAMOS AL INICIO
             val inicio = Intent(activity, MainActivity::class.java)
@@ -43,6 +49,22 @@ class FuncionesGlobales {
                 }
             }
             return activity
+        }
+        //obtiene la fecha del dia en curso
+        fun obtenerFecha(formato: String): String {
+            val fecha = Calendar.getInstance().time
+            val dateFormat = SimpleDateFormat(formato)
+            return dateFormat.format(fecha)
+        }
+        //funcion para convertir una fecha al formato indicado
+        fun convertFecha(fecha: String, formato: String): String{
+            val formatoEntrada: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val formatoSalida: DateFormat = SimpleDateFormat(formato)//SimpleDateFormat("dd/MM/yyyy")
+            val fechaDate: Date = formatoEntrada.parse(fecha)
+            return formatoSalida.format(fechaDate)
+        }   //limita el max num caracteres de un editext
+        fun EditText.setMaxLength(maxLength: Int) {
+            filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
         }
     }
 }

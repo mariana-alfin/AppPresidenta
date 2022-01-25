@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager
 import android.text.Html
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -16,16 +17,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.FuncionesGlobales
-import com.example.apppresidenta.JuntaActivity
-import com.example.apppresidenta.R
-import com.example.apppresidenta.ValGlobales
+import com.example.apppresidenta.*
 import com.example.apppresidenta.databinding.PagosNotificationsBinding
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
+import java.text.DateFormat
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 class PagosFragment : Fragment() {
@@ -72,6 +72,27 @@ class PagosFragment : Fragment() {
             progressBar = binding.cargando
             progressBar.visibility = View.INVISIBLE
         }
+/*
+        try {
+            var toolbar = requireActivity().findViewById(R.id.iAyuda)
+
+            toolbar?.menu?.clear()
+            //toolbar?.title = ""
+            //val toolbarFlowFragment = context?.let { getInflateLayout(it, R.layout.toolbar_profile) }
+
+            toolbar?.addView(toolbarFlowFragment)
+           // (activity as AppCompatActivity).title =  "Fragment Two"
+
+        }catch (e: Exception){
+            val builder = AlertDialog.Builder(requireActivity())
+            builder.setTitle("error")
+            builder.setMessage(e.message)
+            val dialog = builder.create()
+            dialog.show()
+        }
+
+*/
+
         return root
     }
 
@@ -86,14 +107,15 @@ class PagosFragment : Fragment() {
         }
         progressBar.visibility = valorLoadi
         binding.txtCargando.visibility = valorLoadi
-        binding.txtCalendario.visibility = valor
         binding.txtPagoSemanal.visibility = valor
+        binding.txtP.visibility = valor
     }
 
     private fun datosPagos() {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
+        val pagoSemanal = prefs.getFloat("MONTO_SEMANAL", 0.0F)
         //val prestamo = 119483 //para pruebas
         val fecha = "2020-01-17" //para pruebas
         val dialogNo =
@@ -122,7 +144,7 @@ class PagosFragment : Fragment() {
                         if (jsonData.getInt("code") == 200) {
                             //Toast.makeText(activity, "PETICION EXITOSA", Toast.LENGTH_SHORT).show()
                             val jsonResults = jsonData.getJSONArray("results")
-                            llenarTbPagos(jsonResults)
+                            llenarTbPagos(jsonResults,pagoSemanal)
                             /*
                             for (i in 0 until jsonResults.length()) {
                                 val CL: JSONObject = jsonResults.getJSONObject(i)
@@ -187,9 +209,10 @@ class PagosFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun llenarTbPagos(jsonPagos: JSONArray) {
+    private fun llenarTbPagos(jsonPagos: JSONArray, pagoSemanal: Float) {
         val txt = binding.txtPagoSemanal
-        txt.text = "Pago semanal del grupo: ${formatPesos.format(11984)}"
+        //txt.text = " Pago semanal: ${formatPesos.format(pagoSemanal)}  "
+        txt.text = "  ${formatPesos.format(pagoSemanal)}  "
         txt.gravity = Gravity.CENTER
         //SE OBTIENE LA TABLA
         val tabla = binding.tblPagos
@@ -198,6 +221,7 @@ class PagosFragment : Fragment() {
         val fontTr = 15F
         trEn.setBackgroundResource(R.drawable.redondo_verde)
         trEn.gravity = Gravity.CENTER
+        trEn.setPadding(0,20,0,20)
         val tS = TextView(activity)
         tS.text = "Fecha"
         tS.setPadding(0, 0, 0, 0)
@@ -218,7 +242,7 @@ class PagosFragment : Fragment() {
 
         val tEs = TextView(activity)
         tEs.text = ""
-        tEs.setPadding(5, 0, 55, 0)
+        tEs.setPadding(5, 0, 50, 0)
         tEs.gravity = Gravity.CENTER
         tEs.setTextColor(Color.WHITE)
         tEs.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -226,9 +250,8 @@ class PagosFragment : Fragment() {
         trEn.addView(tEs)
 
         val tRP = TextView(activity)
-        tRP.text = "Registro de pagos"
+        tRP.text = "Seguimiento"
         tRP.setPadding(0, 0, 0, 0)
-        tRP.maxWidth = 200
         tRP.setTextColor(Color.WHITE)
         tRP.setTypeface(null, Typeface.BOLD_ITALIC)
         tRP.textSize = fontTh
@@ -260,8 +283,6 @@ class PagosFragment : Fragment() {
             txtS.gravity = Gravity.CENTER
 
             val txtF = TextView(activity)
-            //txtF.setBackgroundResource(R.drawable.borde)
-            txtF.setTextColor(resources.getColor(R.color.Azul1))
             txtF.setTextColor(resources.getColor(R.color.Azul1))
             txtF.setPadding(15, 10, 0, 10)
             txtF.textSize = fontTr
@@ -286,8 +307,8 @@ class PagosFragment : Fragment() {
             ver.setPadding(0, 10, 0, 10)
 
             txtS.text = pago.getString("pay_no")
-            var fechaPago = pago.getString("pay_date") //"09/12/2021"
-            txtF.text = fechaPago
+            var fechaPago = pago.getString("pay_date")
+            txtF.text = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
             var estatus = pago.getString("pay_status").uppercase(Locale.getDefault())
             txtEs.text = estatus
             edit.setOnClickListener { generarJunta(true, pago.getInt("pay_id"),pago.getInt("pay_no"), fechaPago) }

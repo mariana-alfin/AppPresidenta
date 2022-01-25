@@ -36,8 +36,10 @@ class Navegacion : AppCompatActivity() {
         navView.setupWithNavController(navController)
         //AGREGA LA IMAGEN
         //supportActionBar?.setBackgroundDrawable(getResources().getDrawable(R.drawable.bannerprueba))
-        supportActionBar?.setBackgroundDrawable(getResources().getDrawable(R.drawable.banner4))
-
+        supportActionBar?.setBackgroundDrawable(resources.getDrawable(R.drawable.banner4))
+        supportActionBar?.setLogo(R.mipmap.icono_app)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
     }
     override fun onBackPressed() {
         //FUNCION QUE SE EJECUTA AL PERSIONAR EL BOTON ATRAS DE MOMENTO NO DEBE DE HACER NADA

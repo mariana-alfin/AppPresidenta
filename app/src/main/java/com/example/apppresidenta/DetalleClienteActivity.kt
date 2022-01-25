@@ -34,7 +34,6 @@ class DetalleClienteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detalle_cliente)
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this,"true")
-        findViewById<ImageView>(R.id.imaCel).setColorFilter(Color.GREEN)
 
         mostrarFormato(false)
 
@@ -67,6 +66,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtDireccionCliente).visibility = valor
         findViewById<TextView>(R.id.txtTelefonoCliente).visibility = valor
         findViewById<ImageView>(R.id.imaCel).visibility = valor
+        findViewById<ImageView>(R.id.imaWhats).visibility = valor
     }
     private fun detalleCliente(credit_id: Int) {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
@@ -145,11 +145,8 @@ class DetalleClienteActivity : AppCompatActivity() {
         }
         /*******  FIN ENVIO   *******/
     }
-
-
     private fun pintarTablaDetalle(jsonResults: JSONObject) {
 
-        val fT = 20F
         val nombre = jsonResults.getString("customer_name")
         val direccion = jsonResults.getString("address")
         val telefono = jsonResults.getString("cell_phone")
@@ -157,11 +154,9 @@ class DetalleClienteActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtDireccionCliente).text = direccion
         findViewById<TextView>(R.id.txtTelefonoCliente).text = "Télefono: $telefono"
 
-        findViewById<TextView>(R.id.txtNombreCliente).textSize = fT
-        findViewById<TextView>(R.id.txtDireccionCliente).textSize = fT
-        findViewById<TextView>(R.id.txtTelefonoCliente).textSize = fT
-
         findViewById<ImageView>(R.id.imaCel).setOnClickListener{ GeneralUtils.llamarContacto(this, telefono) }
+        findViewById<ImageView>(R.id.imaWhats).setOnClickListener{ validacionesEnvioWhats(telefono,getString(R.string.mensaje_whats) +" "+ nombre) }
+
         //se obtiene la tabla
         val tabla = findViewById<TableLayout>(R.id.tblDetalle)
         val fTr = 18F
@@ -299,6 +294,14 @@ class DetalleClienteActivity : AppCompatActivity() {
         tabla.addView(trDA, TableLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
 
         mostrarFormato(true)
+    }
+    private fun validacionesEnvioWhats(telefono : String, nombreclienta : String) {
+        if (!GeneralUtils.validarAplicacionInstalada(getString(R.string.packagename_whats), this))
+        {
+            GeneralUtils.mostrarAlertInstalarApp(this, getString(R.string.packagename_whats))
+            return
+        }
+        GeneralUtils.enviarMensajeWhatsApp(this, getString(R.string.mensaje_whats) + " " + nombreclienta, telefono)
     }
     /*
     private fun mostrarDatos() {

@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Presidenta ALFIN</string>
     <string name="title_activity_navegacion">Navegacion</string>
-    <string name="title_home">Inicio</string>
-    <string name="title_dashboard">Mi Grupo </string>
-    <string name="title_notifications">Pagos</string>
+    <string name="titleHome">Inicio</string>
+    <string name="titleGpo">Mi Grupo </string>
+    <string name="titlePagos">Pagos</string>
+    <string name="titlePagosFragment">Calendario de Pagos</string>
     <string name="ingresar">Ingresar</string>
     <string name="usuario">Usuario</string>
     <string name="title_activity_calculadora">calculadora_activity</string>
@@ -22,6 +23,8 @@
     <string name="urlMiembrosGrupo">https://api.micartera.test.alfin.com.mx/api/group-members-pays</string>
     <string name="urlPagosGrupo">https://api.micartera.test.alfin.com.mx/api/group-pays</string>
     <string name="urlDetalleCliente">https://api.micartera.test.alfin.com.mx/api/customer-credit-status</string>
+    <string name="urlGuardarJunta">https://api.micartera.test.alfin.com.mx/api/group-task-create</string>
+    <string name="urlEnviarEmail">https://api.micartera.test.alfin.com.mx/api/group-help-sendmail</string>
 
     <!--headers peticion -->
     <string name="content_type">application/json</string>
@@ -53,5 +56,6 @@
 
     <!--Strings para Camara-->
     <string name="extension_foto">.jpeg</string>
+    <string name="ayudaSolitada">Mensaje enviado exitosamente</string>
     <!--Strings para Camara-->
 </resources>

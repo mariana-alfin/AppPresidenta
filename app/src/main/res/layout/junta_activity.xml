@@ -19,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:scrollbarSize="@android:dimen/app_icon_size"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,39 +29,42 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-
+<!--
             <TextView
                 android:id="@+id/txtTitle"
                 style="@style/textAzul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="0dp"
                 android:gravity="left"
                 android:text="Ingresa los pagos de los integrantes"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+-->
+
 
             <TextView
                 android:id="@+id/txtDatosPago"
+                android:background="@drawable/borde_redon_azul"
+                android:padding="8dp"
                 style="@style/textAzul"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:gravity="left"
-                android:text="SEMANA 1 - 28/10/2021"
+                android:text="28/10/2021"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.062"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
-
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TableLayout
                 android:id="@+id/tblJunta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtDatosPago" />
@@ -70,7 +73,8 @@
                 android:id="@+id/btnGuardar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:drawableLeft="@drawable/save"
                 android:text="Guardar"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -105,10 +109,15 @@
 
             <TextView
                 android:id="@+id/txtJson"
+                android:textColor="@color/Verde3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="26dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnGuardar" />
 

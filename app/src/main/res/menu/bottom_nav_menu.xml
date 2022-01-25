@@ -5,16 +5,16 @@
     <item
         android:id="@+id/navHome"
         android:icon="@drawable/ic_inicio_v"
-        android:title="@string/title_home" />
+        android:title="@string/titleHome" />
 
     <item
         android:id="@+id/navMiGrupo"
         android:icon="@drawable/ic_clientas_grupo"
-        android:title="@string/title_dashboard" />
+        android:title="@string/titleGpo" />
 
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_pagos"
-        android:title="@string/title_notifications" />
+        android:title="@string/titlePagos" />
 
 </menu>

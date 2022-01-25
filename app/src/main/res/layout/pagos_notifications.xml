@@ -18,7 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,33 +28,38 @@
         app:layout_constraintVertical_bias="1.0">
 
         <TextView
-            android:id="@+id/txtCalendario"
+            android:id="@+id/txtP"
             style="@style/textAzul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="left"
-            android:layout_margin="10dp"
-            android:text="Calendario de pagos"
+            android:text="Pago semanal"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/txtPagoSemanal"
+            android:background="@drawable/borde_redon_azul"
+            android:padding="8dp"
             style="@style/textAzul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Pago semanal del grupo"
+            android:layout_margin="5dp"
+            android:text="$"
             android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtCalendario" />
+            app:layout_constraintTop_toBottomOf="@+id/txtP" />
 
         <TableLayout
             android:id="@+id/tblPagos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

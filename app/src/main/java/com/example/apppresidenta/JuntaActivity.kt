@@ -6,28 +6,32 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.text.Html
 import android.text.InputType
 import android.text.method.DigitsKeyListener
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
-import android.widget.TableLayout.LayoutParams
 import android.widget.TableLayout.generateViewId
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.apppresidenta.FuncionesGlobales.Companion.setMaxLength
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.text.NumberFormat
 import java.util.*
+
 
 
 class JuntaActivity : CameraBaseActivity() {
@@ -39,20 +43,21 @@ class JuntaActivity : CameraBaseActivity() {
     class CteIds {
         var idTxtPago: Int
         var idSolidario: Int
+        var idChk: Int
 
-        constructor(idTxtPago: Int, idSolidario: Int) {
+        constructor(idTxtPago: Int, idSolidario: Int, idChk: Int) {
             this.idTxtPago = idTxtPago
             this.idSolidario = idSolidario
+            this.idChk = idChk
         }
     }
 
-    var listClientes: MutableMap<Int, CteIds> = mutableMapOf(0 to CteIds(1, 1))
+    var listClientes: MutableMap<Int, CteIds> = mutableMapOf(0 to CteIds(1, 1,1))
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.junta_activity)
-
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this, "true")
 
@@ -64,18 +69,20 @@ class JuntaActivity : CameraBaseActivity() {
         if(esEditar){
             solicitarUsoUbicacion(this)
         }
-
-        //solo pruebas
-        /*val esEditar = false
-        val semana = 1
-        val fechaPago = "2021-09-07"*/
-        findViewById<TextView>(R.id.txtTitle).text = "Ingresa los pagos de los integrantes"
+        /*findViewById<TextView>(R.id.txtTitle).text = "Ingresa los pagos de los integrantes"
         if (!esEditar) {
             findViewById<TextView>(R.id.txtTitle).text = "Los pagos ya fueron guardados"
-        }
-
-        findViewById<TextView>(R.id.txtDatosPago).text = "SEMANA $semana - $fechaPago"
+        }*/
+        val fecha = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
+        findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: $fecha   "
         findViewById<Button>(R.id.btnGuardar).setOnClickListener { guardarJunta() }
+        //findViewById<Button>(R.id.btnGuardar).setOnClickListener { this.onBackPressed() } //ejeuta el persionar atras
+        /*Se agrega logo y titlulo del la actividad*/
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.title = "SEMANA $semana"
+        actionBar?.setLogo(R.mipmap.icono_app)
+        actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar?.setDisplayUseLogoEnabled(true)
 
         //pintarTablaJunta()
         mostrarFormato(false)
@@ -89,7 +96,13 @@ class JuntaActivity : CameraBaseActivity() {
             progressBar = findViewById(R.id.cargando)
             progressBar.visibility = View.INVISIBLE
         }
-
+        val metrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(metrics)
+        val width = metrics.widthPixels // ancho absoluto en pixels
+        val height = metrics.heightPixels // alto absoluto en pixels
+        val widthd = this.resources.displayMetrics.widthPixels
+        val heightd = this.resources.displayMetrics.heightPixels
+       // findViewById<TextView>(R.id.txtJson).text = "width = $width $widthd height = $height $heightd"
     }
 
     //AGREGA EL MENU DE OPCIONES
@@ -126,6 +139,7 @@ class JuntaActivity : CameraBaseActivity() {
                 //solo pruebas
                 //val fechaPago = "2021-09-07"
                 if (ValGlobales.validarConexion(this)) {
+                    LoadingScreen.displayLoadingWithText(this,"Cargando ...",false)
                      datosJunta(fechaPago, true)
                 } else {
                     findViewById<TextView>(R.id.txtCargando).text = getString(R.string.noConexion)
@@ -152,7 +166,7 @@ class JuntaActivity : CameraBaseActivity() {
         }
         progressBar.visibility = valorLoadi
         findViewById<TextView>(R.id.txtCargando).visibility = valorLoadi
-        findViewById<TextView>(R.id.txtTitle).visibility = valor
+        //findViewById<TextView>(R.id.txtTitle).visibility = valor
         findViewById<TextView>(R.id.txtDatosPago).visibility = valor
         findViewById<Button>(R.id.btnGuardar).visibility = valor
     }
@@ -290,7 +304,7 @@ class JuntaActivity : CameraBaseActivity() {
         val fontTh = 16F
         val fontTr = 14F
         val trEn = TableRow(this)
-        trEn.setPadding(0,10,0,10)
+        trEn.setPadding(0,20,0,20)
         val cliente = TextView(this)
         cliente.text = "Cliente"
         //cliente.setPadding(0, 20, 20, 20)
@@ -298,7 +312,7 @@ class JuntaActivity : CameraBaseActivity() {
         cliente.setTextColor(Color.WHITE)
         cliente.setTypeface(null, Typeface.BOLD_ITALIC)
         cliente.textSize = fontTh
-        cliente.maxWidth = 100
+        cliente.maxWidth = 130
         trEn.addView(cliente)
 
         val cuota = TextView(this)
@@ -357,12 +371,6 @@ class JuntaActivity : CameraBaseActivity() {
             } else {
                 tr.setBackgroundResource(R.drawable.borde_redondeado_verde)
             }
-            val lc = LinearLayout(this)
-            //lc.setPadding(10, 0, 5, 0)
-            val chk = CheckBox(this)
-            chk.gravity = Gravity.CENTER_VERTICAL
-            //lc.addView(chk)
-            //tr.addView(lc)
 
             val l = LinearLayout(this)
             val cliente = TextView(this)
@@ -370,7 +378,12 @@ class JuntaActivity : CameraBaseActivity() {
             //cliente.setPadding(0, 20, 0, 20)
             cliente.setTextColor(resources.getColor(R.color.Azul1))
             cliente.textSize = (fontTr - 1)
-            cliente.maxWidth = 200
+            cliente.maxWidth = 230
+
+            val chk = CheckBox(this)
+            val idCk = generateViewId()
+            chk.id = idCk
+            chk.gravity = Gravity.CENTER_HORIZONTAL
             l.addView(chk)
 
             val couta = TextView(this)
@@ -389,13 +402,12 @@ class JuntaActivity : CameraBaseActivity() {
             pago.inputType =
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
             pago.keyListener = DigitsKeyListener.getInstance(".0123456789")
-            //pago.setPadding(5, 20, 10, 15)
-            //pago.setPadding(0, 10, 0, 10)
             pago.setTextColor(resources.getColor(R.color.Azul1))
             pago.textSize = fontTr
             pago.gravity = Gravity.CENTER
-            pago.width = 160
-            pago.maxWidth = 250
+            pago.width = 140
+            pago.maxWidth = 180
+            pago.setMaxLength(7)
 
             val lS = LinearLayout(this)
             val sol = TextView(this)
@@ -404,8 +416,7 @@ class JuntaActivity : CameraBaseActivity() {
             sol.setTypeface(null, Typeface.BOLD)
             sol.textSize = (fontTr + 1)
             sol.setTextColor(resources.getColor(R.color.Verde5))
-            //sol.setPadding(3, 10, 10, 10)
-            //sol.setPadding(0, 10, 0, 10)
+            sol.setPadding(15,0,0,0)
             sol.gravity = Gravity.CENTER
 
             val checlSol = ImageView(this)
@@ -422,19 +433,16 @@ class JuntaActivity : CameraBaseActivity() {
                 pago.setText(cte.getString("pay"))// cte.getString("pay")
                 sol.setText("NA")
                 checlSol.visibility = View.GONE
+                LoadingScreen.hideLoading()
             }
             //SE AGREGAN LOS VALORES
             cliente.text = cte.getString("customer_name")
             //SE AGREGA A LA LISTA DE IDs
-            listClientes.put(cte.getInt("credit_id"), CteIds(idtxtPago, idT))
+            listClientes.put(cte.getInt("credit_id"), CteIds(idtxtPago, idT, idCk))
 
-            //SE AGREGA COLUMNA DEL ROL
-            //l.addView(vRol)
-            //cliente.gravity = Gravity.CENTER
+            //SE AGREGA COLUMNA CLIENTE
             l.addView(cliente)
             tr.addView(l)
-            //SE AGREGA COLUMNA CLIENTE
-            //tr.addView(cliente)
             //SE AGREGA COLUMNA COUTA
             tr.addView(couta)
             //SE AGREGA COLUMNA PAGO
@@ -446,7 +454,6 @@ class JuntaActivity : CameraBaseActivity() {
 
             tr.gravity = Gravity.CENTER
             tabla.addView(tr)
-            //tabla.isShrinkAllColumns = false
         }
         if (!esCopia) {
             mostrarFormato(true)
@@ -460,37 +467,41 @@ class JuntaActivity : CameraBaseActivity() {
         //VARIABLE PARA SABER SI HAY VACIOS PARA CONTINUAR ESTA DEBE DE ESTAR EN CERO
         var hayVacios = 0
         //se genera el json y se envia el metodo para enviarlo al ws
-        var clientes = "\"clientes\" : [ "
+        //var clientes = "\"clientes\" : [ "
+        var clientes = "\"tasks\" : [ "
         //SE RECORRE EL LISTADO DE CLIENTES Y LOS IDS DE SUS INPUTS
         for (cte in listClientes) {
             try {
                 val txtPago = findViewById<EditText>(cte.value.idTxtPago)       //TEXT DE MONTO PAGO
-                val txtSolidario =
-                    findViewById<TextView>(cte.value.idSolidario)//TEXT DE SOLIDARIO (NA,DA,RE)
-                var respuesta = "idCliente ${cte.key}"
-                if (txtPago.text.isNotEmpty()) {//SI NO ESTA VACIO SE AGREGA ALA RESPUESTA
-                    respuesta += "montoPago = ${txtPago.text}"
+                val txtSolidario = findViewById<TextView>(cte.value.idSolidario)//TEXT DE SOLIDARIO (NA,DA,RE)
+                val chkAsistencia = findViewById<CheckBox>(cte.value.idChk)     //TEXT DE SOLIDARIO (NA,DA,RE)
+                //var respuesta = "idCliente ${cte.key}"
+                if (txtPago.text.isNotEmpty()) {                                //SI NO ESTA VACIO SE AGREGA ALA RESPUESTA
+                    //respuesta += "montoPago = ${txtPago.text}"
                     //se agrega al string del json
                     clientes += "{" +
-                            " \"idCliente\" : ${cte.key}," +
-                            " \"montoPago\" : \"${txtPago.text}\","
+                            " \"credit_id\" : ${cte.key}," +
+                            " \"amount\" : \"${txtPago.text}\","
                 } else { //CONTRARIO SE MANDA EL ERROR
                     txtPago.error = "Es requerido"
                     hayVacios++
                 }
+                clientes += " \"description\" : null,"                          //se agrega description siempre en blanco
+                clientes += " \"result_type_id\" : \"1\","                      //se agrega result_type_id siempre en 1
+                clientes += " \"validate\" : \"${if (chkAsistencia.isChecked) "1" else "0"}\"," //se agrega la asistencia de la clienta
                 if (txtSolidario.text.isNotEmpty()) {
-                    respuesta += "solidario = ${txtSolidario.text}"
+                    //respuesta += "solidario = ${txtSolidario.text}"
                     clientes += " \"solidario\" : \"${txtSolidario.text}\" },"
                 } else {
                     txtSolidario.error = "Es requerido"
                     hayVacios++
                 }
                 //Toast.makeText(this, "$respuesta , hayVacios $hayVacios ", Toast.LENGTH_SHORT).show()
-            } catch (e: java.lang.Exception) {
+            } catch (e: Exception) {
                 //Toast.makeText(this, "ex ${e.message}", Toast.LENGTH_SHORT).show()
                 Toast.makeText(
                     this,
-                    "Ocurrio un error, favor de intentarlo más tarde",
+                    "Ocurrio un error, favor de intentarlo más tarde ${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -507,7 +518,7 @@ class JuntaActivity : CameraBaseActivity() {
             builder.setTitle(Html.fromHtml("<font color='#1F2C49'>¿Está seguro de continuar?</font>"))
                 .setPositiveButton("Aceptar",
                     DialogInterface.OnClickListener { _, _ ->
-
+                        //LoadingScreen.displayLoadingWithText(this,"Please wait...",false)
                         generarJson(clientesString)
                     })
                 .setNegativeButton("Cancelar",
@@ -527,22 +538,107 @@ class JuntaActivity : CameraBaseActivity() {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun generarJson(clientesString: String) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         val parametros = this.intent.extras
         val idPago = parametros!!.getInt("idPago", 0)
+        val fechaPago = parametros.getString("fechaPago", "")
         //se genera el json
         var JSJunta = ""
-        val fecha = "2022-01-13"
+        val hoy = FuncionesGlobales.obtenerFecha("yyyy-MM-dd")
         val valSolicitud = "{" +
                 " \"credit_id\" :$prestamo," +
-                " \"idPago\" :$idPago," +
-                " \"fecha\" : \"$fecha\","
+                " \"date_accrual\" : \"$fechaPago\","+ //fecha de pago
+                " \"close_task\" : 1," +
+                " \"date_task\" : \"$hoy\","+
+                " \"idPago\" :$idPago,"
         JSJunta = "$valSolicitud $clientesString }"
-        val jsonJuntaContactos = JSONObject(JSJunta)
-        Toast.makeText(this, "Se envia", Toast.LENGTH_SHORT).show()
-        findViewById<TextView>(R.id.txtJson).text = jsonJuntaContactos.toString()
+        val jsonJunta = JSONObject(JSJunta)
+        //findViewById<TextView>(R.id.txtJson).text = jsonJunta.toString()
+        Log.e("MyActivity", jsonJunta.toString());
+        enviarJunta(jsonJunta)
+    }
+
+    private fun enviarJunta(jsonJunta: JSONObject) {
+        LoadingScreen.displayLoadingWithText(this, "Enviando Información...",false)
+        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+
+        val dialogNo = AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
+            .setTitle(Html.fromHtml("<font color='#3C8943'>Ingresar</font>"))
+            .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
+            .setPositiveButton("Aceptar") { dialog, which ->
+                dialog.cancel()
+            }
+
+        val request = object : JsonObjectRequest(
+            Method.POST,
+            getString(R.string.urlGuardarJunta),
+            jsonJunta,
+            Response.Listener { response ->
+                try {
+                    //Obtiene su respuesta json
+                    //Toast.makeText(this, "Respuesta: $response", Toast.LENGTH_SHORT).show()
+                    val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
+                    if (jsonData.getInt("code") == 201)//si la peticion fue correcta se continua con el login
+                    {
+                        Toast.makeText(this, "Datos guardados correctamente", Toast.LENGTH_SHORT).show()
+                        AlertDialog.Builder(this)
+                            .setTitle(Html.fromHtml("<font color='#1F2C49'>Datos guardados correctamente</font>"))
+                            .setPositiveButton("Aceptar") { _, _ ->
+                                //se finaliza la actividad
+                                finish()
+                            }
+                            .create()
+                            .show()
+
+                    } else {
+                        dialogNo.setMessage("$response")
+                        dialogNo.show()
+                    }
+                    LoadingScreen.hideLoading()
+                } catch (e: Exception) {
+                    LoadingScreen.hideLoading()
+                    dialogNo.setMessage(e.message)
+                    dialogNo.show()
+                }
+            },
+            Response.ErrorListener { error ->
+                //val errorD = VolleyError(String(error.networkResponse.data))
+                val responseError = String(error.networkResponse.data)
+                val dataError = JSONObject(responseError)
+                try {
+                    val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                    val message = jsonData.getString("message")
+                    dialogNo.setMessage(message)
+                }catch (e: Exception){
+                    dialogNo.setMessage(getString(R.string.error))
+                }
+                dialogNo.show()
+                LoadingScreen.hideLoading()
+            })
+        {
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = getString(R.string.content_type)
+                headers["X-Header-Email"] = getString(R.string.header_email)
+                headers["X-Header-Password"] = getString(R.string.header_password)
+                headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
+                return headers
+            }
+        }
+        try {
+            val queue = Volley.newRequestQueue(this)
+            //primero borramos el cache y enviamos despues la peticion
+            queue.cache.clear()
+            queue.add(request)
+        }catch(e: Exception){
+            //dialogNo.setMessage("Ocurrio un error ${e.message}")
+            dialogNo.setMessage(getString(R.string.error))
+            dialogNo.show()
+        }
+        /*******  FIN ENVIO   *******/
     }
 
     /*
