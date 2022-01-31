@@ -58,4 +58,8 @@
     <string name="extension_foto">.jpeg</string>
     <string name="ayudaSolitada">Mensaje enviado exitosamente</string>
     <!--Strings para Camara-->
+
+    <!--Strings para Registro de Token Firebase-->
+    <string name="url_registro_token">http://34.133.226.228/Servicios.svc/rest/AltaTokenFirebase</string>
+    <!--Strings para Registro de Token Firebase-->
 </resources>

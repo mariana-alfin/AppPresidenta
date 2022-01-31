@@ -19,9 +19,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
 import org.json.JSONTokener
 import android.util.DisplayMetrics
-
-
-
+import com.example.apppresidenta.utils.GeneralUtils.Companion.obtenerTokenNotificaciones
 
 
 class MainActivity : AppCompatActivity() {
@@ -141,6 +139,11 @@ class MainActivity : AppCompatActivity() {
                         editor.putInt("CREDITO_ID", jsonResults.getInt("credit_id"))
                         editor.apply()
                         //Toast.makeText(this, "INICIA SESION", Toast.LENGTH_SHORT).show()
+
+                        /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
+                        y este se registra/actualiza en nuestro servidor junto con el numero imei*/
+                        obtenerTokenNotificaciones(this,idCliente,numeroCelular)
+
                         val home = Intent(this, Navegacion::class.java)
                         startActivity(home)
                         finish()

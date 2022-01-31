@@ -1,7 +1,8 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-}
+//Se modifica la forma en que se llaman los plugins para poder usar el plugin de google-services
+apply plugin:'com.android.application'
+apply plugin:'kotlin-android'
+apply plugin:'kotlin-android-extensions'
+apply plugin:'com.google.gms.google-services'
 
 android {
     compileSdk 31
@@ -48,8 +49,17 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
 
     //Implementacion de la dependencia para la ubicacion de Google Play Services
-    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    //Se cambio de la version 15.0.1 a la 18.0.0 para evitar que se dupliquen clases de diferentes versiones
+    //con las dependencias de Firebase
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     //Dependecia para guarda en sesion
     implementation 'androidx.preference:preference:1.1.1'
+
+    //Dependencias Firebase Cloud Messaging
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }

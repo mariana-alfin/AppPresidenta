@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "22772343549",
+    "project_id": "apppresidentasalfin",
+    "storage_bucket": "apppresidentasalfin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22772343549:android:7ed6b813704259653ed494",
+        "android_client_info": {
+          "package_name": "com.example.apppresidenta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22772343549-t2g96b3ns5ujs7t1ov0ojhtotnsmpec7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEFDZ5GWJnGwveRUnrQ5jWTEVjnRZ9lFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22772343549-t2g96b3ns5ujs7t1ov0ojhtotnsmpec7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22772343549:android:b2f0df53660a02163ed494",
+        "android_client_info": {
+          "package_name": "com.example.apppresidentasalfin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22772343549-t2g96b3ns5ujs7t1ov0ojhtotnsmpec7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEFDZ5GWJnGwveRUnrQ5jWTEVjnRZ9lFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22772343549-t2g96b3ns5ujs7t1ov0ojhtotnsmpec7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
