@@ -48,7 +48,7 @@
                 android:id="@+id/txtDatosPago"
                 android:background="@drawable/borde_redon_azul"
                 android:padding="8dp"
-                style="@style/textAzul"
+                style="@style/textAzulTitulos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -56,6 +56,7 @@
                 android:gravity="left"
                 android:text="28/10/2021"
                 android:textSize="18sp"
+                android:elevation="@dimen/elevationTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -5,10 +5,12 @@
         android:id="@+id/iCamara"
         android:title="Tomar Foto"
         android:icon="@drawable/camera"
+        android:elevation="@dimen/elevationTitle"
         app:showAsAction="always"/>
     <item
         android:id="@+id/iCopy"
         android:title="Copiar montos"
         android:icon="@drawable/copy"
+        android:elevation="@dimen/elevationTitle"
         app:showAsAction="always"/>
 </menu>

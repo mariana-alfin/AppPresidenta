@@ -25,4 +25,9 @@
         <item name="android:textSize">17sp</item>
         <item name="android:fontFamily">serif</item>
     </style>
+    <style name="textAzulTitulos" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/Azul1</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+    </style>
 </resources>

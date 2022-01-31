@@ -48,9 +48,18 @@ class DetalleClienteActivity : AppCompatActivity() {
             progressBar = findViewById(R.id.cargando)
             progressBar.visibility = View.INVISIBLE
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Detalle Cliente"
+        supportActionBar?.setLogo(R.mipmap.icono_app)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
+
         //pintarTablaDetalle()
     }
-
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return false
+    }
     private fun mostrarFormato(esMostrar: Boolean) {
         var valor = View.VISIBLE
         var valorLoadi = View.INVISIBLE
@@ -64,7 +73,6 @@ class DetalleClienteActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtCargando).visibility = valorLoadi
         findViewById<TextView>(R.id.txtNombreCliente).visibility = valor
         findViewById<TextView>(R.id.txtDireccionCliente).visibility = valor
-        findViewById<TextView>(R.id.txtTelefonoCliente).visibility = valor
         findViewById<ImageView>(R.id.imaCel).visibility = valor
         findViewById<ImageView>(R.id.imaWhats).visibility = valor
     }
@@ -152,7 +160,6 @@ class DetalleClienteActivity : AppCompatActivity() {
         val telefono = jsonResults.getString("cell_phone")
         findViewById<TextView>(R.id.txtNombreCliente).text = nombre
         findViewById<TextView>(R.id.txtDireccionCliente).text = direccion
-        findViewById<TextView>(R.id.txtTelefonoCliente).text = "Télefono: $telefono"
 
         findViewById<ImageView>(R.id.imaCel).setOnClickListener{ GeneralUtils.llamarContacto(this, telefono) }
         findViewById<ImageView>(R.id.imaWhats).setOnClickListener{ validacionesEnvioWhats(telefono,getString(R.string.mensaje_whats) +" "+ nombre) }

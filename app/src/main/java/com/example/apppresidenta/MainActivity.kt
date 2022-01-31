@@ -18,6 +18,10 @@ import com.android.volley.toolbox.Volley
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
 import org.json.JSONTokener
+import android.util.DisplayMetrics
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,18 +32,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this,"MainActivity")
-
         supportActionBar?.hide()
-        //findViewById<Button>(R.id.btnLogin).setOnClickListener { solicitudWs() }
         findViewById<Button>(R.id.btnLogin).setOnClickListener { validarFormulario() }
-        //findViewById<Button>(R.id.btnLogin).setOnClickListener { errores() }
-        //pone el baner en la barra de la aplicacion
-        //supportActionBar?.setBackgroundDrawable(getResources().getDrawable(R.drawable.bannerprueba))
         /*
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         Toast.makeText(this, "CREDITO_ID : $prestamo", Toast.LENGTH_SHORT).show()
         */
+
+        var densidad = ""
+            when (resources.displayMetrics.densityDpi) {
+                DisplayMetrics.DENSITY_LOW -> densidad = "ldpi"
+                DisplayMetrics.DENSITY_MEDIUM -> densidad = "mdpi"
+                DisplayMetrics.DENSITY_HIGH -> densidad ="hdpi"
+                DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_280 -> densidad = "xhdpi"
+                DisplayMetrics.DENSITY_XXHIGH, DisplayMetrics.DENSITY_360, DisplayMetrics.DENSITY_400, DisplayMetrics.DENSITY_420,DisplayMetrics.DENSITY_440,DisplayMetrics.DENSITY_450 -> densidad = "xxhdpi"
+                DisplayMetrics.DENSITY_XXXHIGH, DisplayMetrics.DENSITY_560 -> densidad = "xxxhdpi"
+            }
+        //findViewById<EditText>(R.id.txtUsuario).hint = "Ingresar $densidad"
     }
     override fun onBackPressed() {
         //FUNCION QUE SE EJECUTA AL PERSIONAR EL BOTON ATRAS DE MOMENTO NO DEBE DE HACER NADA
@@ -94,12 +104,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun iniciarSesionWS(idCliente: String, numeroCelular: String) {
-        progressBar = this.findViewById(R.id.cargando)
-        //se muestra loading
-        progressBar.visibility = View.VISIBLE
-
-        //se oculta boton
-        findViewById<Button>(R.id.btnLogin).visibility = View.GONE
+        LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
 
         val dialogNo = AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
@@ -138,12 +143,14 @@ class MainActivity : AppCompatActivity() {
                         //Toast.makeText(this, "INICIA SESION", Toast.LENGTH_SHORT).show()
                         val home = Intent(this, Navegacion::class.java)
                         startActivity(home)
+                        finish()
                     } else {
                         dialogNo.show()
+                        LoadingScreen.hideLoading()
                     }
-                    ocultarCargando()
+                    LoadingScreen.hideLoading()
                 } catch (e: Exception) {
-                    ocultarCargando()
+                    LoadingScreen.hideLoading()
                     dialogNo.show()
                 }
             },
@@ -174,7 +181,7 @@ class MainActivity : AppCompatActivity() {
                     dialogNo.setMessage(getString(R.string.error))
                 }
                 dialogNo.show()
-                ocultarCargando()
+                LoadingScreen.hideLoading()
             })
         {
             override fun getHeaders(): Map<String, String> {
@@ -198,15 +205,6 @@ class MainActivity : AppCompatActivity() {
         }
         /*******  FIN ENVIO   *******/
     }
-
-    fun ocultarCargando() {
-        progressBar = this.findViewById(R.id.cargando)
-        //se muestra loading
-        progressBar.visibility = View.GONE
-        //se oculta boton
-        findViewById<Button>(R.id.btnLogin).visibility = View.VISIBLE
-    }
-
     fun solicitudWs1() {
         val URL = "https://api.sample.com/Api/user_id"
         val json = JSONObject()

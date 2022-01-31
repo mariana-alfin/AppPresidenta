@@ -8,7 +8,7 @@
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/borde.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/borde_celda.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/borde_redon_azul.xml" value="0.22135416666666666" />
-        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/borde_redondeado_verde.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/borde_redondeado_verde.xml" value="0.16" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/call_24.xml" value="0.22916666666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/camera.xml" value="0.22916666666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/fondo_azul.xml" value="0.22916666666666666" />
@@ -19,11 +19,17 @@
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/ic_pago_v.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/ic_pagos.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/ic_si_pago.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/redondo_verde.xml" value="0.2483108108108108" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/redondo_verde_1.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable/redondo_verde_2.xml" value="0.3828125" />
-        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_detalle_cliente.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout-hdpi/activity_main.xml" value="0.45732349841938885" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout-mdpi/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout-xhdpi/activity_main.xml" value="0.25" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout-xxhdpi/activity_main.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout-xxxhdpi/activity_main.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_detalle_cliente.xml" value="0.41333333333333333" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_inicio_app.xml" value="0.20520833333333333" />
-        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/activity_navegacion.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/calculadora_activity.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/layout/inicio_fragment.xml" value="0.33" />

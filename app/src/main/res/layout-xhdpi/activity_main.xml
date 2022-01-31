@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="210dp"
+            android:layout_height="200dp"
             android:layout_marginTop="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -32,7 +32,7 @@
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="150dp"
             android:background="@drawable/fondo_azul"
             android:foregroundGravity="center"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,8 +43,8 @@
                 android:id="@+id/txtUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
                 android:backgroundTint="@color/Azul3"
                 android:ems="10"
                 android:gravity="left"
@@ -62,8 +62,8 @@
                 android:id="@+id/txtCelular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
                 android:backgroundTint="@color/Azul3"
                 android:ems="10"
                 android:gravity="left"
@@ -81,8 +81,8 @@
                 android:id="@+id/textView2"
                 android:layout_width="187dp"
                 android:layout_height="29dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
                 android:text="¿Olvidaste tu contraseña?"
                 android:textColor="@color/Verde1"
                 android:textSize="15sp"
@@ -93,11 +93,12 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="167dp"
                 android:layout_height="38dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/fondo_azul"
                 android:gravity="center_horizontal"
                 android:text="@string/ingresar"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.519"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -105,12 +106,11 @@
                 android:id="@+id/textView3"
                 android:layout_width="324dp"
                 android:layout_height="44dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="25dp"
                 android:gravity="center_horizontal"
                 android:text="¿Aún no formas parte de este plan de recompensas?"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.494"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
@@ -124,9 +124,10 @@
                 android:textColor="@color/Verde1"
                 app:layout_constraintBottom_toTopOf="@+id/textView6"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.526"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.091" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -141,19 +142,20 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <TextView
+                android:id="@+id/txtPruebas"
+                android:layout_width="346dp"
+                android:layout_height="37dp"
+                android:layout_margin="15dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="25dp"
+                tools:layout_editor_absoluteY="204dp" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <TextView
-            android:id="@+id/txtPruebas"
-            android:layout_width="346dp"
-            android:layout_height="37dp"
-            android:layout_margin="15dp"
-            android:text="TextView"
-            android:textColor="@color/white"
-            android:visibility="invisible"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="33dp"
-            tools:layout_editor_absoluteY="480dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

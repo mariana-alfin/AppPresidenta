@@ -32,11 +32,11 @@
 
             <TextView
                 android:id="@+id/txtB"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:gravity="center_horizontal"
-                android:text="BONIFICACIÓN ACUMULADA"
+                android:text="  BONIFICACIÓN ACUMULADA  "
                 android:textColor="@color/Azul1"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="  $2,500 mxn  "
+                android:elevation="@dimen/elevationTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtB" />
