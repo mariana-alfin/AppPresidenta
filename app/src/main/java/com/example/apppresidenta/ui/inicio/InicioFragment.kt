@@ -32,6 +32,13 @@ import org.json.JSONTokener
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.HashMap
+import android.R.string.no
+import java.text.DateFormat
+import java.text.Format
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 
 class InicioFragment : Fragment() {
 
@@ -46,41 +53,42 @@ class InicioFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-            ViewModelProvider(this)[InicioViewModel::class.java]
-        _binding = InicioFragmentBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    ): View {
+        try {
 
-        /*val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })*/
-        //INDICA QUE SE HABILITARA EL MENU DE OPCIONES
-        setHasOptionsMenu(true)
-        /*
+            homeViewModel =
+                ViewModelProvider(this)[InicioViewModel::class.java]
+            _binding = InicioFragmentBinding.inflate(inflater, container, false)
+            val root: View = binding.root
+
+            //INDICA QUE SE HABILITARA EL MENU DE OPCIONES
+            setHasOptionsMenu(true)
+            /*
         binding.btnAyuda.setColorFilter(resources.getColor(R.color.Azul1))
         binding.btnAyuda.setOnClickListener{ solicitarSoporte()
             //Toast.makeText(activity,"Boton de ayuda ", Toast.LENGTH_SHORT).show();
         }
         */
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
-        FuncionesGlobales.guardarPestanaSesion(activity as AppCompatActivity,"true")
-        mostrarFormato(false)
-        if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
-            datosDelCredito()
-        }else{
-            binding.txtCargando.text = getString(R.string.noConexion)
-            binding.txtCargando.gravity = Gravity.CENTER
-            binding.txtCargando.visibility = View.VISIBLE
-            progressBar = binding.cargando
-            progressBar.visibility = View.INVISIBLE
-        }
+            //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+            FuncionesGlobales.guardarPestanaSesion(activity as AppCompatActivity, "true")
+            mostrarFormato(false)
+            if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
+                datosDelCredito()
+            } else {
+                binding.txtCargando.text = getString(R.string.noConexion)
+                binding.txtCargando.gravity = Gravity.CENTER
+                binding.txtCargando.visibility = View.VISIBLE
+                progressBar = binding.cargando
+                progressBar.visibility = View.INVISIBLE
+            }
 
-        val width = this.resources.displayMetrics.widthPixels
-        val height = this.resources.displayMetrics.heightPixels
-     //   binding.txtMedidas.text = "width = $width, height  $height"
-        return root
+            return root
+        }
+        catch (e: Exception){
+            val root: View = binding.root
+            Toast.makeText(activity,"${e.message}", Toast.LENGTH_SHORT).show();
+            return root
+        }
     }
 
 
@@ -114,6 +122,8 @@ class InicioFragment : Fragment() {
         //FORMATO EN PESOS MXM
         val mx = Locale("es", "MX")
         val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
+        formatPesos.maximumFractionDigits = 0
+
         val txtDiaPago: TextView = binding.txtDiaPago
         val txtBonificacionAcumulada: TextView = binding.txtBonificacionAcumulada
         val txtBonificacion: TextView = binding.txtBonificacion
@@ -153,8 +163,9 @@ class InicioFragment : Fragment() {
                         val noPago =  jsonResults.getString("period") + " de " +jsonResults.getString("pays")
                         txtDiaPago.text = "Tu día de pago son los ${jsonResults.getString("pay_day")}"
                         val bonificacion = 858
-                        txtBonificacionAcumulada.text = "  ${formatPesos.format(bonificacion)} mxn "
-                        txtBonificacion.text = "  ${formatPesos.format(bonificacion)} mxn "
+                        txtBonificacionAcumulada.text = "  ${formatPesos.format(bonificacion)}  "
+                        //txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
+                        txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
                         txtPago.text = formatPesos.format(jsonResults.getDouble("pay"))
                         /*MD SE GUARDA EN SESSION EL MONTO PAGO DEL CREDITO PARA LA VISTA DE PAGOS*/
                         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -162,7 +173,10 @@ class InicioFragment : Fragment() {
                         editor.putFloat("MONTO_SEMANAL", jsonResults.getDouble("pay").toFloat())
                         editor.apply()
                         /*****************/
-                        txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
+                        //txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
+                        txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd-MMMyy").replace('.','-')
+
+
                         txtNoPago.text = noPago
                         txtMtoPag.text = formatPesos.format(jsonResults.getDouble("payments"))
                         txtPagos.text = jsonResults.getString("due_pay")

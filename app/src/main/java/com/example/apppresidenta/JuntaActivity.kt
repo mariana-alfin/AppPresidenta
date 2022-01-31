@@ -1,8 +1,10 @@
 package com.example.apppresidenta
 
+import android.R.id
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
@@ -31,6 +33,15 @@ import org.json.JSONObject
 import org.json.JSONTokener
 import java.text.NumberFormat
 import java.util.*
+import android.content.res.ColorStateList
+
+import android.R.id.checkbox
+import android.graphics.PorterDuffColorFilter
+
+import androidx.core.widget.CompoundButtonCompat
+
+
+
 
 
 
@@ -73,7 +84,8 @@ class JuntaActivity : CameraBaseActivity() {
         if (!esEditar) {
             findViewById<TextView>(R.id.txtTitle).text = "Los pagos ya fueron guardados"
         }*/
-        val fecha = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
+        //val fecha = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
+        val fecha = FuncionesGlobales.convertFecha(fechaPago,"dd-MMMyy").replace('.','-')
         findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: $fecha   "
         findViewById<Button>(R.id.btnGuardar).setOnClickListener { guardarJunta() }
         //findViewById<Button>(R.id.btnGuardar).setOnClickListener { this.onBackPressed() } //ejeuta el persionar atras
@@ -87,6 +99,7 @@ class JuntaActivity : CameraBaseActivity() {
         //pintarTablaJunta()
         mostrarFormato(false)
         //pintarTablaJunta()
+
         if (ValGlobales.validarConexion(this)) {
             datosJunta(fechaPago, false)
         } else {
@@ -96,13 +109,7 @@ class JuntaActivity : CameraBaseActivity() {
             progressBar = findViewById(R.id.cargando)
             progressBar.visibility = View.INVISIBLE
         }
-        val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
-        val width = metrics.widthPixels // ancho absoluto en pixels
-        val height = metrics.heightPixels // alto absoluto en pixels
-        val widthd = this.resources.displayMetrics.widthPixels
-        val heightd = this.resources.displayMetrics.heightPixels
-       // findViewById<TextView>(R.id.txtJson).text = "width = $width $widthd height = $height $heightd"
+
     }
 
     //AGREGA EL MENU DE OPCIONES
@@ -252,13 +259,6 @@ class JuntaActivity : CameraBaseActivity() {
                             //Toast.makeText(activity, "PETICION EXITOSA", Toast.LENGTH_SHORT).show()
                             val jsonResults = jsonData.getJSONArray("results")
                             pintarTablaJunta(jsonResults, esCopia)
-                            /*
-                            for (i in 0 until jsonResults.length()) {
-                                val CL: JSONObject = jsonResults.getJSONObject(i)
-                                binding.txt9.text = CL.toString()
-                                binding.txt9.text = CL.getString("credit_id") + " NO CLIENTAS = "+jsonResults.length()
-                            }
-                            */
                         }
                     } catch (e: Exception) {
                         //dialogNo.setMessage("Ocurrio un error catch $e") //PRUEBAS
@@ -361,53 +361,79 @@ class JuntaActivity : CameraBaseActivity() {
         //for de los clientes
         //SE BORRA LA LISTA DE CTES
         listClientes.clear()
+
+        /**     VARIABLES PARA TAMAÑOS      **/
+        //se obtiene la densidad del dispositivo para cambiar los tamaños
+        val densidad = resources.displayMetrics.densityDpi
+        val width =  resources.displayMetrics.widthPixels
+        var witCte: Int
+        var witPgo = 140
+         if(densidad < DisplayMetrics.DENSITY_HIGH){
+              witCte = 140
+        }else if(densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH){
+              witCte = 200
+        }else if(densidad == DisplayMetrics.DENSITY_XHIGH){
+              witCte = 220
+        }else if(densidad in DisplayMetrics.DENSITY_XHIGH until DisplayMetrics.DENSITY_XXHIGH){
+              witCte = 380
+              witPgo = 200
+        }else if((densidad in DisplayMetrics.DENSITY_XXHIGH until DisplayMetrics.DENSITY_XXXHIGH) && width < 1200){
+              witCte = 415
+              witPgo = 205
+        }else if((densidad >= DisplayMetrics.DENSITY_XXXHIGH) || width <= 1200){
+              witCte = 430
+              witPgo = 215
+        }else {//si la pantalla es mayor a 1200px el valor del nombre sera de una tercera parte
+              witCte = (width/4)
+              witPgo = 225
+        }
+        /***       FIN VARIABLES       **/
         for (i in 0 until numClientes) {
             //SE GENERA EL OBJETO CLIENTE DEL ARREGLO
             val cte: JSONObject = jsonClientes.getJSONObject(i)
             val tr = TableRow(this)
-            tr.setPadding(0,10,0,10)
+            tr.setPadding(10,20,0,20)
             if (i != numClientes) {
                 tr.setBackgroundResource(R.drawable.borde)
             } else {
                 tr.setBackgroundResource(R.drawable.borde_redondeado_verde)
             }
-
             val l = LinearLayout(this)
-            val cliente = TextView(this)
-            cliente.setPadding(0, 10, 0, 10)
-            //cliente.setPadding(0, 20, 0, 20)
-            cliente.setTextColor(resources.getColor(R.color.Azul1))
-            cliente.textSize = (fontTr - 1)
-            cliente.maxWidth = 230
-
             val chk = CheckBox(this)
             val idCk = generateViewId()
             chk.id = idCk
-            chk.gravity = Gravity.CENTER_HORIZONTAL
-            l.addView(chk)
+            chk.gravity = Gravity.RIGHT
+            //chk.buttonDrawable
+            //chk.setBackgroundColor(Color.parseColor("#00e2a5"))
+
+            val cliente = TextView(this)
+            cliente.setTextColor(resources.getColor(R.color.Azul1))
+            cliente.textSize = (fontTr - 1)
+            //cliente.maxWidth = 230
+            cliente.maxWidth = witCte
 
             val couta = TextView(this)
             val mCuota = cte.getDouble("pay")
             couta.text = formatPesos.format(mCuota)
-            //couta.setPadding(0, 20, 15, 20)
-            //couta.setPadding(0, 10, 0, 10)
             couta.setTextColor(resources.getColor(R.color.Azul1))
             couta.textSize = fontTr
 
             val pago = EditText(this)
-            //pago.setBackgroundResource(R.drawable.borde)
             val idtxtPago = cte.getInt("credit_id")
             pago.id = idtxtPago
-            //pago.hint = idtxtPago.toString()
             pago.inputType =
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
             pago.keyListener = DigitsKeyListener.getInstance(".0123456789")
             pago.setTextColor(resources.getColor(R.color.Azul1))
             pago.textSize = fontTr
             pago.gravity = Gravity.CENTER
-            pago.width = 140
-            pago.maxWidth = 180
+            //pago.width = 140
+            pago.width = witPgo
+            //pago.maxWidth = 180
+            pago.maxWidth = witPgo
             pago.setMaxLength(7)
+            //pago.tint(Color.RED)
+            pago.getBackground().setColorFilter(resources.getColor(R.color.Azul3), PorterDuff.Mode.SRC_ATOP)
 
             val lS = LinearLayout(this)
             val sol = TextView(this)
@@ -436,11 +462,12 @@ class JuntaActivity : CameraBaseActivity() {
                 LoadingScreen.hideLoading()
             }
             //SE AGREGAN LOS VALORES
-            cliente.text = cte.getString("customer_name")
+            cliente.text = cte.getString("customer_name")//+ " $witCte w$width $witPgo"
             //SE AGREGA A LA LISTA DE IDs
             listClientes.put(cte.getInt("credit_id"), CteIds(idtxtPago, idT, idCk))
 
             //SE AGREGA COLUMNA CLIENTE
+            l.addView(chk)
             l.addView(cliente)
             tr.addView(l)
             //SE AGREGA COLUMNA COUTA
@@ -487,15 +514,22 @@ class JuntaActivity : CameraBaseActivity() {
                     hayVacios++
                 }
                 clientes += " \"description\" : null,"                          //se agrega description siempre en blanco
-                clientes += " \"result_type_id\" : \"1\","                      //se agrega result_type_id siempre en 1
-                clientes += " \"validate\" : \"${if (chkAsistencia.isChecked) "1" else "0"}\"," //se agrega la asistencia de la clienta
+                //clientes += " \"result_type_id\" : \"1\","                      //se agrega result_type_id siempre en 1 //se reemplaza por el valor del solidario
                 if (txtSolidario.text.isNotEmpty()) {
                     //respuesta += "solidario = ${txtSolidario.text}"
-                    clientes += " \"solidario\" : \"${txtSolidario.text}\" },"
+                    //clientes += " \"solidario\" : \"${txtSolidario.text}\" }," //MD SE QUITA Y SE USA RESULT-TYPE-ID
+                      val solidario_v =  when(txtSolidario.text){
+                            "DA"->{1}//1}
+                            "RE"->{1}//2}
+                            "NA"->{1}//3}
+                          else -> {1}//3}
+                      }
+                    clientes += " \"result_type_id\" : \"${solidario_v}\"," //MD SE QUITA Y SE USA RESULT-TYPE-ID
                 } else {
                     txtSolidario.error = "Es requerido"
                     hayVacios++
                 }
+                clientes += " \"validate\" : \"${if (chkAsistencia.isChecked) "1" else "0"}\"}," //se agrega la asistencia de la clienta
                 //Toast.makeText(this, "$respuesta , hayVacios $hayVacios ", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 //Toast.makeText(this, "ex ${e.message}", Toast.LENGTH_SHORT).show()
@@ -566,7 +600,7 @@ class JuntaActivity : CameraBaseActivity() {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
 
         val dialogNo = AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-            .setTitle(Html.fromHtml("<font color='#3C8943'>Ingresar</font>"))
+            .setTitle(Html.fromHtml("<font color='#3C8943'>Guarda Junta</font>"))
             .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
             .setPositiveButton("Aceptar") { dialog, which ->
                 dialog.cancel()
@@ -594,7 +628,7 @@ class JuntaActivity : CameraBaseActivity() {
                             .show()
 
                     } else {
-                        dialogNo.setMessage("$response")
+                        //dialogNo.setMessage("$response")
                         dialogNo.show()
                     }
                     LoadingScreen.hideLoading()

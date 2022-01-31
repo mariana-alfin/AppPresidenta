@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import android.text.Html
+import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.ActionBar
@@ -210,6 +211,7 @@ class PagosFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun llenarTbPagos(jsonPagos: JSONArray, pagoSemanal: Float) {
+
         val txt = binding.txtPagoSemanal
         //txt.text = " Pago semanal: ${formatPesos.format(pagoSemanal)}  "
         txt.text = "  ${formatPesos.format(pagoSemanal)}  "
@@ -217,41 +219,37 @@ class PagosFragment : Fragment() {
         //SE OBTIENE LA TABLA
         val tabla = binding.tblPagos
         val trEn = TableRow(activity)
-        val fontTh = 16F
-        val fontTr = 15F
+        val fontTh = 18F
+        val fontTr = 16F
         trEn.setBackgroundResource(R.drawable.redondo_verde)
-        trEn.gravity = Gravity.CENTER
         trEn.setPadding(0,20,0,20)
+
+        val txtM = TextView(activity)
+        txtM.text = "Fecha"
+        txtM.setTextColor(resources.getColor(R.color.Verde2))
+        txtM.setTypeface(null, Typeface.BOLD_ITALIC)
+        txtM.textSize = fontTh
+        trEn.addView(txtM)
+
         val tS = TextView(activity)
         tS.text = "Fecha"
-        tS.setPadding(0, 0, 0, 0)
-        tS.gravity = Gravity.LEFT
+        tS.gravity = Gravity.CENTER
         tS.setTextColor(Color.WHITE)
         tS.setTypeface(null, Typeface.BOLD_ITALIC)
         tS.textSize = fontTh
         trEn.addView(tS)
 
+
         val tF = TextView(activity)
-        tF.text = "Estado"
-        tF.setPadding(100, 0, 0, 0)
-        tF.gravity = Gravity.RIGHT
+        tF.text = "   Estado   "
+        tF.gravity = Gravity.CENTER
         tF.setTextColor(Color.WHITE)
         tF.setTypeface(null, Typeface.BOLD_ITALIC)
         tF.textSize = fontTh
         trEn.addView(tF)
 
-        val tEs = TextView(activity)
-        tEs.text = ""
-        tEs.setPadding(5, 0, 50, 0)
-        tEs.gravity = Gravity.CENTER
-        tEs.setTextColor(Color.WHITE)
-        tEs.setTypeface(null, Typeface.BOLD_ITALIC)
-        tEs.textSize = fontTh
-        trEn.addView(tEs)
-
         val tRP = TextView(activity)
         tRP.text = "Seguimiento"
-        tRP.setPadding(0, 0, 0, 0)
         tRP.setTextColor(Color.WHITE)
         tRP.setTypeface(null, Typeface.BOLD_ITALIC)
         tRP.textSize = fontTh
@@ -270,12 +268,12 @@ class PagosFragment : Fragment() {
             //SE GENERA EL OBJETO CLIENTE DEL ARREGLO
             val pago: JSONObject = jsonPagos.getJSONObject(i)
             val tr = TableRow(activity)
+            tr.setPadding(0,10,0,10)
             if (i != numPagos) {
                 tr.setBackgroundResource(R.drawable.borde)
             } else {
                 tr.setBackgroundResource(R.drawable.borde_redondeado_verde)
             }
-
             val txtS = TextView(activity)
             txtS.setTextColor(resources.getColor(R.color.Azul1))
             txtS.setPadding(5, 10, 5, 10)
@@ -284,31 +282,32 @@ class PagosFragment : Fragment() {
 
             val txtF = TextView(activity)
             txtF.setTextColor(resources.getColor(R.color.Azul1))
-            txtF.setPadding(15, 10, 0, 10)
             txtF.textSize = fontTr
             txtF.gravity = Gravity.LEFT
             txtF.maxWidth = 380
 
             val txtEs = TextView(activity)
             txtEs.setTextColor(resources.getColor(R.color.Verde1))
-            txtEs.setPadding(20, 10, 5, 10)
             txtEs.textSize = fontTr
             txtEs.gravity = Gravity.CENTER
             txtEs.maxWidth = 380
 
+            val lC = LinearLayout(activity)
+            lC.gravity = Gravity.CENTER
+
             val edit = ImageView(activity)
             edit.setImageResource(R.drawable.ic_editar_junta)
             edit.setColorFilter(Color.GREEN)
-            edit.setPadding(1, 10, 0, 10)
 
             val ver = ImageView(activity)
             ver.setImageResource(R.drawable.ic_ver_junta)
             ver.setColorFilter(resources.getColor(R.color.Azul1))
-            ver.setPadding(0, 10, 0, 10)
+            ver.setPadding(30, 0, 0, 0)
 
             txtS.text = pago.getString("pay_no")
             var fechaPago = pago.getString("pay_date")
-            txtF.text = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
+            //txtF.text = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
+            txtF.text = FuncionesGlobales.convertFecha(fechaPago,"dd-MMMyy").replace('.','-')
             var estatus = pago.getString("pay_status").uppercase(Locale.getDefault())
             txtEs.text = estatus
             edit.setOnClickListener { generarJunta(true, pago.getInt("pay_id"),pago.getInt("pay_no"), fechaPago) }
@@ -317,8 +316,11 @@ class PagosFragment : Fragment() {
             tr.addView(txtS)
             tr.addView(txtF)
             tr.addView(txtEs)
-            tr.addView(edit)
-            tr.addView(ver)
+            tr.addView(lC)
+            lC.addView(edit)
+            lC.addView(ver)
+            //tr.addView(edit)
+            //tr.addView(ver)
 
             tabla.addView(
                 tr,

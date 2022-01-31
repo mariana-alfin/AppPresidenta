@@ -40,8 +40,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
             actionBar?.setDisplayShowHomeEnabled(true)
             actionBar?.setDisplayUseLogoEnabled(true)
 
-
-
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this,"true")
         pintarTablaBonificacion()
@@ -178,7 +176,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l.setBackgroundResource(R.drawable.borde_celda)
         l.setPadding(leftRigth, 20, leftRigth, 20)
         val ps = TextView(this)
-        ps.text = "Pago Semanal del prestamo"
+        ps.text = "Pago Semanal"
         ps.setTextColor(color)
         ps.textSize = fTr
         l.addView(ps)

@@ -52,50 +52,33 @@
                 android:layout_marginTop="10dp"
                 android:text="DIRECCION"
                 android:textSize="20sp"
-                android:maxWidth="500dp"
+                android:maxWidth="300dp"
+                android:gravity="center"
+                android:layout_gravity ="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtNombreCliente" />
 
-
-            <TextView
-                android:id="@+id/txtTelefonoCliente"
-                style="@style/textAzul"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:text="TELEFONO"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.181"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtDireccionCliente" />
 
             <ImageView
                 android:id="@+id/imaCel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="132dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp"
                 android:src="@drawable/call_24"
-                app:layout_constraintEnd_toStartOf="@+id/imaWhats"
-                app:layout_constraintStart_toEndOf="@+id/txtTelefonoCliente"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtDireccionCliente" />
-
 
             <ImageView
                 android:id="@+id/imaWhats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="1dp"
+                android:layout_marginStart="36dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
                 android:src="@drawable/ic_whats"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imaCel"
                 app:layout_constraintTop_toBottomOf="@+id/txtDireccionCliente" />
 
@@ -103,12 +86,12 @@
                 android:id="@+id/tblDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="12dp"
                 android:weightSum="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtTelefonoCliente" />
+                app:layout_constraintTop_toBottomOf="@+id/imaWhats" />
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/cargando"
