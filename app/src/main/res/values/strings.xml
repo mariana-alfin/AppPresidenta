@@ -26,6 +26,9 @@
     <string name="urlGuardarJunta">https://api.micartera.test.alfin.com.mx/api/group-task-create</string>
     <string name="urlEnviarEmail">https://api.micartera.test.alfin.com.mx/api/group-help-sendmail</string>
 
+    <string name="urlPagosConciliar">https://api.micartera.test.alfin.com.mx/api/group-payments</string>
+    <string name="urlGuardarJuntaConciliacion">https://api.micartera.test.alfin.com.mx/api/group-task-concilied</string>
+
     <!--headers peticion -->
     <string name="content_type">application/json</string>
     <string name="header_email">apicartera@alfin.com</string>
@@ -34,7 +37,7 @@
 
     <!--mensajes -->
     <string name="noConexion">No es posible mostrar información \n No cuenta con conexión a Internet</string>
-    <string name="error">Ocurrio un error</string>
+    <string name="error">Ocurrio un error. Favor de intentarlo más tarde.</string>
 
     <!--Strings para GeneralUtils.kt-->
     <!--Instalacion de Apps-->

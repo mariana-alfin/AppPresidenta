@@ -3,21 +3,16 @@ package com.example.apppresidenta.ui.miGrupo
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.preference.PreferenceManager
-import android.text.Html
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.*
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -31,14 +26,11 @@ import com.example.apppresidenta.utils.GeneralUtils.Companion.llamarContacto
 import com.example.apppresidenta.utils.GeneralUtils.Companion.mostrarAlertInstalarApp
 import com.example.apppresidenta.utils.GeneralUtils.Companion.validarAplicacionInstalada
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.text.NumberFormat
 import java.util.*
-import org.json.JSONArray
-
-
-
 
 
 class MiGrupoFragment : Fragment() {
@@ -116,13 +108,7 @@ class MiGrupoFragment : Fragment() {
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         //val prestamo = 119483 //para pruebas
         val fecha = "" //para pruebas
-        val dialogNo =
-            AlertDialog.Builder(requireActivity(), R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-                .setTitle(Html.fromHtml("<font color='#3C8943'>Ingresar</font>"))
-                .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
-                .setPositiveButton("Aceptar") { dialog, which ->
-                    dialog.cancel()
-                }
+        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Mi Grupo",getString(R.string.error),false)
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", prestamo)
         jsonParametros.put("pay_date", fecha)
@@ -145,11 +131,9 @@ class MiGrupoFragment : Fragment() {
                             llenarTablaClientes(jsonResults)
                         }
                     } catch (e: Exception) {
-                        //dialogNo.setMessage("Ocurrio un error catch $e") //PRUEBAS
                         if (e.message != null) {
-                            dialogNo.show()
+                            alertError.show()
                         }
-                        dialogNo.show()
                     }
                 }, Response.ErrorListener { error ->
                     val responseError = String(error.networkResponse.data)
@@ -174,8 +158,7 @@ class MiGrupoFragment : Fragment() {
                     progressBar = binding.cargando
                     progressBar.visibility = View.INVISIBLE
                     binding.txtCargando.text = mensaje
-                    dialogNo.setMessage(mensaje)
-                    dialogNo.show()
+                        alertError.show()
                 }
             ) {
                 override fun getHeaders(): Map<String, String> {

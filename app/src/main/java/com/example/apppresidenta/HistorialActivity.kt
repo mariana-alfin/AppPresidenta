@@ -18,11 +18,12 @@ class HistorialActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.historial_activity)
 
-        val actionBar: ActionBar? = supportActionBar
-        actionBar?.title = "Mi Historial"
-        actionBar?.setLogo(R.mipmap.icono_app)
-        actionBar?.setDisplayShowHomeEnabled(true)
-        actionBar?.setDisplayUseLogoEnabled(true)
+        /*Se agrega logo y titulo del la actividad*/
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Mi Historial"
+        supportActionBar?.setLogo(R.mipmap.icono_app)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this,"true")
         mostrarHistorial()
@@ -31,6 +32,10 @@ class HistorialActivity : AppCompatActivity() {
         val presidenta = prefs.getString("PRESIDENTA","SIN NOMBRE")
          findViewById<TextView>(R.id.txtPresidenta).text = presidenta
 
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return false
     }
     private fun mostrarHistorial() {
         //se obtiene la tabla

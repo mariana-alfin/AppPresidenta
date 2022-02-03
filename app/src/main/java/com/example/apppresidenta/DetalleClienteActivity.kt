@@ -4,14 +4,15 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Html
 import android.view.Gravity
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TableLayout
 import android.widget.TableLayout.LayoutParams.MATCH_PARENT
-import androidx.appcompat.app.AlertDialog
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -48,6 +49,7 @@ class DetalleClienteActivity : AppCompatActivity() {
             progressBar = findViewById(R.id.cargando)
             progressBar.visibility = View.INVISIBLE
         }
+        /*Se agrega logo y titulo del la actividad*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Detalle Cliente"
         supportActionBar?.setLogo(R.mipmap.icono_app)
@@ -79,12 +81,7 @@ class DetalleClienteActivity : AppCompatActivity() {
     private fun detalleCliente(credit_id: Int) {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
 
-        val dialogNo = AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-            .setTitle(Html.fromHtml("<font color='#3C8943'>Inicio</font>"))
-            .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
-            .setPositiveButton("Aceptar") { dialog, which ->
-                dialog.cancel()
-            }
+        val alertError = FuncionesGlobales.mostrarAlert(this,"error",true,"Detalle Cliente",getString(R.string.error),false)
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", credit_id)
 
@@ -103,10 +100,10 @@ class DetalleClienteActivity : AppCompatActivity() {
                             val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                             pintarTablaDetalle(jsonResults)
                         }else{
-                            dialogNo.show()
+                            alertError.show()
                         }
                     } catch (e: Exception) {
-                        dialogNo.show()
+                        alertError.show()
                     }
 
                 },
@@ -114,23 +111,17 @@ class DetalleClienteActivity : AppCompatActivity() {
                     //val errorD = VolleyError(String(error.networkResponse.data))
                     val responseError = String(error.networkResponse.data)
                     val dataError = JSONObject(responseError)
-                    var mensaje = getString(R.string.error)
                     try {
                         val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                         val code = jsonData.getInt("code")
-                        val message = jsonData.getString("message")
                         val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         if(code == 422 && jsonData.getString("results").contains("credit_id")){
-                            mensaje = jResul.getString("credit_id")
-                        }else{
-                            mensaje = message
+                            alertError.setMessage(jResul.getString("credit_id"))
                         }
                     }catch (e: Exception){
-                        mensaje = getString(R.string.error)
                     }
 
-                    dialogNo.setMessage(mensaje)
-                    dialogNo.show()
+                    alertError.show()
                 }
             ) {
                 override fun getHeaders(): Map<String, String> {
@@ -148,8 +139,7 @@ class DetalleClienteActivity : AppCompatActivity() {
             queue.cache.clear()
             queue.add(request)
         }catch(e: Exception){
-            dialogNo.setMessage("Ocurrio un error")
-            dialogNo.show()
+            alertError.show()
         }
         /*******  FIN ENVIO   *******/
     }
