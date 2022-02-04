@@ -20,8 +20,11 @@ import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.*
+import com.example.apppresidenta.FuncionesGlobales
 import com.example.apppresidenta.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.LoadingScreen
+import com.example.apppresidenta.R
+import com.example.apppresidenta.ValGlobales
 import com.example.apppresidenta.databinding.InicioFragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -32,12 +35,6 @@ import org.json.JSONTokener
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.HashMap
-import android.R.string.no
-import java.text.DateFormat
-import java.text.Format
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 class InicioFragment : Fragment() {
@@ -138,12 +135,7 @@ class InicioFragment : Fragment() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         //val prestamo = 119483 //para pruebas
-        val dialogNo = AlertDialog.Builder(requireActivity(), R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-            .setTitle(Html.fromHtml("<font color='#3C8943'>Inicio</font>"))
-            .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
-            .setPositiveButton("Aceptar") { dialog, which ->
-                dialog.cancel()
-            }
+        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Inicio",getString(R.string.error),false)
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", prestamo)
 
@@ -174,7 +166,7 @@ class InicioFragment : Fragment() {
                         editor.apply()
                         /*****************/
                         //txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
-                        txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd-MMMyy").replace('.','-')
+                        txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd-MMM-yy").replace(".-","-").uppercase()
 
 
                         txtNoPago.text = noPago
@@ -185,13 +177,13 @@ class InicioFragment : Fragment() {
                         txtAsesor.textSize = 15F
                         mostrarFormato(true)
                     }else{
-                        dialogNo.show()
+                        alertError.show()
 
                     }
 
                 } catch (e: Exception) {
                     if (e.message != null){
-                        dialogNo.show()
+                        alertError.show()
                     }
                 }
 
@@ -217,8 +209,8 @@ class InicioFragment : Fragment() {
                 progressBar = binding.cargando
                 progressBar.visibility = View.INVISIBLE
                 binding.txtCargando.text = mensaje
-                dialogNo.setMessage(mensaje)
-                dialogNo.show()
+                alertError.setMessage(mensaje)
+                alertError.show()
             }
         ) {
             override fun getHeaders(): Map<String, String> {
@@ -236,8 +228,7 @@ class InicioFragment : Fragment() {
             queue.cache.clear()
             queue.add(request)
         }catch(e: Exception){
-            dialogNo.setMessage("Ocurrio un error")
-            dialogNo.show()
+            alertError.show()
         }
         /*******  FIN ENVIO   *******/
     }
@@ -268,6 +259,7 @@ class InicioFragment : Fragment() {
     private fun solicitarSoporte() {
         val builder = MaterialAlertDialogBuilder(requireActivity())
         builder.setTitle(Html.fromHtml("<font color='#1F2C49' size='20'>DESCRIBE TU PROBLEMA</font>"))
+        builder.setIcon(R.drawable.ic_soporte)
         val constraintLayout = getEditTextLayout(requireActivity())
         builder.setView(constraintLayout)
         val textInputLayout = constraintLayout.
@@ -308,12 +300,7 @@ class InicioFragment : Fragment() {
     private fun enviarEmail(mensaje: String) {
         LoadingScreen.displayLoadingWithText(activity,"Solicitando apoyo", false)
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
-        val dialogNo = AlertDialog.Builder(requireActivity(), R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-            .setTitle(Html.fromHtml("<font color='#3C8943'>SOLICITAR AYUDA</font>"))
-            .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
-            .setPositiveButton("Aceptar") { dialog, which ->
-                dialog.cancel()
-            }
+        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Solicitar Soporte",getString(R.string.error),false)
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         val jsonParametros = JSONObject()
@@ -331,22 +318,22 @@ class InicioFragment : Fragment() {
                     {
                         val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         val mensaje = jsonResults.getString("message")
-                        Toast.makeText(requireActivity(),mensaje, Toast.LENGTH_SHORT).show()
-                        dialogNo.setMessage(mensaje)
-                        dialogNo.show()
+                        //Toast.makeText(requireActivity(),mensaje, Toast.LENGTH_SHORT).show()
+                        val alertCorrecto = FuncionesGlobales.mostrarAlert(requireActivity(),"correcto",true,"Solicitar Soporte",
+                            mensaje,false)
+                        alertCorrecto.show()
                     } else {
-                        dialogNo.show()
+                        alertError.show()
                     }
                     LoadingScreen.hideLoading()
                 } catch (e: Exception) {
-                    dialogNo.show()
+                    alertError.show()
                     LoadingScreen.hideLoading()
                 }
             },
             Response.ErrorListener { error ->
                 //val errorD = VolleyError(String(error.networkResponse.data))
-                dialogNo.setMessage("Intentelo más tarde")
-                dialogNo.show()
+                alertError.show()
                 LoadingScreen.hideLoading()
             })
         {
@@ -365,9 +352,7 @@ class InicioFragment : Fragment() {
             queue.cache.clear()
             queue.add(request)
         }catch(e: Exception){
-            //dialogNo.setMessage("Ocurrio un error ${e.message}")
-            dialogNo.setMessage(getString(R.string.error))
-            dialogNo.show()
+            alertError.show()
         }
 
         /*******  FIN ENVIO   *******/

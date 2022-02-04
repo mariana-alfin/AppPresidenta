@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import java.text.NumberFormat
 import java.util.*
@@ -23,7 +22,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
     private val mx = Locale("es", "MX")
     private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
 
-
     var numPagos = 16
     val listPagos: MutableList<String> = ArrayList()
     var listOpciones = arrayOf("Sí", "No")
@@ -31,20 +29,26 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.calculadora_activity)
-        for (i in 1..numPagos){
+        for (i in 1..numPagos) {
             listPagos.add("$i")
         }
-            val actionBar: ActionBar? = supportActionBar
-            actionBar?.title = "Calculadora"
-            actionBar?.setLogo(R.mipmap.icono_app)
-            actionBar?.setDisplayShowHomeEnabled(true)
-            actionBar?.setDisplayUseLogoEnabled(true)
+        /*Se agrega logo y titulo del la actividad*/
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Calculadora"
+        supportActionBar?.setLogo(R.mipmap.icono_app)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayUseLogoEnabled(true)
 
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
-        FuncionesGlobales.guardarPestanaSesion(this,"true")
+        FuncionesGlobales.guardarPestanaSesion(this, "true")
         pintarTablaBonificacion()
         pintarCalculadoraBonificacion()
-        findViewById<TextView>(R.id.txtNota).text = Html.fromHtml("<font color='#3C8943'>Nota:</font><font color='#000000'> Recuerda que si el prestamo no se liquida se perdera la bolsa acumulada.</font>")
+        findViewById<TextView>(R.id.txtNota).text =
+            Html.fromHtml("<font color='#3C8943'>Nota:</font><font color='#000000'> Recuerda que si el prestamo no se liquida se perdera la bolsa acumulada.</font>")
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return false
     }
     private fun pintarTablaBonificacion() {
         //se obtiene la tabla
@@ -74,10 +78,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
         trP.addView(bs)
         trP.addView(txtBonS)
-        tabla.addView(trP, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trP, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         //Bonificación, pago semanal
         val trB = TableRow(this)
@@ -97,10 +103,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
         trB.addView(Mp)
         trB.addView(txtMp)
-        tabla.addView(trB, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         //Bolsa acumulada
         val trB2 = TableRow(this)
@@ -120,10 +128,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
         trB2.addView(Ba)
         trB2.addView(txtBa)
-        tabla.addView(trB2, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.WRAP_CONTENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB2, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.WRAP_CONTENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         //Bolsa acumulada nota
         val row = TableRow(this)
@@ -142,10 +152,11 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         row.addView(txt)
         tabla.addView(row)
     }
+
     private fun pintarCalculadoraBonificacion() {
         //se obtiene la tabla
         val tabla = findViewById<TableLayout>(R.id.tblCalculadora)
-        tabla.setPadding(60,0,50,0)
+        tabla.setPadding(60, 0, 50, 0)
         tabla.gravity = Gravity.CENTER_VERTICAL
         val fTr = 16F
         val color = Color.BLACK
@@ -187,9 +198,10 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l2.gravity = gravityTxtC
         val txtPsP = EditText(this)
         //txtPsP.text = formatPesos.format(25000)
-        txtPsP.hint =  "$25,000"
+        txtPsP.hint = "$25,000"
         txtPsP.setPadding(5, 20, 10, 20)
-        txtPsP.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+        txtPsP.inputType =
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
         txtPsP.keyListener = DigitsKeyListener.getInstance(".0123456789")
         txtPsP.setTextColor(color)
         txtPsP.gravity = gravityTxtC
@@ -200,10 +212,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val trP = TableRow(this)
         trP.addView(l)
         trP.addView(l2)
-        tabla.addView(trP, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trP, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         val l3 = LinearLayout(this)
         l3.setBackgroundResource(R.drawable.borde_celda)
@@ -226,10 +240,16 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         spinnerPagos.adapter = opciones
         //spinner1.onItemSelectedListener = this
         spinnerPagos.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                arg0: AdapterView<*>?,
+                arg1: View?,
+                position: Int,
+                id: Long
+            ) {
                 //Toast.makeText(baseContext,"se selecciono "+ listPagos[position], Toast.LENGTH_SHORT).show()
                 findViewById<TextView>(R.id.txtPgos).text = listPagos[position]
             }
+
             override fun onNothingSelected(arg0: AdapterView<*>?) {
                 // TODO Auto-generated method stub
             }
@@ -248,14 +268,16 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val trB = TableRow(this)
         trB.addView(l3)
         trB.addView(l4)
-        tabla.addView(trB, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         val l5 = LinearLayout(this)
         l5.setBackgroundResource(R.drawable.borde_celda)
-        l5.setPadding(leftRigth, topBottom, leftRigth, topBottom+1)
+        l5.setPadding(leftRigth, topBottom, leftRigth, topBottom + 1)
         l5.gravity = gravityTxt
         val pl = TextView(this)
         pl.text = "Prestamo Liquidado"
@@ -274,10 +296,16 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         spinnerPL.adapter = opciones2
         //spinner1.onItemSelectedListener = this
         spinnerPL.onItemSelectedListener = object : OnItemSelectedListener {
-            override fun onItemSelected(arg0: AdapterView<*>?, arg1: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                arg0: AdapterView<*>?,
+                arg1: View?,
+                position: Int,
+                id: Long
+            ) {
                 //Toast.makeText(baseContext,"se "+ listOpciones[position], Toast.LENGTH_SHORT).show()
                 findViewById<TextView>(R.id.txtPL).text = listOpciones[position]
             }
+
             override fun onNothingSelected(arg0: AdapterView<*>?) {
                 // TODO Auto-generated method stub
             }
@@ -295,10 +323,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val trB2 = TableRow(this)
         trB2.addView(l5)
         trB2.addView(l6)
-        tabla.addView(trB2, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB2, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         val trB3 = TableRow(this)
         val l7 = LinearLayout(this)
@@ -307,10 +337,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l7.layoutParams = layoutParams
 
         trB3.addView(l7)
-        tabla.addView(trB3, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB3, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         val l8 = LinearLayout(this)
         l8.setBackgroundResource(R.drawable.borde_celda)
@@ -335,10 +367,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val trB4 = TableRow(this)
         trB4.addView(l8)
         trB4.addView(l9)
-        tabla.addView(trB4, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB4, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         val l10 = LinearLayout(this)
         l10.setBackgroundResource(R.drawable.borde_celda)
@@ -367,10 +401,12 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val trB5 = TableRow(this)
         trB5.addView(l10)
         trB5.addView(l11)
-        tabla.addView(trB5, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB5, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
 
         val l12 = LinearLayout(this)
         l12.setPadding(leftRigth, topBottom, leftRigth, topBottom)
@@ -379,7 +415,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         b.text = "Bonificación Total"
         b.setTypeface(null, Typeface.BOLD_ITALIC)
         b.setTextColor(Color.WHITE)
-        b.textSize = fTr+2
+        b.textSize = fTr + 2
         l12.addView(b)
 
         val l13 = LinearLayout(this)
@@ -389,7 +425,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         txtBonificacion.text = formatPesos.format(16000)
         txtBonificacion.setTypeface(null, Typeface.BOLD_ITALIC)
         txtBonificacion.setTextColor(Color.WHITE)
-        txtBonificacion.textSize = fTr+2
+        txtBonificacion.textSize = fTr + 2
         l13.addView(txtBonificacion)
 
         val trB6 = TableRow(this)
@@ -397,15 +433,18 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l13.setBackgroundResource(R.drawable.redondo_verde_2)
         trB6.addView(l12)
         trB6.addView(l13)
-        tabla.addView(trB6, TableLayout.LayoutParams(
-            TableLayout.LayoutParams.MATCH_PARENT,
-            TableLayout.LayoutParams.MATCH_PARENT
-        ))
+        tabla.addView(
+            trB6, TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.MATCH_PARENT
+            )
+        )
     }
+
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
         //textView_msg!!.text = "Selected : "+languages[position]
         //Toast.makeText(this, "Selected : "+languages[position], Toast.LENGTH_SHORT).show()
-        Toast.makeText(this, "Selected : $id " , Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Selected : $id ", Toast.LENGTH_SHORT).show()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -416,6 +455,8 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
     fun EditText.setMaxLength(maxLength: Int) {
         filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
     }
+}
+    /*
     fun pagosAtiempo(idTxt: Int){
         //se genera la cadena
         var numPagos = 16
@@ -428,6 +469,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         //val animals = arrayOf("horse", "cow", "camel", "sheep", "goat")
         // setup the alert builder
         val builder = AlertDialog.Builder(this)
+        builder.setIcon(R.drawable.ic_alert)
         builder.setTitle("Selecciona el número de pagos realizados a tiempo")
         builder.setItems(list.toTypedArray()) { _, which ->
             //Toast.makeText(this,"Valor = $which", Toast.LENGTH_SHORT).show()
@@ -466,5 +508,4 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val dialog = builder.create()
         dialog.show()
     }
-
-}
+*/

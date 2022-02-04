@@ -88,15 +88,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (continua) {
-
                 iniciarSesionWS(idCliente, numeroCelular)
             } else {
-                AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-                    .setTitle(Html.fromHtml("<font color='#3C8943'>Ingresar</font>"))
-                    .setMessage(respuesta)
-                    .setPositiveButton("ACEPTAR", null)
-                    .create()
-                    .show()
+                FuncionesGlobales.mostrarAlert(this,"error",true,"Ingresar",respuesta,false).show()
             }
         }
     }

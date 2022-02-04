@@ -5,16 +5,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.preference.PreferenceManager
-import android.text.Html
-import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -24,9 +20,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
-import java.text.DateFormat
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 class PagosFragment : Fragment() {
@@ -64,8 +58,15 @@ class PagosFragment : Fragment() {
         FuncionesGlobales.guardarPestanaSesion(activity as AppCompatActivity,"true")
         //llenarTbPagos()
         mostrarFormato(false)
-        if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
-            datosPagos()
+       if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+            val prestamo = prefs.getInt("CREDITO_ID", 0)
+            val pagoSemanal = prefs.getFloat("MONTO_SEMANAL", 0.0F)
+           obtenerSaldoConciliar(prestamo) //se obtiene el saldo por conciliar
+           datosPagos(prestamo,pagoSemanal)
+
+
+
         } else {
             binding.txtCargando.text = getString(R.string.noConexion)
             binding.txtCargando.gravity = Gravity.CENTER
@@ -73,27 +74,6 @@ class PagosFragment : Fragment() {
             progressBar = binding.cargando
             progressBar.visibility = View.INVISIBLE
         }
-/*
-        try {
-            var toolbar = requireActivity().findViewById(R.id.iAyuda)
-
-            toolbar?.menu?.clear()
-            //toolbar?.title = ""
-            //val toolbarFlowFragment = context?.let { getInflateLayout(it, R.layout.toolbar_profile) }
-
-            toolbar?.addView(toolbarFlowFragment)
-           // (activity as AppCompatActivity).title =  "Fragment Two"
-
-        }catch (e: Exception){
-            val builder = AlertDialog.Builder(requireActivity())
-            builder.setTitle("error")
-            builder.setMessage(e.message)
-            val dialog = builder.create()
-            dialog.show()
-        }
-
-*/
-
         return root
     }
 
@@ -110,22 +90,17 @@ class PagosFragment : Fragment() {
         binding.txtCargando.visibility = valorLoadi
         binding.txtPagoSemanal.visibility = valor
         binding.txtP.visibility = valor
+
     }
 
-    private fun datosPagos() {
+    private fun datosPagos(prestamo: Int,pagoSemanal: Float) {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
-        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        /*val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         val pagoSemanal = prefs.getFloat("MONTO_SEMANAL", 0.0F)
-        //val prestamo = 119483 //para pruebas
-        val fecha = "2020-01-17" //para pruebas
-        val dialogNo =
-            AlertDialog.Builder(requireActivity(), R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-                .setTitle(Html.fromHtml("<font color='#3C8943'>Ingresar</font>"))
-                .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
-                .setPositiveButton("Aceptar") { dialog, which ->
-                    dialog.cancel()
-                }
+        */
+        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Obtener Pagos",getString(R.string.error),false)
+        val fecha = ""//"2020-01-17" //para pruebas
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", prestamo)
         jsonParametros.put("pay_date", fecha)
@@ -146,23 +121,13 @@ class PagosFragment : Fragment() {
                             //Toast.makeText(activity, "PETICION EXITOSA", Toast.LENGTH_SHORT).show()
                             val jsonResults = jsonData.getJSONArray("results")
                             llenarTbPagos(jsonResults,pagoSemanal)
-                            /*
-                            for (i in 0 until jsonResults.length()) {
-                                val CL: JSONObject = jsonResults.getJSONObject(i)
-                                binding.txt9.text = CL.toString()
-                                binding.txt9.text = CL.getString("credit_id") + " NO CLIENTAS = "+jsonResults.length()
-                            }
-                            */
                         } else {
-                            dialogNo.show()
+                            alertError.show()
                         }
                     } catch (e: Exception) {
-                        //dialogNo.setMessage("Ocurrio un error catch $e") //PRUEBAS
                         if (e.message != null){
-                            dialogNo.show()
+                            alertError.show()
                         }
-                        //dialogNo.setMessage(getString(R.string.error))
-                        //dialogNo.show()
                     }
                 },
                 Response.ErrorListener { error ->
@@ -171,17 +136,15 @@ class PagosFragment : Fragment() {
                     val dataError = JSONObject(responseError)
                     var mensaje = getString(R.string.error)
                     try {
-                        val jsonData =
-                            JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                        val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                         val code = jsonData.getInt("code")
                         val message = jsonData.getString("message")
-                        val jResul =
-                            JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                        if (code == 422 && jsonData.getString("results").contains("credit_id")) {
-                            mensaje = jResul.getString("credit_id")
-                        } else {
-                            mensaje = message
-                        }
+                        val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                        mensaje = if(code == 422 && jsonData.getString("results").contains("credit_id")) {
+                                        jResul.getString("credit_id")
+                                    } else {
+                                        message
+                                    }
 
                     } catch (e: Exception) {
                         mensaje = getString(R.string.error)
@@ -189,8 +152,7 @@ class PagosFragment : Fragment() {
                     progressBar = binding.cargando
                     progressBar.visibility = View.INVISIBLE
                     binding.txtCargando.text = mensaje
-                    dialogNo.setMessage(mensaje)
-                    dialogNo.show()
+                    alertError.show()
                 }
             ) {
                 override fun getHeaders(): Map<String, String> {
@@ -202,10 +164,15 @@ class PagosFragment : Fragment() {
                     return headers
                 }
             }
-        val queue = Volley.newRequestQueue(activity)
-        //primero borramos el cache y enviamos despues la peticion
-        queue.cache.clear()
-        queue.add(request)
+        try {
+            val queue = Volley.newRequestQueue(activity)
+            //primero borramos el cache y enviamos despues la peticion
+            queue.cache.clear()
+            queue.add(request)
+        }
+        catch (e: java.lang.Exception){
+            alertError.show()
+        }
         /*******  FIN ENVIO   *******/
     }
 
@@ -297,7 +264,7 @@ class PagosFragment : Fragment() {
 
             val edit = ImageView(activity)
             edit.setImageResource(R.drawable.ic_editar_junta)
-            edit.setColorFilter(Color.GREEN)
+            edit.setColorFilter(resources.getColor(R.color.Verde3))
 
             val ver = ImageView(activity)
             ver.setImageResource(R.drawable.ic_ver_junta)
@@ -305,10 +272,11 @@ class PagosFragment : Fragment() {
             ver.setPadding(30, 0, 0, 0)
 
             txtS.text = pago.getString("pay_no")
-            var fechaPago = pago.getString("pay_date")
+            val fechaPago = pago.getString("pay_date")
             //txtF.text = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
-            txtF.text = FuncionesGlobales.convertFecha(fechaPago,"dd-MMMyy").replace('.','-')
-            var estatus = pago.getString("pay_status").uppercase(Locale.getDefault())
+            txtF.text = FuncionesGlobales.convertFecha(fechaPago,"dd-MMM-yy").replace(".-","-").uppercase()
+
+            val estatus = pago.getString("pay_status").uppercase(Locale.getDefault())
             txtEs.text = estatus
             edit.setOnClickListener { generarJunta(true, pago.getInt("pay_id"),pago.getInt("pay_no"), fechaPago) }
             ver.setOnClickListener { generarJunta(false, pago.getInt("pay_id"),pago.getInt("pay_no"), fechaPago) }
@@ -316,11 +284,9 @@ class PagosFragment : Fragment() {
             tr.addView(txtS)
             tr.addView(txtF)
             tr.addView(txtEs)
-            tr.addView(lC)
             lC.addView(edit)
             lC.addView(ver)
-            //tr.addView(edit)
-            //tr.addView(ver)
+            tr.addView(lC)
 
             tabla.addView(
                 tr,
@@ -333,6 +299,101 @@ class PagosFragment : Fragment() {
         mostrarFormato(true)
     }
 
+    private fun obtenerSaldoConciliar(prestamo: Int){
+        //FORMATO EN PESOS MXM SIN DECIMALES
+        //formatPesos.maximumFractionDigits = 0
+        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Guardar Junta",getString(R.string.error),false)
+        val jsonParametros = JSONObject()
+        jsonParametros.put("credit_id", prestamo)
+        jsonParametros.put("payment_date", null)
+        jsonParametros.put("payment_status", 0)//1 PARA PRUEBAS
+
+        val request = object : JsonObjectRequest(
+            Method.POST,
+            getString(R.string.urlPagosConciliar),
+            jsonParametros,
+            Response.Listener { response ->
+                try {
+                    //Obtiene su respuesta json
+                    val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
+                    if (jsonData.getInt("code") == 200) {
+                        val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                        val payments = jsonResults.getJSONArray("payments")
+                        var saldoConciliar = 0.0
+                        var pagosConciliar = ""
+                        for (i in 0 until payments.length()) {
+                            val pago: JSONObject = payments.getJSONObject(i)
+                            saldoConciliar += pago.getDouble("amount")
+                            pagosConciliar += "${pago.getString("payment_id")},"
+                            binding.txtSaldoConciliar.text = "Saldo por Conciliar ${formatPesos.format(saldoConciliar)}"
+                            //se agrega la accion al boton
+                            binding.iConciliar.setOnClickListener { juntaConciliacion(saldoConciliar,pagosConciliar) }
+                        }
+                        if(saldoConciliar != 0.0){
+                                binding.iConciliar.visibility =  View.VISIBLE
+                                binding.txtSaldoConciliar.visibility =  View.VISIBLE
+
+                        }
+                    } else {
+                        alertError.show()
+                    }
+                } catch (e: Exception) {
+                }
+            },
+            Response.ErrorListener { error ->
+                val responseError = String(error.networkResponse.data)
+                val dataError = JSONObject(responseError)
+                var mensaje = getString(R.string.error)
+                try {
+                    val jsonData =
+                        JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                    val code = jsonData.getInt("code")
+                    val message = jsonData.getString("message")
+                    val jResul =
+                        JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                    if (code == 422 && jsonData.getString("results").contains("credit_id")) {
+                        mensaje = jResul.getString("credit_id")
+                    } else {
+                        mensaje = message
+                    }
+
+                } catch (e: Exception) {
+                }
+                progressBar = binding.cargando
+                progressBar.visibility = View.INVISIBLE
+                binding.txtCargando.text = mensaje
+                alertError.setMessage(mensaje)
+                alertError.show()
+            }
+        ) {
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = getString(R.string.content_type)
+                headers["X-Header-Email"] = getString(R.string.header_email)
+                headers["X-Header-Password"] = getString(R.string.header_password)
+                headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
+                return headers
+            }
+        }
+        try {
+            val queue = Volley.newRequestQueue(activity)
+            //primero borramos el cache y enviamos despues la peticion
+            queue.cache.clear()
+            queue.add(request)
+            /*******  FIN ENVIO   *******/
+        }
+        catch (e: java.lang.Exception){
+            alertError.show()
+        }
+    }
+    private fun juntaConciliacion(saldoConciliar: Double,idPagos: String) {
+        val junta = Intent(activity, JuntaConciliacionActivity::class.java)
+        //enviamos datos
+        junta.putExtra("saldoConciliar", saldoConciliar)
+        junta.putExtra("idPagos", idPagos)
+        startActivity(junta)
+    }
     private fun generarJunta(esEditar: Boolean, idPago: Int, numPago: Int, fechaPago: String) {
         val junta = Intent(activity, JuntaActivity::class.java)
         //enviamos datos
@@ -352,6 +413,8 @@ class PagosFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }
 /*
 

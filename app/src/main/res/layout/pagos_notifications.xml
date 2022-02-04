@@ -36,6 +36,7 @@
             android:gravity="left"
             android:text="Pago semanal"
             android:textSize="20sp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -52,15 +53,38 @@
             android:text="$"
             android:textSize="20sp"
             android:elevation="@dimen/elevationTitle"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtP" />
-
+        <TextView
+            android:id="@+id/txtSaldoConciliar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            style="@style/textAzulTitulos"
+            android:text="Saldo a Conciliar"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPagoSemanal" />
+        <ImageView
+            android:id="@+id/iConciliar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="6dp"
+            app:tint="@color/Verde3"
+            android:visibility="invisible"
+            android:src="@drawable/ic_editar_junta"
+            app:layout_constraintStart_toEndOf="@+id/txtSaldoConciliar"
+            app:layout_constraintTop_toBottomOf="@+id/txtPagoSemanal" />
         <TableLayout
             android:id="@+id/tblPagos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="40dp"
             android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,17 +111,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cargando"
             app:layout_constraintVertical_bias="0.0" />
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="44dp"
-            android:text=""
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tblPagos" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

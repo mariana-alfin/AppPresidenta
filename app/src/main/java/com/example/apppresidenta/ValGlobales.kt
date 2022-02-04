@@ -2,6 +2,7 @@ package com.example.apppresidenta
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.text.Html
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -17,12 +18,7 @@ class ValGlobales {
                 // Si hay conexión a Internet en este momento
                 //Toast.makeText(this, "SI HAY CONEXION", Toast.LENGTH_SHORT).show()
             } else {
-                AlertDialog.Builder(activity)
-                    .setTitle("CONEXION")
-                    .setMessage("No cuenta con conexión a Internet")
-                    .setPositiveButton("OK", null)
-                    .create()
-                    .show()
+                FuncionesGlobales.mostrarAlert(activity,"advertencia",true,"CONEXION","No cuenta con conexión a Internet",false).show()
                 return false
                 // No hay conexión a Internet en este momento
             }
