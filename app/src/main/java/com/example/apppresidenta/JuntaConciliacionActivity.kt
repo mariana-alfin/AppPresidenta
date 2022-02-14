@@ -1,14 +1,11 @@
 package com.example.apppresidenta
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog.THEME_HOLO_DARK
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.util.DisplayMetrics
@@ -20,14 +17,14 @@ import android.view.View
 import android.widget.*
 import android.widget.TableLayout.generateViewId
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
@@ -35,7 +32,7 @@ import org.json.JSONTokener
 import java.text.NumberFormat
 import java.util.*
 
-
+/*MD ESTE ACTIVITY ES UN REPLICA DE JUNTA LA UNICA DIFERENCIA ES QUE NO SE TOMA FOTOGRAFIA Y SE ENVIAN LOS ID_PAGOS RECIVIDOS*/
 class JuntaConciliacionActivity : CameraBaseActivity() {
     //FORMATO EN PESOS MXM
     private val mx = Locale("es", "MX")
@@ -54,38 +51,54 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         }
     }
 
-    var listClientes: MutableMap<Int, CteIds> = mutableMapOf(0 to CteIds(1, 1,1))
+    var listClientes: MutableMap<Int, CteIds> = mutableMapOf(0 to CteIds(1, 1, 1))
     var listPagos: MutableMap<Int, Int> = mutableMapOf(0 to 0)
     var saldoPorConciliar: Double = 0.0
     var idPagosArray: String = ""
-    @RequiresApi(Build.VERSION_CODES.M)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_junta_conciliacion)
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this, "true")
+
+        //Se elimina la ruta de la fotografia y ubicacion para generar una nueva junta en caso de que
+        //el usuario no haya concluido la actividad
+        GeneralUtils.eliminaVariableSesion(this, "LATITUD")
+        GeneralUtils.eliminaVariableSesion(this, "LONGITUD")
 
         val parametros = this.intent.extras
         val saldoConciliar = parametros!!.getDouble("saldoConciliar", 0.0)
         val idPagos = parametros.getString("idPagos", "")
-        idPagosArray = idPagos.substring(0,idPagos.length - 1)
-            solicitarUsoUbicacion(this)
+        idPagosArray = idPagos.substring(0, idPagos.length - 1)
 
-        findViewById<Button>(R.id.btnGuardar).setOnClickListener { guardarJunta() }
+        //Se solicita la ubicacion
+        solicitarUsoUbicacion(this)
 
-        /*Se agrega logo y titulo del la actividad*/
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val FECHA_PAGO_CONCILIACION = prefs.getString("FECHA_PAGO_CONCILIACION", "")
+        val fecha = FuncionesGlobales.convertFecha(FECHA_PAGO_CONCILIACION!!, "dd-MMM-yy").replace(".-", "-").uppercase()
+        //findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: ${if (fecha.contains(".")) fecha.replace('.','-') else fecha}   "
+        findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: $fecha"
+        findViewById<Button>(R.id.btnGuardar).setOnClickListener {
+            guardarJunta(
+                FECHA_PAGO_CONCILIACION
+            )
+        }
+
+        /*MD SE AGREGA LOGO, TITULO Y SUBTITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title =  formatPesos.format(saldoConciliar)
-        supportActionBar?.subtitle ="Saldo por Conciliar"
+        supportActionBar?.title = formatPesos.format(saldoConciliar)
+        supportActionBar?.subtitle = "Saldo por Conciliar"
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
-        //se asigna variable
+        //SE ASIGNA VARIABLE
         saldoPorConciliar = saldoConciliar
         mostrarFormato(false)
         if (ValGlobales.validarConexion(this)) {
             datosJunta("", false)
-            //se obtiene la ubicacion
+            //SE OBTIENE LA UBICACION
             solicitarUsoUbicacion(this)
         } else {
             findViewById<TextView>(R.id.txtCargando).text = getString(R.string.noConexion)
@@ -95,11 +108,13 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             progressBar.visibility = View.INVISIBLE
         }
     }
+
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return false
     }
-    //AGREGA EL MENU DE OPCIONES
+
+    //MD AGREGA EL MENU DE OPCIONES
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
         val inflater = menuInflater
@@ -107,8 +122,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    //FUNCIONES DE CADA OPTION
-    @RequiresApi(Build.VERSION_CODES.M)
+    //MD FUNCIONES DE CADA OPTION
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.iCopy -> {
@@ -120,23 +134,27 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
     }
 
     private fun copiarMontos() {
-        val parametros = this.intent.extras
-        val fechaPago = parametros!!.getString("fechaPago", "")
-        val alert = FuncionesGlobales.mostrarAlert(this,"cuestion",true,"Pago completo"
-            ,"¿Está seguro que todas las clientas pagaron completo?",true)
+        val alert = FuncionesGlobales.mostrarAlert(
+            this,
+            "cuestion",
+            true,
+            "Pago completo",
+            "¿Está seguro que todas las clientas pagaron completo?",
+            true
+        )
         alert.setPositiveButton("Aceptar") { _, _ ->
-                //solo pruebas val fechaPago = "2021-09-07"
-                if (ValGlobales.validarConexion(this)) {
-                    LoadingScreen.displayLoadingWithText(this,"Cargando ...",false)
-                    datosJunta(fechaPago, true)
-                } else {
-                    findViewById<TextView>(R.id.txtCargando).text = getString(R.string.noConexion)
-                    findViewById<TextView>(R.id.txtCargando).gravity = Gravity.CENTER
-                    findViewById<TextView>(R.id.txtCargando).visibility = View.VISIBLE
-                    progressBar = findViewById(R.id.cargando)
-                    progressBar.visibility = View.INVISIBLE
-                }
+            //solo pruebas val fechaPago = "2021-09-07"
+            if (ValGlobales.validarConexion(this)) {
+                LoadingScreen.displayLoadingWithText(this, "Cargando ...", false)
+                datosJunta("", true)
+            } else {
+                findViewById<TextView>(R.id.txtCargando).text = getString(R.string.noConexion)
+                findViewById<TextView>(R.id.txtCargando).gravity = Gravity.CENTER
+                findViewById<TextView>(R.id.txtCargando).visibility = View.VISIBLE
+                progressBar = findViewById(R.id.cargando)
+                progressBar.visibility = View.INVISIBLE
             }
+        }
         alert.setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
         alert.create()
         alert.show()
@@ -157,7 +175,14 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         findViewById<Button>(R.id.btnGuardar).visibility = valor
     }
 
-    private fun showOpcionesSolidario(v: View,menuRes: Int,idTxt: Int,idSelect: Int,idtxtPago: Int,montoCuota: Double) { //idtxtPago,mCuota
+    private fun showOpcionesSolidario(
+        v: View,
+        menuRes: Int,
+        idTxt: Int,
+        idSelect: Int,
+        idtxtPago: Int,
+        montoCuota: Double
+    ) { //idtxtPago,mCuota
         //se obtiene el txt por el id
         val txt = findViewById<TextView>(idTxt)
         //se obtiene el icono del combo por el id
@@ -191,10 +216,11 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
 
     private fun validaPagoSolidario(tipoSolidario: String, idtxtPago: Int, montoCuota: Double) {
         try {
-            //se obtiene el monto capturado en el pago para compararlo con la couta
+            //SE OBTIENE EL MONTO CAPTURADO EN EL PAGO PARA COMPARARLO CON LA COUTA
             val montoPago = findViewById<EditText>(idtxtPago)
-            if((montoPago.text.toString().toDouble() == montoCuota) && (tipoSolidario == "DA" || tipoSolidario == "RE")){
-                //   Toast.makeText(this, "monto pago debe de ser 0", Toast.LENGTH_SHORT).show()
+            if ((montoPago.text.toString()
+                    .toDouble() == montoCuota) && (tipoSolidario == "DA" || tipoSolidario == "RE")
+            ) {
                 montoPago.setText("0")
             }
         } catch (e: Exception) {
@@ -202,12 +228,19 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         }
     }
 
-    //se reutiliza la funcion de datos del grupo del fragment MiGrupo
+    //SE REUTILIZA LA FUNCION DE DATOS DEL GRUPO DEL FRAGMENT MIGRUPO
     private fun datosJunta(fechaPago: String, esCopia: Boolean) {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
-        val alertError = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta",getString(R.string.error),false)
+        val alertError = FuncionesGlobales.mostrarAlert(
+            this,
+            "error",
+            true,
+            "Guardar Junta",
+            getString(R.string.error),
+            false
+        )
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", prestamo)
         jsonParametros.put("pay_date", fechaPago)
@@ -221,9 +254,9 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                 Response.Listener { response ->
                     try {
                         //Obtiene su respuesta json
-                        val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
+                        val jsonData =
+                            JSONTokener(response.getString("data")).nextValue() as JSONObject
                         if (jsonData.getInt("code") == 200) {
-                            //Toast.makeText(activity, "PETICION EXITOSA", Toast.LENGTH_SHORT).show()
                             val jsonResults = jsonData.getJSONArray("results")
                             pintarTablaJunta(jsonResults, esCopia)
                         }
@@ -235,7 +268,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                     /*findViewById<TextView>(R.id.txtPruebas).text = "$codigoError"
                     Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()*/
                     if (codigoError == 422) {
-                        alertError.setMessage(Html.fromHtml("El ID de Crédito no se encontro."))
+                        alertError.setMessage("El ID de Crédito no se encontro.")
                     } else {
                         alertError.setMessage("Ocurrio un error")
                     }
@@ -258,8 +291,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             //primero borramos el cache y enviamos despues la peticion
             queue.cache.clear()
             queue.add(request)
-        }
-        catch (e: java.lang.Exception){
+        } catch (e: java.lang.Exception) {
             alertError.show()
         }
 
@@ -275,7 +307,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         val fontTh = 16F
         val fontTr = 13.5F
         val trEn = TableRow(this)
-        trEn.setPadding(0,20,0,20)
+        trEn.setPadding(0, 20, 0, 20)
         val cliente = TextView(this)
         cliente.text = "Cliente"
         cliente.gravity = Gravity.CENTER
@@ -312,7 +344,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         val so = TextView(this)
         so.text = "______"
         so.gravity = Gravity.CENTER
-        so.setTextColor(resources.getColor(R.color.Verde2))
+        so.setTextColor(ContextCompat.getColor(this, R.color.Verde2))
         so.setTypeface(null, Typeface.BOLD_ITALIC)
         so.textSize = fontTh
         trEn.addView(so)
@@ -328,31 +360,31 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         listClientes.clear()
 
         /**     VARIABLES PARA TAMAÑOS      **/
-        //se obtiene la densidad del dispositivo para cambiar los tamaños
+        //SE OBTIENE LA DENSIDAD DEL DISPOSITIVO PARA CAMBIAR LOS TAMAÑOS
         val densidad = resources.displayMetrics.densityDpi
-        val width =  resources.displayMetrics.widthPixels
+        val width = resources.displayMetrics.widthPixels
         var witCte: Int
         var witPgo = 140
-        if(densidad < DisplayMetrics.DENSITY_HIGH){
+        if (densidad < DisplayMetrics.DENSITY_HIGH) {
             witCte = 140
-        }else if(densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH){
+        } else if (densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH) {
             witCte = 200
-        }else if(densidad == DisplayMetrics.DENSITY_XHIGH){
+        } else if (densidad == DisplayMetrics.DENSITY_XHIGH) {
             witCte = 220
-        }else if(densidad in DisplayMetrics.DENSITY_XHIGH until DisplayMetrics.DENSITY_XXHIGH){
+        } else if (densidad in DisplayMetrics.DENSITY_XHIGH until DisplayMetrics.DENSITY_XXHIGH) {
             witCte = 380
             witPgo = 200
-        }else if(densidad == DisplayMetrics.DENSITY_XXHIGH && width == 1080){
+        } else if (densidad == DisplayMetrics.DENSITY_XXHIGH && width == 1080) {
             witCte = 380
             witPgo = 175
-        }else if((densidad in DisplayMetrics.DENSITY_XXHIGH until DisplayMetrics.DENSITY_XXXHIGH) && width < 1200 && width != 1080){
+        } else if ((densidad in DisplayMetrics.DENSITY_XXHIGH until DisplayMetrics.DENSITY_XXXHIGH) && width < 1200 && width != 1080) {
             witCte = 415
             witPgo = 205
-        }else if((densidad >= DisplayMetrics.DENSITY_XXXHIGH) || width <= 1200){
+        } else if ((densidad >= DisplayMetrics.DENSITY_XXXHIGH) || width <= 1200) {
             witCte = 430
             witPgo = 215
-        }else {//si la pantalla es mayor a 1200px el valor del nombre sera de una tercera parte
-            witCte = (width/3)
+        } else {//SI LA PANTALLA ES MAYOR A 1200PX EL VALOR DEL NOMBRE SERA DE UNA TERCERA PARTE
+            witCte = (width / 3)
             witPgo = 225
         }
         /***       FIN VARIABLES       **/
@@ -360,7 +392,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             //SE GENERA EL OBJETO CLIENTE DEL ARREGLO
             val cte: JSONObject = jsonClientes.getJSONObject(i)
             val tr = TableRow(this)
-            tr.setPadding(10,20,0,20)
+            tr.setPadding(10, 20, 0, 20)
             if (i != numClientes) {
                 tr.setBackgroundResource(R.drawable.borde)
             } else {
@@ -371,9 +403,9 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             val idCk = generateViewId()
             chk.id = idCk
             chk.gravity = Gravity.RIGHT
-
+            val colorAzul = ContextCompat.getColor(this, R.color.Azul1)
             val cliente = TextView(this)
-            cliente.setTextColor(resources.getColor(R.color.Azul1))
+            cliente.setTextColor(colorAzul)
             cliente.textSize = (fontTr - 1)
             //cliente.maxWidth = 230
             cliente.maxWidth = witCte
@@ -381,24 +413,22 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             val couta = TextView(this)
             val mCuota = cte.getDouble("pay")
             couta.text = formatPesos.format(mCuota)
-            couta.setTextColor(resources.getColor(R.color.Azul1))
+            couta.setTextColor(colorAzul)
             couta.textSize = fontTr
 
             val pago = EditText(this)
             val idtxtPago = cte.getInt("credit_id")
             pago.id = idtxtPago
-            pago.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+            pago.inputType =
+                InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
             pago.keyListener = DigitsKeyListener.getInstance(".0123456789")
-            pago.setTextColor(resources.getColor(R.color.Azul1))
+            pago.setTextColor(colorAzul)
             pago.textSize = fontTr
             pago.gravity = Gravity.CENTER
-            //pago.width = 140
             pago.width = witPgo
-            //pago.maxWidth = 180
             pago.maxWidth = witPgo
             pago.setMaxLength(7)
-            //pago.tint(Color.RED)
-            pago.background.setColorFilter(resources.getColor(R.color.Azul3), PorterDuff.Mode.SRC_ATOP)
+            pago.background.setColorFilter(colorAzul, PorterDuff.Mode.SRC_ATOP)
             pago.doAfterTextChanged { sumaPagos() }
 
             val lS = LinearLayout(this)
@@ -407,15 +437,15 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             sol.id = idT
             sol.setTypeface(null, Typeface.BOLD)
             sol.textSize = (fontTr + 1)
-            sol.setTextColor(resources.getColor(R.color.Verde5))
-            sol.setPadding(15,0,0,0)
+            sol.setTextColor(ContextCompat.getColor(this, R.color.Verde5))
+            sol.setPadding(15, 0, 0, 0)
             sol.gravity = Gravity.CENTER
 
             val checlSol = ImageView(this)
             val idS = generateViewId()
             checlSol.id = idS
             checlSol.setImageResource(R.drawable.drop_down_36)
-            checlSol.setColorFilter(resources.getColor(R.color.Azul1))
+            checlSol.setColorFilter(ContextCompat.getColor(this, R.color.Azul1))
             lS.setOnClickListener { v: View ->
                 showOpcionesSolidario(v, R.menu.opciones_solidario, idT, idS, idtxtPago, mCuota)
             }
@@ -423,7 +453,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             //CUANDO ES COPIA DE MONTOS SE ASIGNA EL MONTO DE LA CUOTA AL PAGO Y SE PONE NO APLICA AL SOLIDARIO
             if (esCopia) {
                 pago.setText(cte.getString("pay"))// cte.getString("pay")
-                sol.setText("NA")
+                sol.text = "NA"
                 checlSol.visibility = View.GONE
                 LoadingScreen.hideLoading()
             }
@@ -459,6 +489,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
     }
 
     private fun sumaPagos() {
+        //MD SE REALIZA LA AUTOSUMA DE LOS MONTOS CAPTURADOS
         var sumaPagos = 0.0
         for (pgo in listPagos) {
             try {
@@ -466,16 +497,20 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                 if (txtPago.text.isNotEmpty()) {                      //SOLO SI NO ESTA VACIO SE AGREGA ALA SUMA
                     sumaPagos += txtPago.text.toString().toDouble()
                     findViewById<TextView>(R.id.txtSuma).text = formatPesos.format(sumaPagos)
-                     if(sumaPagos > saldoPorConciliar){
-                         Toast.makeText(this, "El monto capturado no debe ser mayor al Saldo por Conciliar", Toast.LENGTH_SHORT).show()
-                     }
+                    if (sumaPagos > saldoPorConciliar) {
+                        Toast.makeText(
+                            this,
+                            "El monto capturado no debe ser mayor al Saldo por Conciliar",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             } catch (e: Exception) {
             }
         }
     }
 
-    private fun guardarJunta() {
+    private fun guardarJunta(fechaPagoConciliacion: String) {
         //VARIABLE PARA SABER SI HAY VACIOS PARA CONTINUAR ESTA DEBE DE ESTAR EN CERO
         var hayVacios = 0
         var saldoConciliacion = 0.0
@@ -486,8 +521,10 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         for (cte in listClientes) {
             try {
                 val txtPago = findViewById<EditText>(cte.value.idTxtPago)       //TEXT DE MONTO PAGO
-                val txtSolidario = findViewById<TextView>(cte.value.idSolidario)//TEXT DE SOLIDARIO (NA,DA,RE)
-                val chkAsistencia = findViewById<CheckBox>(cte.value.idChk)     //TEXT DE SOLIDARIO (NA,DA,RE)
+                val txtSolidario =
+                    findViewById<TextView>(cte.value.idSolidario)//TEXT DE SOLIDARIO (NA,DA,RE)
+                val chkAsistencia =
+                    findViewById<CheckBox>(cte.value.idChk)     //TEXT DE SOLIDARIO (NA,DA,RE)
                 //var respuesta = "idCliente ${cte.key}"
                 if (txtPago.text.isNotEmpty()) {                                //SI NO ESTA VACIO SE AGREGA ALA RESPUESTA
                     saldoConciliacion += txtPago.text.toString().toDouble()
@@ -501,11 +538,19 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                 }
                 pagos += " \"description\" : null,"                          //se agrega description siempre en blanco
                 if (txtSolidario.text.isNotEmpty()) {
-                    val solidario_v =  when(txtSolidario.text){
-                        "DA"->{1}//1}
-                        "RE"->{1}//2}
-                        "NA"->{1}//3}
-                        else -> {1}//3}
+                    val solidario_v = when (txtSolidario.text) {
+                        "DA" -> {
+                            11
+                        }
+                        "RE" -> {
+                            12
+                        }
+                        "NA" -> {
+                            13
+                        }
+                        else -> {
+                            13
+                        }
                     }
                     pagos += " \"result_type_id\" : \"${solidario_v}\"," //MD SE QUITA Y SE USA RESULT-TYPE-ID
                 } else {
@@ -524,67 +569,103 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         //SE MUESTRA PARA PRUEBAS
         //findViewById<TextView>(R.id.txtJson).text = pagosString
         //SI EL MONTO NO ES IGUAL AL DE CONCILIAR NO DEJA CONTINUAR
-        if(saldoConciliacion != saldoPorConciliar){
-
-            val alertCorrecto = FuncionesGlobales.mostrarAlert(this,"advertencia",true,"Guardar Junta","El total debe ser igual al Saldo por Conciliar",false)
+        if (saldoConciliacion != saldoPorConciliar) {
+            val alertCorrecto = FuncionesGlobales.mostrarAlert(
+                this,
+                "advertencia",
+                true,
+                "Guardar Junta",
+                "El total debe ser igual al Saldo por Conciliar",
+                false
+            )
             alertCorrecto.show()
-/*
-            AlertDialog.Builder(this)
-                .setTitle(Html.fromHtml("<font color='#1F2C49' size='10'>Guardar Junta</font>"))
-                .setIcon(R.drawable.ic_warning)
-                .setMessage("El total debe ser igual al Saldo por Conciliar")
-                .setPositiveButton("Aceptar", null)
-                .create()
-                .show()*/
         }
         //SI HAY VACIOS ES 0 CONTINUA DE LO CONTRARIO NO
         else if (hayVacios == 0 && saldoConciliacion == saldoPorConciliar) {
-            val alertCorrecto = FuncionesGlobales.mostrarAlert(this,"cuestion",true,"¿Está seguro de continuar?","na",true)
+            val alertCorrecto = FuncionesGlobales.mostrarAlert(
+                this,
+                "cuestion",
+                true,
+                "¿Está seguro de continuar?",
+                "na",
+                true
+            )
             alertCorrecto.setPositiveButton("Aceptar") { _, _ ->
-                    generarJson(pagos)
+                //SE VALIDA QUE EXISTA CONEXION
+                if (ValGlobales.validarConexion(this)) {
+                    generarJson(pagos, fechaPagoConciliacion)
                 }
+            }
             alertCorrecto.setNegativeButton("Cancelar") { dialog, _ ->
-                    dialog.cancel()
-                }
+                dialog.cancel()
+            }
             alertCorrecto.create()
             alertCorrecto.show()
         } else {
-            val alert = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta","Debe capturar todos los datos, para continuar",false)
+            val alert = FuncionesGlobales.mostrarAlert(
+                this,
+                "error",
+                true,
+                "Guardar Junta",
+                "Debe capturar todos los datos, para continuar",
+                false
+            )
             alert.create()
             alert.show()
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun generarJson(pagosStrings: String) {
+    private fun generarJson(pagosStrings: String, fechaPagoConciliacion: String) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         //se genera el json
         var JSJuntaC = ""
-        val hoy = FuncionesGlobales.obtenerFecha("yyyy-MM-dd")
         val valSolicitud = "{" +
                 " \"credit_id\" :$prestamo," +
-                " \"date_accrual\" : \"$hoy\","+ //fecha de pago
+                " \"date_accrual\" : \"$fechaPagoConciliacion\"," + //fecha de pago
                 " \"close_task\" : 1," +
                 " \"payments\" : [$idPagosArray],"
-        JSJuntaC = "$valSolicitud ${pagosStrings.substring(0, pagosStrings.length - 1)}]}"
+
+        //Se obtienen las coordenadas de las ultima ubicacion registrada
+        val latitude = prefs.getString("LATITUD", "")
+        val longitude = prefs.getString("LONGITUD", "")
+
+        val valGeoreferencia = "\"georeference_data\" : { "+
+                " \"longitude\" :$longitude," +
+                " \"latitude\" : $latitude,"+
+                " \"image\" : null}"
+
+        //JSJuntaC = "$valSolicitud ${pagosStrings.substring(0, pagosStrings.length - 1)}]}"
+        JSJuntaC = "$valSolicitud ${pagosStrings.substring(0, pagosStrings.length - 1)}], $valGeoreferencia}"
         try {
             val jsonJuntaC = JSONObject(JSJuntaC)
             Log.e("DatosJunta", jsonJuntaC.toString());
             enviarJuntaConciliacion(jsonJuntaC)
             //findViewById<TextView>(R.id.txtJson).text = jsonJuntaC.toString()
-        }catch (e: Exception){
-
-        }
-
+        } catch (e: Exception) {  }
     }
 
     private fun enviarJuntaConciliacion(jsonJuntaC: JSONObject) {
-        LoadingScreen.displayLoadingWithText(this, "Enviando Información...",false)
+        LoadingScreen.displayLoadingWithText(this, "Enviando Información...", false)
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
 
-        val alertError = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta",getString(R.string.error),false)
-        val alertCorrecto = FuncionesGlobales.mostrarAlert(this,"correcto",true,"Datos guardados correctamente","na",true)
+        val alertError = FuncionesGlobales.mostrarAlert(
+            this,
+            "error",
+            true,
+            "Guardar Junta",
+            getString(R.string.error),
+            false
+        )
+        val alertCorrecto = FuncionesGlobales.mostrarAlert(
+            this,
+            "correcto",
+            true,
+            "Datos guardados correctamente",
+            "na",
+            true
+        )
 
         val request = object : JsonObjectRequest(
             Method.POST,
@@ -598,9 +679,14 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                     if (jsonData.getInt("code") == 201)//si la peticion fue correcta se continua con el login
                     {
                         alertCorrecto.setPositiveButton("Aceptar") { _, _ ->
-                                //se finaliza la actividad
-                                finish()
-                            }
+
+                            //Se elimina la ruta de la fotografia y ubicacion para generar una nueva junta
+                            GeneralUtils.eliminaVariableSesion(this, "LATITUD")
+                            GeneralUtils.eliminaVariableSesion(this, "LONGITUD")
+
+                            //se finaliza la actividad
+                            finish()
+                        }
                         alertCorrecto.create()
                         alertCorrecto.show()
 
@@ -617,15 +703,15 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                 val responseError = String(error.networkResponse.data)
                 val dataError = JSONObject(responseError)
                 try {
-                    val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
-                    val message = jsonData.getString("message")
-                    //dialogNo.setMessage(message)
-                }catch (e: Exception){
+                    val jsonData =
+                        JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                    alertError.setMessage(jsonData.toString())
+                } catch (e: Exception) {
                 }
+
                 alertError.show()
                 LoadingScreen.hideLoading()
-            })
-        {
+            }) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Content-Type"] = getString(R.string.content_type)
@@ -637,14 +723,13 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         }
         try {
             val queue = Volley.newRequestQueue(this)
-            //primero borramos el cache y enviamos despues la peticion
+            //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
-        }catch(e: Exception){
+        } catch (e: Exception) {
             alertError.show()
         }
         /*******  FIN ENVIO   *******/
     }
 
 }
-

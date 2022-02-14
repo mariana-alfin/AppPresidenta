@@ -6,11 +6,11 @@ import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.text.Html
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -18,12 +18,14 @@ import android.view.View
 import android.widget.*
 import android.widget.TableLayout.generateViewId
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBar
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.utils.GeneralUtils.Companion.eliminaVariableSesion
+import com.example.apppresidenta.utils.GeneralUtils.Companion.eliminarFotos
+import com.example.apppresidenta.utils.GeneralUtils.Companion.obtenerCadenaB64DeImagen
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
@@ -63,6 +65,12 @@ class JuntaActivity : CameraBaseActivity() {
           val esEditar = parametros!!.getBoolean("esEdicion", false)
           val semana = parametros.getInt("numPago", 1)
           val fechaPago = parametros.getString("fechaPago", "")
+
+        //Se elimina la ruta de la fotografia y ubicacion para generar una nueva junta en caso de que
+        //el usuario no haya concluido la actividad
+        eliminaVariableSesion(this,"RUTA_FOTO")
+        eliminaVariableSesion(this,"LATITUD")
+        eliminaVariableSesion(this,"LONGITUD")
 
         if(esEditar){
             solicitarUsoUbicacion(this)
@@ -476,6 +484,11 @@ class JuntaActivity : CameraBaseActivity() {
     private fun guardarJunta() {
         //VARIABLE PARA SABER SI HAY VACIOS PARA CONTINUAR ESTA DEBE DE ESTAR EN CERO
         var hayVacios = 0
+
+        //Si no hay foto tomada manda alert para realizar la actividad
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val rutaFotoActual = prefs.getString("RUTA_FOTO","")
+
         //se genera el json y se envia el metodo para enviarlo al ws
         //var clientes = "\"clientes\" : [ "
         var clientes = "\"tasks\" : [ "
@@ -524,13 +537,13 @@ class JuntaActivity : CameraBaseActivity() {
             }
         }
         var clientesString = clientes.substring(0, clientes.length - 1)
-        clientesString += " ]"
+        clientesString += " ]," //se modifica agrenaod una coma para agregar la georeferencia
 
         //SE MUESTRA PARA PRUEBAS
         //findViewById<TextView>(R.id.txtJson).text = clientesString
 
         //SI HAY VACIOS ES 0 CONTINUA DE LO CONTRARIO NO
-        if (hayVacios == 0) {
+        if (hayVacios == 0 && rutaFotoActual != "") {
             val alertCorrecto = FuncionesGlobales.mostrarAlert(this,"cuestion",true,"¿Está seguro de continuar?","na",true)
             alertCorrecto.setPositiveButton("Aceptar") { _, _ ->
                 generarJson(clientesString)
@@ -541,7 +554,13 @@ class JuntaActivity : CameraBaseActivity() {
             alertCorrecto.create()
             alertCorrecto.show()
 
-        } else {
+        }
+        else if(rutaFotoActual == ""){
+            val alert = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta","Es necesario tomar foto como evidencia, para continuar",false)
+            alert.create()
+            alert.show()
+        }
+        else {
             val alert = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta","Debe capturar todos los datos, para continuar",false)
             alert.create()
             alert.show()
@@ -564,10 +583,21 @@ class JuntaActivity : CameraBaseActivity() {
                 " \"close_task\" : 1," +
                 " \"date_task\" : \"$hoy\","+
                 " \"idPago\" :$idPago,"
-        JSJunta = "$valSolicitud $clientesString }"
+
+        //Se obtienen las coordenadas de las ultima ubicacion registrada
+        val latitude = prefs.getString("LATITUD", "")
+        val longitude = prefs.getString("LONGITUD", "")
+        val rutaFotoActual = prefs.getString("RUTA_FOTO","")
+        val imagenB64 = obtenerCadenaB64DeImagen(rutaFotoActual!!)
+        val valGeoreferencia = "\"georeference_data\" : { "+
+                " \"longitude\" :$longitude," +
+                " \"latitude\" : $latitude,"+
+                " \"image\" : \"data:image/jpeg;base64,$imagenB64\"}"
+
+        JSJunta = "$valSolicitud $clientesString $valGeoreferencia }"
         val jsonJunta = JSONObject(JSJunta)
         //findViewById<TextView>(R.id.txtJson).text = jsonJunta.toString()
-        Log.e("MyActivity", jsonJunta.toString());
+        //Log.e("MyActivity", jsonJunta.toString());
         enviarJunta(jsonJunta)
     }
 
@@ -589,8 +619,18 @@ class JuntaActivity : CameraBaseActivity() {
                     {
                         val alertCorrecto = FuncionesGlobales.mostrarAlert(this,"correcto",true,"Datos guardados correctamente","na",true)
                         alertCorrecto.setPositiveButton("Aceptar") { _, _ ->
-                                //se finaliza la actividad
-                                finish()
+
+                            //Se elimina la ruta de la fotografia y ubicacion para generar una nueva junta
+                            eliminaVariableSesion(this,"RUTA_FOTO")
+                            eliminaVariableSesion(this,"LATITUD")
+                            eliminaVariableSesion(this,"LONGITUD")
+
+                            //Se eliminan las fotos de la carpeta de la app
+                            val directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
+                            eliminarFotos(directorio)
+
+                            //se finaliza la actividad
+                            finish()
                             }
                         alertCorrecto.create()
                         alertCorrecto.show()

@@ -16,6 +16,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.example.apppresidenta.utils.GeneralUtils
 import com.example.apppresidenta.utils.PermisosUtils
 import com.google.android.gms.common.api.ApiException
@@ -112,7 +113,11 @@ open class UbicacionActivity : AppCompatActivity() {
             val ultimaUbicacion: Location = locationResult.lastLocation
             Toast.makeText(this@UbicacionActivity
                 , "Ubicacion actual: Lat: ${ultimaUbicacion.latitude} , Lon: ${ultimaUbicacion.longitude}"
-                , Toast.LENGTH_SHORT).show()
+                , Toast.LENGTH_LONG).show()
+
+            //Se guarda en variables de sesion la ubicacion mas actual
+            GeneralUtils.registrarVariableSesion(this@UbicacionActivity, "LATITUD", (ultimaUbicacion.latitude).toString())
+            GeneralUtils.registrarVariableSesion(this@UbicacionActivity, "LONGITUD", (ultimaUbicacion.longitude).toString())
         }
     }
 
@@ -158,11 +163,12 @@ open class UbicacionActivity : AppCompatActivity() {
     /*Funcion que recibe la respuesta del alert mostrado al usuario para activar la ubicacion*/
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) { //El usuario acepta prender del GPS
-            if (requestCode == SOLICITUD_PERMISO_UBICACION) { //El codigo con el que se solicito la activacion es el mismo
-                obtenerUbicacion() //Se obtiene la ubicacion
-            }
-        }else{ //En caso de rechazar el activar la ubicacion se muestra un mensaje y lo saca de la actividad
+        if (resultCode == Activity.RESULT_OK && requestCode == SOLICITUD_PERMISO_UBICACION) {
+            //El usuario acepta prender del GPS
+            obtenerUbicacion() //Se obtiene la ubicacion
+        }
+        else if(resultCode != Activity.RESULT_OK && requestCode == SOLICITUD_PERMISO_UBICACION){
+            //En caso de rechazar el activar la ubicacion se muestra un mensaje y lo saca de la actividad
             GeneralUtils.mostrarAlertActivacionGPS(this,this)
         }
     }

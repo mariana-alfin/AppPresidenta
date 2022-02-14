@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
-import android.text.Html
 import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.*
@@ -14,8 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -26,6 +25,7 @@ import com.example.apppresidenta.LoadingScreen
 import com.example.apppresidenta.R
 import com.example.apppresidenta.ValGlobales
 import com.example.apppresidenta.databinding.InicioFragmentBinding
+//import com.example.apppresidenta.databinding.Inicio2FragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
@@ -39,10 +39,7 @@ import kotlin.collections.HashMap
 
 class InicioFragment : Fragment() {
 
-    private lateinit var homeViewModel: InicioViewModel
     private var _binding: InicioFragmentBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     lateinit var progressBar: CircularProgressIndicator
 
@@ -53,20 +50,12 @@ class InicioFragment : Fragment() {
     ): View {
         try {
 
-            homeViewModel =
-                ViewModelProvider(this)[InicioViewModel::class.java]
             _binding = InicioFragmentBinding.inflate(inflater, container, false)
             val root: View = binding.root
 
-            //INDICA QUE SE HABILITARA EL MENU DE OPCIONES
+            //MD INDICA QUE SE HABILITARA EL MENU DE OPCIONES
             setHasOptionsMenu(true)
-            /*
-        binding.btnAyuda.setColorFilter(resources.getColor(R.color.Azul1))
-        binding.btnAyuda.setOnClickListener{ solicitarSoporte()
-            //Toast.makeText(activity,"Boton de ayuda ", Toast.LENGTH_SHORT).show();
-        }
-        */
-            //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+            //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
             FuncionesGlobales.guardarPestanaSesion(activity as AppCompatActivity, "true")
             mostrarFormato(false)
             if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
@@ -88,7 +77,7 @@ class InicioFragment : Fragment() {
         }
     }
 
-
+    // MD FUNCION PARA OCULTAR LOS DATOS Y MOSTRAR CARGANDO
     private fun mostrarFormato(esMostrar: Boolean) {
         var valor = View.VISIBLE
         var valorLoadi = View.INVISIBLE
@@ -102,12 +91,12 @@ class InicioFragment : Fragment() {
         binding.txtCargando.visibility = valorLoadi
         binding.txtB.visibility = valor
         binding.txtBonificacionAcumulada.visibility = valor
-        binding.textView12.visibility = valor
         binding.txtBonificacion.visibility = valor
+        //binding.tblInicio.visibility = valor
         binding.tblInicio.visibility = valor
     }
 
-    //AGREGA EL MENU DE OPCIONES A LA VISTA
+    //MD AGREGA EL MENU DE OPCIONES A LA VISTA
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_inicio, menu)
     }
@@ -115,6 +104,7 @@ class InicioFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+    //MD HACE LA CONEXION CON EL WS PARA OBTENER LOS DATOS
     private fun datosDelCredito() {
         //FORMATO EN PESOS MXM
         val mx = Locale("es", "MX")
@@ -135,96 +125,107 @@ class InicioFragment : Fragment() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         //val prestamo = 119483 //para pruebas
-        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Inicio",getString(R.string.error),false)
+        val alertError = FuncionesGlobales.mostrarAlert(
+            requireActivity(),
+            "error",
+            true,
+            "Inicio",
+            getString(R.string.error),
+            false
+        )
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", prestamo)
 
         val request =
-        @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
-        object : JsonObjectRequest(
-            Method.POST,
-            getString(R.string.urlDatosCredito),
-            jsonParametros,
-            Response.Listener { response ->
-                try {
-                    //Obtiene su respuesta json
-                    val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
-                    if(jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
-                    {
-                        val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                        val noPago =  jsonResults.getString("period") + " de " +jsonResults.getString("pays")
-                        txtDiaPago.text = "Tu día de pago son los ${jsonResults.getString("pay_day")}"
-                        val bonificacion = 858
-                        txtBonificacionAcumulada.text = "  ${formatPesos.format(bonificacion)}  "
-                        //txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
-                        txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
-                        txtPago.text = formatPesos.format(jsonResults.getDouble("pay"))
-                        /*MD SE GUARDA EN SESSION EL MONTO PAGO DEL CREDITO PARA LA VISTA DE PAGOS*/
-                        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-                        val editor = prefs.edit()
-                        editor.putFloat("MONTO_SEMANAL", jsonResults.getDouble("pay").toFloat())
-                        editor.apply()
-                        /*****************/
-                        //txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
-                        txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd-MMM-yy").replace(".-","-").uppercase()
+            @SuppressLint("SetTextI18n") //<-- MD SE AGREGA PARA ADMITIR UNA VARIEDAD DE CONFIGURACIONES REGIONALES SIN TENER QUE MODIFICAR CÓDIGO EN LA CONCATENACION DE CADENAS
+            object : JsonObjectRequest(
+                Method.POST,
+                getString(R.string.urlDatosCredito),
+                jsonParametros,
+                Response.Listener { response ->
+                    try {
+                        // MD OBTIENE SU RESPUESTA JSON
+                        val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
+                        if(jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
+                        {
+                            val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                            val noPago =  jsonResults.getString("period") + " de " +jsonResults.getString("pays")
+                            //txtDiaPago.text = "Tu día de pago son los ${jsonResults.getString("pay_day")}"
+                            txtDiaPago.text = jsonResults.getString("pay_day")
+                            val bonificacion = 858
+                            txtBonificacionAcumulada.text = "  ${formatPesos.format(bonificacion)}  "
+                            //txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
+                            txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
+                            txtPago.text = formatPesos.format(jsonResults.getDouble("pay"))
+                            /*MD SE GUARDA EN SESSION EL MONTO PAGO DEL CREDITO PARA LA VISTA DE PAGOS*/
+                            val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+                            val editor = prefs.edit()
+                            editor.putFloat("MONTO_SEMANAL", jsonResults.getDouble("pay").toFloat())
+                            editor.putString("FECHA_PAGO_CONCILIACION", jsonResults.getString("next_pay_date"))
+                            editor.apply()
+                            /*****************/
+                            //txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
+                            txtFPago.text = FuncionesGlobales.convertFecha(
+                                jsonResults.getString("next_pay_date"),
+                                "dd-MMM-yy"
+                            ).replace(".-","-").uppercase()
 
 
-                        txtNoPago.text = noPago
-                        txtMtoPag.text = formatPesos.format(jsonResults.getDouble("payments"))
-                        txtPagos.text = jsonResults.getString("due_pay")
-                        txtSaldoVencido.text = formatPesos.format(jsonResults.getDouble("min_pay"))
-                        txtAsesor.text = jsonResults.getString("zone_name")
-                        txtAsesor.textSize = 15F
-                        mostrarFormato(true)
-                    }else{
-                        alertError.show()
+                            txtNoPago.text = noPago
+                            txtMtoPag.text = formatPesos.format(jsonResults.getDouble("payments"))
+                            txtPagos.text = jsonResults.getString("due_pay")
+                            txtSaldoVencido.text = formatPesos.format(jsonResults.getDouble("min_pay"))
+                            txtAsesor.text = jsonResults.getString("zone_name")
+                            mostrarFormato(true)
+                        }else{
+                            alertError.show()
 
+                        }
+
+                    } catch (e: Exception) {
+                        if (e.message != null){
+                            alertError.show()
+                        }
                     }
 
-                } catch (e: Exception) {
-                    if (e.message != null){
-                        alertError.show()
+                },
+                Response.ErrorListener { error ->
+                    //val errorD = VolleyError(String(error.networkResponse.data))
+                    val responseError = String(error.networkResponse.data)
+                    val dataError = JSONObject(responseError)
+                    var mensaje = getString(R.string.error)
+                    try {
+                        val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                        val code = jsonData.getInt("code")
+                        val message = jsonData.getString("message")
+                        val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                        if(code == 422 && jsonData.getString("results").contains("credit_id")){
+                            mensaje = jResul.getString("credit_id")
+                        }else{
+                            mensaje = message
+                        }
+                    }catch (e: Exception){
+                        mensaje = getString(R.string.error)
                     }
+                    progressBar = binding.cargando
+                    progressBar.visibility = View.INVISIBLE
+                    binding.txtCargando.text = mensaje
+                    alertError.setMessage(mensaje)
+                    alertError.show()
                 }
-
-            },
-            Response.ErrorListener { error ->
-                //val errorD = VolleyError(String(error.networkResponse.data))
-                val responseError = String(error.networkResponse.data)
-                val dataError = JSONObject(responseError)
-                var mensaje = getString(R.string.error)
-                try {
-                    val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
-                    val code = jsonData.getInt("code")
-                    val message = jsonData.getString("message")
-                    val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                    if(code == 422 && jsonData.getString("results").contains("credit_id")){
-                        mensaje = jResul.getString("credit_id")
-                    }else{
-                        mensaje = message
-                    }
-                }catch (e: Exception){
-                    mensaje = getString(R.string.error)
+            ) {
+                override fun getHeaders(): Map<String, String> {
+                    val headers = HashMap<String, String>()
+                    headers["Content-Type"] = getString(R.string.content_type)
+                    headers["X-Header-Email"] = getString(R.string.header_email)
+                    headers["X-Header-Password"] = getString(R.string.header_password)
+                    headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
+                    return headers
                 }
-                progressBar = binding.cargando
-                progressBar.visibility = View.INVISIBLE
-                binding.txtCargando.text = mensaje
-                alertError.setMessage(mensaje)
-                alertError.show()
             }
-        ) {
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = getString(R.string.content_type)
-                headers["X-Header-Email"] = getString(R.string.header_email)
-                headers["X-Header-Password"] = getString(R.string.header_password)
-                headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
-                return headers
-            }
-        }
         try {
             val queue = Volley.newRequestQueue(activity)
-            //primero borramos el cache y enviamos despues la peticion
+            //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
         }catch(e: Exception){
@@ -232,7 +233,7 @@ class InicioFragment : Fragment() {
         }
         /*******  FIN ENVIO   *******/
     }
-    //FUNCIONES DE CADA OPTION
+    //MD FUNCIONES DE CADA OPTION DEL MENU
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.iAyuda -> {
@@ -242,14 +243,24 @@ class InicioFragment : Fragment() {
             R.id.iCalculadora -> {
                 //showOption(item.title)
                 //redireccionarOpcion("CALCULADORA")
-                startActivity(FuncionesGlobales.redireccionarOpcion(activity as AppCompatActivity,"CALCULADORA"))
+                startActivity(
+                    FuncionesGlobales.redireccionarOpcion(
+                        activity as AppCompatActivity,
+                        "CALCULADORA"
+                    )
+                )
                 true
             }
             R.id.iHistorial -> {
-                startActivity(FuncionesGlobales.redireccionarOpcion(activity as AppCompatActivity,"MI_HISTORIAL"))
+                startActivity(
+                    FuncionesGlobales.redireccionarOpcion(
+                        activity as AppCompatActivity,
+                        "MI_HISTORIAL"
+                    )
+                )
                 true
             }
-            R.id.iSesion-> {
+            R.id.iSesion -> {
                 startActivity(FuncionesGlobales.cerrarSesion(activity as AppCompatActivity))
                 true
             }
@@ -258,7 +269,7 @@ class InicioFragment : Fragment() {
     }
     private fun solicitarSoporte() {
         val builder = MaterialAlertDialogBuilder(requireActivity())
-        builder.setTitle(Html.fromHtml("<font color='#1F2C49' size='20'>DESCRIBE TU PROBLEMA</font>"))
+        builder.setTitle(HtmlCompat.fromHtml("<font color='#1F2C49' size='20'>DESCRIBE TU PROBLEMA</font>", HtmlCompat.FROM_HTML_MODE_LEGACY))
         builder.setIcon(R.drawable.ic_soporte)
         val constraintLayout = getEditTextLayout(requireActivity())
         builder.setView(constraintLayout)
@@ -298,9 +309,16 @@ class InicioFragment : Fragment() {
     }
 
     private fun enviarEmail(mensaje: String) {
-        LoadingScreen.displayLoadingWithText(activity,"Solicitando apoyo", false)
-        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
-        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Solicitar Soporte",getString(R.string.error),false)
+        LoadingScreen.displayLoadingWithText(activity, "Solicitando apoyo", false)
+        /**************   MD  ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        val alertError = FuncionesGlobales.mostrarAlert(
+            requireActivity(),
+            "error",
+            true,
+            "Solicitar Soporte",
+            getString(R.string.error),
+            false
+        )
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         val jsonParametros = JSONObject()
@@ -319,8 +337,10 @@ class InicioFragment : Fragment() {
                         val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         val mensaje = jsonResults.getString("message")
                         //Toast.makeText(requireActivity(),mensaje, Toast.LENGTH_SHORT).show()
-                        val alertCorrecto = FuncionesGlobales.mostrarAlert(requireActivity(),"correcto",true,"Solicitar Soporte",
-                            mensaje,false)
+                        val alertCorrecto = FuncionesGlobales.mostrarAlert(
+                            requireActivity(), "correcto", true, "Solicitar Soporte",
+                            mensaje, false
+                        )
                         alertCorrecto.show()
                     } else {
                         alertError.show()
@@ -331,8 +351,7 @@ class InicioFragment : Fragment() {
                     LoadingScreen.hideLoading()
                 }
             },
-            Response.ErrorListener { error ->
-                //val errorD = VolleyError(String(error.networkResponse.data))
+            Response.ErrorListener {
                 alertError.show()
                 LoadingScreen.hideLoading()
             })
@@ -348,7 +367,7 @@ class InicioFragment : Fragment() {
         }
         try {
             val queue = Volley.newRequestQueue(activity)
-            //primero borramos el cache y enviamos despues la peticion
+            //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
         }catch(e: Exception){
@@ -357,8 +376,7 @@ class InicioFragment : Fragment() {
 
         /*******  FIN ENVIO   *******/
     }
-
-    // get edit text layout
+    // MD MUESTRA EL INPUT PARA AGREGAR EL MENSAJE EN EL DIALOG
     fun getEditTextLayout(context:Context): ConstraintLayout {
         val constraintLayout = ConstraintLayout(context)
         val layoutParams = ConstraintLayout.LayoutParams(
@@ -378,6 +396,7 @@ class InicioFragment : Fragment() {
         )
         textInputLayout.layoutParams = layoutParams
         textInputLayout.hint = "Un asesor se pondrá en contacto con usted."
+        textInputLayout.counterMaxLength = 150
         textInputLayout.id = View.generateViewId()
         textInputLayout.tag = "textInputLayoutTag"
 

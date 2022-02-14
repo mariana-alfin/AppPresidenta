@@ -7,11 +7,15 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Base64
 import android.util.Log
+import androidx.preference.PreferenceManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -20,6 +24,10 @@ import com.example.apppresidenta.R
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileFilter
+import java.text.SimpleDateFormat
 import java.util.*
 
 class GeneralUtils {
@@ -35,8 +43,6 @@ class GeneralUtils {
 
         private val canalIDGeneral = "generalID"
         private val nombreCanalGeneral = "General"
-
-        fun nombreRandom(): String = UUID.randomUUID().toString()
 
         fun validarAplicacionInstalada(packageName: String, contexto: Context?): Boolean {
             val packageManager = contexto?.packageManager
@@ -99,6 +105,7 @@ class GeneralUtils {
             context?.startActivity(intent)
         }
 
+        /*Funciones para notificaciones (registro de token, temas, canales de notificaciones)*/
         private fun crearCanalesNotificaciones(contexto: Context?) {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             {
@@ -123,8 +130,7 @@ class GeneralUtils {
             }
         }
 
-        fun obtenerTokenNotificaciones(contexto: Context?,idCliente: String, numeroCelular: String)
-        {
+        fun obtenerTokenNotificaciones(contexto: Context?,idCliente: String, numeroCelular: String) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d("Installations", "Installation auth token: " + task.result)
@@ -206,6 +212,73 @@ class GeneralUtils {
                 Log.d("Registro Token-ID"
                     , "Ocurrio un error en el registro un valor es null, token: $token , id_device: $id_device")
             }
+        }
+
+        /*Funciones para manejo de la fotografia*/
+
+        fun asignarNombreFoto(contexto: Context?) : String{
+            val prefs = PreferenceManager.getDefaultSharedPreferences(contexto)
+            val prestamo = prefs.getInt("CREDITO_ID", 0)
+            val tz: TimeZone = TimeZone.getTimeZone("GMT-06:00")
+            val calendario: Calendar = Calendar.getInstance(tz)
+
+            val dia = calendario.get(Calendar.DAY_OF_MONTH)
+            val mes = calendario.get(Calendar.MONTH) + 1
+            val ano = calendario.get(Calendar.YEAR)
+
+            return "${prestamo}_$dia$mes$ano"
+        }
+
+        fun obtenerCadenaB64DeImagen(ruta: String): String? {
+            val imagenExtension = ruta.split(".").last()
+            if( extensionImagenes.indexOf(imagenExtension) >= 0 ){
+                val bitmap = BitmapFactory.decodeFile(ruta)
+                if (bitmap != null) return codificaBase64aBitmap(bitmap)
+            }
+
+            return if (ruta.isEmpty()) null else ruta
+
+        }
+
+        fun codificaBase64aBitmap(bitmap: Bitmap): String {
+            var base64 = Base64.encodeToString(obtenerArregloByteDeImagen(bitmap), Base64.DEFAULT)
+            base64 = base64.replace("\n", "")
+
+            return base64.trim()
+        }
+
+        private val extensionImagenes = arrayOf("jpg", "jpeg", "png", "tiff", "tif", "bmp", "sgv")
+
+        private fun obtenerArregloByteDeImagen(bitmap: Bitmap): ByteArray? {
+            val byteArrayOutputSteam = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputSteam)
+
+            return byteArrayOutputSteam.toByteArray()
+        }
+
+        /*Funcion para registrar variables de sesion*/
+        fun registrarVariableSesion(contexto: Context?,nombreVariable: String,valorVariable: String)
+        {
+            val preferencias = PreferenceManager.getDefaultSharedPreferences(contexto)
+            val editor = preferencias.edit()
+            editor.putString(nombreVariable,valorVariable)
+            editor.apply()
+        }
+
+        /*Funcion para registrar variables de sesion*/
+        fun eliminaVariableSesion(contexto: Context?,nombreVariable: String)
+        {
+            val preferencias = PreferenceManager.getDefaultSharedPreferences(contexto)
+            val editor = preferencias.edit()
+            editor.remove(nombreVariable)
+            editor.apply()
+        }
+
+        /*Funcion para eliminar fotos*/
+        fun eliminarFotos(ruta: String) {
+            val archivos: Array<File> = File(ruta).listFiles()
+            for (archivo in archivos)
+                archivo.delete()
         }
     }
 }
