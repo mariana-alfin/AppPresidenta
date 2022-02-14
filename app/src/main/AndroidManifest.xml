@@ -27,6 +27,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppPresidenta">
         <activity
+            android:name=".submenu.MiCuentaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NIPActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".JuntaConciliacionActivity"
             android:exported="false" />
         <activity
@@ -34,19 +46,19 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DetalleClienteActivity"
+            android:name=".submenu.DetalleClienteActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HistorialActivity"
+            android:name=".submenu.HistorialActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CalculadoraActivity"
+            android:name=".submenu.CalculadoraActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Navegacion"
+            android:name=".navegacion.Navegacion"
             android:exported="false"
             android:label="@string/title_activity_navegacion"
             android:screenOrientation="portrait" />

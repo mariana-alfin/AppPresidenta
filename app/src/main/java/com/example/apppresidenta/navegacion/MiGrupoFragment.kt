@@ -1,4 +1,4 @@
-package com.example.apppresidenta.ui.miGrupo
+package com.example.apppresidenta.navegacion
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,17 +10,17 @@ import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.DetalleClienteActivity
-import com.example.apppresidenta.FuncionesGlobales
+import com.example.apppresidenta.submenu.DetalleClienteActivity
+import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.R
-import com.example.apppresidenta.ValGlobales
-import com.example.apppresidenta.databinding.MiGrupoActivityBinding
+import com.example.apppresidenta.generales.ValGlobales
+import com.example.apppresidenta.databinding.MiGrupoFragmentBinding
 import com.example.apppresidenta.utils.GeneralUtils.Companion.enviarMensajeWhatsApp
 import com.example.apppresidenta.utils.GeneralUtils.Companion.llamarContacto
 import com.example.apppresidenta.utils.GeneralUtils.Companion.mostrarAlertInstalarApp
@@ -35,16 +35,13 @@ import java.util.*
 
 class MiGrupoFragment : Fragment() {
 
-    private lateinit var miGrupoViewModel: MiGrupoViewModel
-    private var _binding: MiGrupoActivityBinding? = null
+    private var _binding: MiGrupoFragmentBinding? = null
 
-    //FORMATO EN PESOS MXM
+    // MD VARIABLES DE FORMATO EN PESOS MXM
     private val mx = Locale("es", "MX")
     private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
     lateinit var progressBar: CircularProgressIndicator
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -52,22 +49,14 @@ class MiGrupoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        miGrupoViewModel =
-            ViewModelProvider(this).get(MiGrupoViewModel::class.java)
-
-        _binding = MiGrupoActivityBinding.inflate(inflater, container, false)
+        _binding = MiGrupoFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        /* val textView: TextView = binding.textDashboard
-         dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-             textView.text = it
-         })*/
-        //INDICA QUE SE HABILITARA EL MENU DE OPCIONES
+        //MD INDICA QUE SE HABILITARA EL MENU DE OPCIONES
         setHasOptionsMenu(true)
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(activity as AppCompatActivity, "true")
 
-        //llenarTabla()
         mostrarFormato(false)
         if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
             datosDelGrupo()
@@ -79,15 +68,13 @@ class MiGrupoFragment : Fragment() {
             progressBar.visibility = View.INVISIBLE
         }
 
-        binding.txtM.text = "d ${resources.displayMetrics.densityDpi}"
-        //findViewById<TextView>(R.id.textView).text = "Ingresar $densidad"
         return root
     }
-
-    //AGREGA EL MENU DE OPCIONES A LA VISTA
+/*
+    //MD AGREGA EL MENU DE OPCIONES A LA VISTA
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
-    }
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -97,7 +84,7 @@ class MiGrupoFragment : Fragment() {
 
     private fun detalleCliente(idCliente: Int) {
         val detalle = Intent(activity, DetalleClienteActivity::class.java)
-        //enviamos datos
+        //MD ENVIAMOS DATOS AL ACTIVITY
         detalle.putExtra("idCliente", idCliente)
         startActivity(detalle)
     }
@@ -114,7 +101,7 @@ class MiGrupoFragment : Fragment() {
         jsonParametros.put("pay_date", fecha)
 
         val request =
-            @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
+            @SuppressLint("SetTextI18n") //<-- MD SE AGREGA PARA ADMITIR UNA VARIEDAD DE CONFIGURACIONES REGIONALES SIN TENER QUE MODIFICAR CÓDIGO EN LA CONCATENACION DE CADENAS
             object : JsonObjectRequest(
                 Method.POST,
                 getString(R.string.urlMiembrosGrupo),
@@ -122,7 +109,7 @@ class MiGrupoFragment : Fragment() {
                 jsonParametros,
                 Response.Listener { response ->
                     try {
-                        //Obtiene su respuesta json
+                        //MD Obtiene su respuesta json
                         val jsonData =
                             JSONTokener(response.getString("data")).nextValue() as JSONObject
                         if (jsonData.getInt("code") == 200) {
@@ -136,6 +123,7 @@ class MiGrupoFragment : Fragment() {
                         }
                     }
                 }, Response.ErrorListener { error ->
+                    // MD MANEJO DE ERRORES EN LA RESPUESTA DE LA PETICION AL WS
                     val responseError = String(error.networkResponse.data)
                     val dataError = JSONObject(responseError)
                     var mensaje = getString(R.string.error)
@@ -158,7 +146,7 @@ class MiGrupoFragment : Fragment() {
                     progressBar = binding.cargando
                     progressBar.visibility = View.INVISIBLE
                     binding.txtCargando.text = mensaje
-                        alertError.show()
+                    alertError.show()
                 }
             ) {
                 override fun getHeaders(): Map<String, String> {
@@ -171,77 +159,88 @@ class MiGrupoFragment : Fragment() {
                 }
             }
         val queue = Volley.newRequestQueue(activity)
-        //primero borramos el cache y enviamos despues la peticion
+        //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
         queue.cache.clear()
         queue.add(request)
         /*******  FIN ENVIO   *******/
     }
 
+    @SuppressLint("WrongConstant")
     private fun llenarTablaClientes(jsonClientes: JSONArray) {
-        //se obtiene la tabla
+        //MD SE OBTIENE LA TABLA
         val tabla = binding.tblMiGpo
-        //encabezado de la tabla
+        //MD ENCABEZADO DE LA TABLA
         val trEn = TableRow(activity)
         var fontTh = 18F
         val fontTr = 15F
 
         /**     VARIABLES PARA TAMAÑOS      **/
-        //se obtiene la densidad del dispositivo para cambiar los tamaños
+        //MD SE OBTIENE LA DENSIDAD DEL DISPOSITIVO PARA CAMBIAR LOS TAMAÑOS
         val densidad = resources.displayMetrics.densityDpi
         val width =  resources.displayMetrics.widthPixels
         val witCte: Int = if(densidad < DisplayMetrics.DENSITY_HIGH){
-                                200
-                            }else if(densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH && width > 400){
-                                (width/4)
-                            }else if(densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH && width < 400){
-                                300
-                            }else if(densidad == DisplayMetrics.DENSITY_XHIGH){
-                                250
-                            }else if(densidad in DisplayMetrics.DENSITY_XHIGH until DisplayMetrics.DENSITY_XXHIGH){
-                                380
-                            }else if((densidad in DisplayMetrics.DENSITY_XXHIGH until DisplayMetrics.DENSITY_XXXHIGH) && width < 1200){
-                                415
-                            }else if((densidad >= DisplayMetrics.DENSITY_XXXHIGH) || width >= 1200){
-                                480
-                            }else {//si la pantalla es mayor a 1200px el valor del nombre sera de una tercera parte
-                                (width/3)
-                            }
+            200
+        }else if(densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH && width > 400){
+            (width/4)
+        }else if(densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH && width < 400){
+            300
+        }else if(densidad == DisplayMetrics.DENSITY_XHIGH){
+            250
+        }else if(densidad in DisplayMetrics.DENSITY_XHIGH until DisplayMetrics.DENSITY_XXHIGH){
+            380
+        }else if((densidad in DisplayMetrics.DENSITY_XXHIGH until DisplayMetrics.DENSITY_XXXHIGH) && width < 1200){
+            415
+        }else if((densidad >= DisplayMetrics.DENSITY_XXXHIGH) || width >= 1200){
+            480
+        }else {//MD SI LA PANTALLA ES MAYOR A 1200PX EL VALOR DEL NOMBRE SERA DE UNA TERCERA PARTE
+            (width/3)
+        }
         /***       FIN VARIABLES       **/
 
         trEn.setBackgroundResource(R.drawable.redondo_verde)
         trEn.setPadding(20, 20, 10, 20)
 
+        val colorTH = Color.WHITE
+        val tipoLetra = Typeface.MONOSPACE
+
         val linea = LinearLayout(activity)
         val txtN = TextView(activity)
-        txtN.text = "Integrantes"
+        txtN.text = "Integrantes".uppercase()
         txtN.gravity = Gravity.CENTER
         txtN.maxWidth = 500
-        txtN.setTextColor(Color.WHITE)
+        txtN.setTextColor(colorTH)
         txtN.setTypeface(null, Typeface.BOLD_ITALIC)
         txtN.textSize = fontTh
+
         linea.addView(txtN)
         trEn.addView(linea)
 
         val txtP = TextView(activity)
-        txtP.text = "Pago"
-        txtP.setTextColor(Color.WHITE)
+        txtP.text = "Pago".uppercase()
+        txtP.setTextColor(colorTH)
         txtP.setTypeface(null, Typeface.BOLD_ITALIC)
         txtP.textSize = fontTh
         trEn.addView(txtP)
 
         val txtL = TextView(activity)
-        txtL.text = "Contacto"
-        txtL.setTextColor(Color.WHITE)
+        txtL.text = "Contacto".uppercase()
+        txtL.gravity = Gravity.CENTER
+        txtL.setTextColor(colorTH)
         txtL.setTypeface(null, Typeface.BOLD_ITALIC)
         txtL.textSize = fontTh
         trEn.addView(txtL)
 
         val txtM = TextView(activity)
         txtM.text = "   "
-        txtM.setTextColor(Color.WHITE)
+        txtM.setTextColor(colorTH)
         txtM.setTypeface(null, Typeface.BOLD_ITALIC)
         txtM.textSize = fontTh
         trEn.addView(txtM)
+        //propuesta titulos tabla
+        txtN.typeface = tipoLetra
+        txtP.typeface = tipoLetra
+        txtL.typeface = tipoLetra
+        trEn.setBackgroundResource(R.drawable.borde_relleno)
 
         tabla.addView(
             trEn,
@@ -251,7 +250,7 @@ class MiGrupoFragment : Fragment() {
             )
         )
         val numClientes = jsonClientes.length()
-        //for de los clientes
+        //MD FOR DE LOS CLIENTES
         for (i in 0 until numClientes) {
             //SE GENERA EL OBJETO CLIENTE DEL ARREGLO
             val cte: JSONObject = jsonClientes.getJSONObject(i)
@@ -282,17 +281,18 @@ class MiGrupoFragment : Fragment() {
 
             view.setPadding(0, 10, 0, 10)
             linea.addView(view)
-
+            val colorTr =ContextCompat.getColor(requireActivity(),R.color.Azul1)
+            val colorTr2 =ContextCompat.getColor(requireActivity(),R.color.Verde3)
             val txtN = TextView(activity)
             txtN.setPadding(10,0,0,0)
             txtN.textSize = fontTr
-            txtN.setTextColor(resources.getColor(R.color.Verde1))
+            txtN.setTextColor(colorTr2)
             txtN.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             txtN.gravity = Gravity.LEFT
             txtN.maxWidth = witCte
 
             val txtP = TextView(activity)
-            txtP.setTextColor(resources.getColor(R.color.Azul1))
+            txtP.setTextColor(colorTr)
             txtP.textSize = fontTr
             txtP.gravity = Gravity.CENTER
 
@@ -304,9 +304,8 @@ class MiGrupoFragment : Fragment() {
             mensaje.setColorFilter(Color.GREEN)
 
             txtN.text = cte.getString("customer_name") //+" $densidad $width m$witCte"
-
             txtP.text = formatPesos.format(cte.getDouble("pay"))
-            //call.setOnClickListener{ llamarCliente(cte.getString("cell_phone"))}
+
             call.setOnClickListener { llamarContacto(context, cte.getString("cell_phone")) }
             mensaje.setOnClickListener {
                 validacionesEnvioWhats(
@@ -331,11 +330,6 @@ class MiGrupoFragment : Fragment() {
         }
         mostrarFormato(true)
     }
-
-    /*private fun llamarCliente(string: String) {
-        Toast.makeText(activity, "Llamar al $string", Toast.LENGTH_SHORT).show()
-    }*/
-
     private fun validacionesEnvioWhats(telefono: String, nombreclienta: String) {
 
         if (!validarAplicacionInstalada(getString(R.string.packagename_whats), context)) {

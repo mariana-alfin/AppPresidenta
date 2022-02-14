@@ -1,30 +1,33 @@
-package com.example.apppresidenta
+package com.example.apppresidenta.submenu
 
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import com.example.apppresidenta.R.drawable.redondo_verde
+import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.R
 
 class HistorialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.historial_activity)
 
-        /*Se agrega logo y titulo del la actividad*/
+        /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Mi Historial"
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        supportActionBar?.setBackgroundDrawable(getDrawable(R.drawable.barra_v6))
+
+        //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this,"true")
         mostrarHistorial()
 
@@ -38,7 +41,7 @@ class HistorialActivity : AppCompatActivity() {
         return false
     }
     private fun mostrarHistorial() {
-        //se obtiene la tabla
+        //SE OBTIENE LA TABLA
         val tabla = findViewById<TableLayout>(R.id.tlbHistorial)
         //ENCABEZADO
         val fontTh = 18F
@@ -66,7 +69,7 @@ class HistorialActivity : AppCompatActivity() {
         trEn.addView(gpo)
 
         trEn.gravity = Gravity.CENTER
-        trEn.setBackgroundResource(redondo_verde)
+        trEn.setBackgroundResource(R.drawable.redondo_verde)
 
         tabla.addView(
             trEn,
@@ -76,7 +79,7 @@ class HistorialActivity : AppCompatActivity() {
             )
         )
         val numGpos = 5
-        //for del numero de clientes
+        //FOR DEL NUMERO DE CLIENTES
         for (i in 1..numGpos) {
             val tr = TableRow(this)
 
@@ -93,7 +96,7 @@ class HistorialActivity : AppCompatActivity() {
             txtCiclo.text = "1$i/0$i/21 al 10/0$i/21"
             txtCiclo.setPadding(10, 20, 5, 20)
             //txtCiclo.gravity = Gravity.LEFT
-            txtCiclo.setTextColor(resources.getColor(R.color.Azul1))
+            txtCiclo.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
             txtCiclo.textSize = fontTr
             //linea.setBackgroundResource(borde_redondeado_verde)
             linea.addView(txtCiclo)
@@ -102,7 +105,7 @@ class HistorialActivity : AppCompatActivity() {
             txtGpo.text = "Arbol de vida"
             txtGpo.setPadding(5, 20, 5, 20)
             txtGpo.gravity = Gravity.CENTER
-            txtGpo.setTextColor(resources.getColor(R.color.Azul1))
+            txtGpo.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
             txtGpo.setTypeface(null, Typeface.BOLD_ITALIC)
             txtGpo.textSize = fontTr
 

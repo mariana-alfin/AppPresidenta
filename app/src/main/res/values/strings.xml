@@ -9,13 +9,12 @@
     <string name="usuario">Usuario</string>
     <string name="title_activity_calculadora">calculadora_activity</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <!--EXPERSIONES REGULARES -->
 
     <string name="rexUSUARIO">[0-9]*</string>
     <string name="rexCELULAR">[0-9]{10}+</string>
+    <string name="rexNIP">[0-9]{4}+</string>
 
     <!--url -->
     <string name="urlLogin">https://api.micartera.test.alfin.com.mx/api/customer-validations</string>
@@ -34,6 +33,19 @@
     <string name="header_email">apicartera@alfin.com</string>
     <string name="header_password">password</string>
     <string name="header_api_key">1df6a7c1-3057-4dcd-a73a-26bbc46bc860</string>
+
+    <!-- Activity Registro-->
+    <string name="vCodigo">Verificación Código</string>
+    <string name="btnVCodigo">Verificar</string>
+    <string name="btnRCodigo">Reenviar</string>
+    <string name="envioSms">Hemos enviado un mensaje SMS con tu código de verificación al número registrado, por favor ingrésalo.</string>
+    <string name="home"><img src="@drawable/ic_warning" />sfsds</string>
+    <!-- Activity NIP-->
+    <string name="crea_nip">Genera un NIP de acceso</string>
+    <string name="info_nip"> Este NIP de 4 dígitos servirá para iniciar sesión</string>
+    <string name="rec_nip">Recuérdalo y no lo compartas con nadie</string>
+    <string name="c_nip">Vuelve a ingresar el NIP </string>
+    <string name="btnRegistrar">CONTINUAR</string>
 
     <!--mensajes -->
     <string name="noConexion">No es posible mostrar información \n No cuenta con conexión a Internet</string>

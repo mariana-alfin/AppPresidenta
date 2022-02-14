@@ -1,19 +1,23 @@
-package com.example.apppresidenta
+package com.example.apppresidenta.generales
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.provider.Settings.Global.getString
-import android.text.Html
 import android.text.InputFilter
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.apppresidenta.R.string
+import androidx.preference.PreferenceManager
+import com.example.apppresidenta.LoginActivity
+import com.example.apppresidenta.R
+import com.example.apppresidenta.submenu.CalculadoraActivity
+import com.example.apppresidenta.submenu.HistorialActivity
+import com.example.apppresidenta.submenu.MiCuentaActivity
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+/* MD SE GENERA ARCHIVO CON FUNCIONES GLOBALES PARA MANDAR ALLAR EN TODO EL PROYECTO*/
 class FuncionesGlobales {
     companion object {
         fun guardarPestanaSesion(activity: AppCompatActivity, pestañaActiva: String) {
@@ -37,9 +41,13 @@ class FuncionesGlobales {
             editor.remove("PRESIDENTA")
             editor.remove("SESION_ACTIVA")
             editor.remove("MONTO_SEMANAL")
+            editor.remove("FECHA_PAGO_CONCILIACION")
+            //DEL SMS
+            editor.remove("CODIGO_VERIFICADOR")
             editor.apply()
             //REDIRECCIONAMOS AL INICIO
-            val inicio = Intent(activity, MainActivity::class.java)
+            //val inicio = Intent(activity, MainActivity::class.java)
+            val inicio = Intent(activity, LoginActivity::class.java)
             return inicio
         }
 
@@ -51,29 +59,34 @@ class FuncionesGlobales {
                 "MI_HISTORIAL" -> {
                     Intent(activity, HistorialActivity::class.java)
                 }
+                "MI_CUENTA" -> {
+                    Intent(activity, MiCuentaActivity::class.java)
+                }
                 else -> {
-                    Intent(activity, MainActivity::class.java)
+                    Intent(activity, HistorialActivity::class.java)
                 }
             }
             return activity
         }
 
-        //obtiene la fecha del dia en curso
+        //OBTIENE LA FECHA DEL DIA EN CURSO
+        @SuppressLint("SimpleDateFormat")
         fun obtenerFecha(formato: String): String {
             val fecha = Calendar.getInstance().time
             val dateFormat = SimpleDateFormat(formato)
             return dateFormat.format(fecha)
         }
 
-        //funcion para convertir una fecha al formato indicado
+        //FUNCION PARA CONVERTIR UNA FECHA AL FORMATO INDICADO
+        @SuppressLint("SimpleDateFormat")
         fun convertFecha(fecha: String, formato: String): String {
             val formatoEntrada: DateFormat = SimpleDateFormat("yyyy-MM-dd")
             val formatoSalida: DateFormat =
                 SimpleDateFormat(formato)//SimpleDateFormat("dd/MM/yyyy")
             val fechaDate: Date = formatoEntrada.parse(fecha)
             return formatoSalida.format(fechaDate)
-        }   //limita el max num caracteres de un editext
-
+        }
+        //LIMITA EL MAX NUM CARACTERES DE UN EDITEXT
         fun EditText.setMaxLength(maxLength: Int) {
             filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
         }
@@ -85,7 +98,7 @@ class FuncionesGlobales {
             if(mensaje != "na"){
                 dialog.setMessage(mensaje)
             }
-            when (tipo) {
+            when (tipo) { //DE ACUERDO AL TIPO DE ALERT SE AGREEGA EL ICONO A MOSTAR
                 "advertencia" -> {
                     dialog.setIcon(R.drawable.ic_warning)
                 }
@@ -99,7 +112,7 @@ class FuncionesGlobales {
                     dialog.setIcon(R.drawable.ic_correcto)
                 }
             }
-            if(!ejecutaAccion){
+            if(!ejecutaAccion){//SI NO SE VA A EJECUTAR ALGUNA ACCION SE AGREGA QU EL BOTON CANCELE EL ALERT DE LO CONTRARO EN SU IMPLEMENTACION SE AGREGAN LAS FUNCIONES
                 dialog.setPositiveButton("Aceptar") { dialog, which ->
                     dialog.cancel()
                 }

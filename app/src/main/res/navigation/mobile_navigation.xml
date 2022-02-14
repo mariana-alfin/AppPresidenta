@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navHome"
-        android:name="com.example.apppresidenta.ui.inicio.InicioFragment"
+        android:name="com.example.apppresidenta.navegacion.InicioFragment"
         android:label="@string/titleHome"
         tools:layout="@layout/inicio_fragment" />
 
     <fragment
         android:id="@+id/navMiGrupo"
-        android:name="com.example.apppresidenta.ui.miGrupo.MiGrupoFragment"
+        android:name="com.example.apppresidenta.navegacion.MiGrupoFragment"
         android:label="@string/titleGpo"
-        tools:layout="@layout/mi_grupo_activity" />
+        tools:layout="@layout/mi_grupo_fragment" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.apppresidenta.ui.pagos.PagosFragment"
+        android:name="com.example.apppresidenta.navegacion.PagosFragment"
         android:label="@string/titlePagosFragment"
-        tools:layout="@layout/pagos_notifications" />
+        tools:layout="@layout/pagos_fragment" />
 </navigation>

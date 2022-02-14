@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/barra"
+    tools:context=".navegacion.InicioFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="75dp"
+            android:background="@drawable/fondo_blanco"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/cargando"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:indeterminate="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txtB" />
+
+            <TextView
+                android:id="@+id/txtCargando"
+                style="@style/textVerde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Espere un momento \n Cargando información ..."
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cargando"
+                app:layout_constraintVertical_bias="0.0" />
+            <TextView
+                android:id="@+id/txtB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:gravity="center_horizontal"
+                android:text="  BONIFICACIÓN ACUMULADA  "
+                android:textColor="@color/Azul1"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtBonificacionAcumulada"
+                style="@style/textWhite"
+                android:background="@drawable/fondo_verde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:text="  $2,500 mxn  "
+                android:elevation="@dimen/elevationTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtB" />
+
+
+
+            <LinearLayout
+                android:id="@+id/lblInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="80dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtBonificacionAcumulada">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:orientation="horizontal"
+                    android:elevation="@dimen/elevationCajas"
+                    android:weightSum="7">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="5"
+                        android:layout_gravity="center"
+                        android:background="@drawable/borde_celda"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_height="0dp"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:text="AÚN PUEDES GANAR"
+                            android:textSize="18sp" />
+                        <TextView
+                            android:id="@+id/txtBonificacion"
+                            style="@style/textVerdeTitulos"
+                            android:layout_height="0dp"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="left"
+                            android:layout_weight="1"
+                            android:textSize="22sp"
+                            android:elevation="10dp"
+                            android:text=" $8,000 mxn " />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:elevation="@dimen/elevationCajas"
+                    android:weightSum="1">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/txtPago"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:textSize="24sp"
+                            android:text="$10,738" />
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:paddingTop="5dp"
+                            android:text="Cuota"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:elevation="@dimen/elevationCajas"
+                    android:weightSum="2">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtFPago"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:text="24/12/2021" />
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="5dp"
+                            android:text="Próximo pago" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtDiaPago"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:text="Martes" />
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="5dp"
+                            android:text="Día de pago" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtNoPago"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:text="4 de 16" />
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="5dp"
+                            android:text="No. pago"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtMtoPag"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:text="$2" />
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="5dp"
+                            android:text="Monto Pagado" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtPagos"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:text="4" />
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="5dp"
+                            android:text="Pagos atrasados"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtSaldoVencido"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:text="$2000" />
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:paddingTop="5dp"
+                            android:text="Saldo Vencido" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/borde_r_azul_2"
+                        android:elevation="@dimen/elevationCajas"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtAsesor"
+                            style="@style/textVerdeTitulos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="20sp"
+                            android:text="BEATRIZ PAREDES JOAQUINA LOPEZ"  />
+
+                        <TextView
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:text="Asesor"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

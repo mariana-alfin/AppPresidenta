@@ -6,7 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="Azul1">#2C3B62</color>
     <color name="Azul3">#1F2C49</color>
     <color name="Verde1">#3C8943</color>
@@ -14,4 +14,9 @@
     <color name="Verde3">#86B44D</color>
     <color name="Verde5">#246035</color>
     <color name="Amarillo">#FFFF40</color>
+    <color name="VerdeAgua">#00CEC9</color>
+    <color name="AzulElectrico">#0984E3</color>
+    <color name="RojoAlertas">#D63031</color>
+    <color name="Naranja">#FDCB6E</color>
+
 </resources>

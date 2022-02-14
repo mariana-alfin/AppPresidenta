@@ -1,24 +1,26 @@
-package com.example.apppresidenta
+package com.example.apppresidenta.submenu
 
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Html
-import android.text.InputFilter
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.R
 import java.text.NumberFormat
 import java.util.*
 
 
 class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
-    //FORMATO EN PESOS MXM
+    //MD FORMATO EN PESOS MXM
     private val mx = Locale("es", "MX")
     private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
 
@@ -32,26 +34,27 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         for (i in 1..numPagos) {
             listPagos.add("$i")
         }
-        /*Se agrega logo y titulo del la actividad*/
+        /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Calculadora"
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF'>Calculadora</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setBackgroundDrawable(getDrawable(R.drawable.barra_v6))
 
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this, "true")
         pintarTablaBonificacion()
         pintarCalculadoraBonificacion()
         findViewById<TextView>(R.id.txtNota).text =
-            Html.fromHtml("<font color='#3C8943'>Nota:</font><font color='#000000'> Recuerda que si el prestamo no se liquida se perdera la bolsa acumulada.</font>")
+            HtmlCompat.fromHtml("<font color='#3C8943'>Nota:</font><font color='#000000'> Recuerda que si el prestamo no se liquida se perdera la bolsa acumulada.</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return false
     }
     private fun pintarTablaBonificacion() {
-        //se obtiene la tabla
+        //MD SE OBTIENE LA TABLA
         val tabla = findViewById<TableLayout>(R.id.tblBonificacion)
         val fTr = 16F
         val color = Color.BLACK
@@ -91,14 +94,14 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
         val Mp = TextView(this)
         Mp.text = "Bonificación, pago semanal"
-        Mp.setTextColor(resources.getColor(R.color.Verde1))
+        Mp.setTextColor(ContextCompat.getColor(this,R.color.Verde1))
         Mp.textSize = fTr
 
         val txtMp = TextView(this)
         txtMp.text = formatPesos.format(24256)
         txtMp.setPadding(left, 0, 5, 0)
         txtBonS.gravity = gravityTxt
-        txtMp.setTextColor(resources.getColor(R.color.Verde1))
+        txtMp.setTextColor(ContextCompat.getColor(this,R.color.Verde1))
         txtMp.textSize = fTr
 
         trB.addView(Mp)
@@ -139,7 +142,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val row = TableRow(this)
         row.setPadding(25, topBottom, 20, topBottom)
         val layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT)
-        layoutParams.span = 4 // define no. of column span will row do
+        layoutParams.span = 4 // MD DEFINE CUANTAS COLUMNAS DE LA TABLA USARA EL ROW
         row.layoutParams = layoutParams
 
         val txt = TextView(this)
@@ -147,14 +150,14 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         txt.gravity = Gravity.LEFT
         txt.textSize = fTr
         txt.setTextColor(color)
-        txt.layoutParams = layoutParams //This line will span your row
+        txt.layoutParams = layoutParams
 
         row.addView(txt)
         tabla.addView(row)
     }
 
     private fun pintarCalculadoraBonificacion() {
-        //se obtiene la tabla
+        //MD SE OBTIENE LA TABLA
         val tabla = findViewById<TableLayout>(R.id.tblCalculadora)
         tabla.setPadding(60, 0, 50, 0)
         tabla.gravity = Gravity.CENTER_VERTICAL
@@ -164,9 +167,9 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val gravityTxtC = Gravity.CENTER
         val topBottom = 10
         val leftRigth = 10
-        //Encabezado
+        //ENCABEZADO
         val layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT)
-        layoutParams.span = 4 // define no. of column span will row do
+        layoutParams.span = 4
 
         val txt = TextView(this)
         txt.text = "Calcula tu bonificación"
@@ -175,7 +178,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         txt.textSize = 20F
         txt.setBackgroundResource(R.drawable.redondo_verde)
         txt.setTextColor(Color.WHITE)
-        txt.layoutParams = layoutParams //This line will span your row
+        txt.layoutParams = layoutParams
 
         val row = TableRow(this)
         row.setPadding(0, 0, 0, 0)
@@ -193,7 +196,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l.addView(ps)
 
         val l2 = LinearLayout(this)
-        //l2.setPadding(leftRigth, 0, leftRigth, 0)
         l2.setBackgroundResource(R.drawable.borde_celda)
         l2.gravity = gravityTxtC
         val txtPsP = EditText(this)
@@ -233,12 +235,11 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l4.setPadding(leftRigth, topBottom, leftRigth, 4)
         l4.gravity = gravityTxtC
         val spinnerPagos = Spinner(this)
-        // Create an ArrayAdapter using a simple spinner layout and languages array
+        // MD CREA UN ARREGLO CON LAS OPCIONES PARA ENVIARLO AL COMBO DEL DIALOG
         val opciones = ArrayAdapter(this, android.R.layout.simple_spinner_item, listPagos)
         opciones.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set Adapter to Spinner
+        // MD SE ASIGNA EL ARREGLO AL SPINER
         spinnerPagos.adapter = opciones
-        //spinner1.onItemSelectedListener = this
         spinnerPagos.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 arg0: AdapterView<*>?,
@@ -255,15 +256,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
             }
         }
         l4.addView(spinnerPagos)
-        /*val txtPt = TextView(this)
-        val idTxt = generateViewId()
-        txtPt.id = idTxt
-        txtPt.text = "--"
-        txtPt.gravity = gravityTxtC
-        txtPt.setTextColor(color)
-        txtPt.textSize = fTr
-        //l4.setOnClickListener{pagosAtiempo(idTxt)}
-        l4.addView(txtPt)*/
 
         val trB = TableRow(this)
         trB.addView(l3)
@@ -292,9 +284,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val spinnerPL = Spinner(this)
         val opciones2 = ArrayAdapter(this, android.R.layout.simple_spinner_item, listOpciones)
         opciones2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set Adapter to Spinner
         spinnerPL.adapter = opciones2
-        //spinner1.onItemSelectedListener = this
         spinnerPL.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 arg0: AdapterView<*>?,
@@ -311,14 +301,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
             }
         }
         l6.addView(spinnerPL)
-        /* val txtPl = TextView(this)
-         val idPL = generateViewId()
-         txtPl.id = idPL
-         txtPl.text = "--"
-         txtPl.setTextColor(color)
-         txtPl.textSize = fTr
-         l6.addView(txtPl)
-         l6.setOnClickListener { opcionesSiNo("PL",idPL) }*/
 
         val trB2 = TableRow(this)
         trB2.addView(l5)
@@ -333,7 +315,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         val trB3 = TableRow(this)
         val l7 = LinearLayout(this)
         l7.setPadding(0, topBottom, 0, topBottom)
-        //l7.setBackgroundResource(R.drawable.borde_verde_1p)
         l7.layoutParams = layoutParams
 
         trB3.addView(l7)
@@ -350,7 +331,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l8.gravity = gravityTxt
         val bsa = TextView(this)
         bsa.text = "Bolsa semanal acumulada"
-        bsa.setTextColor(resources.getColor(R.color.Verde1))
+        bsa.setTextColor(ContextCompat.getColor(this,R.color.Verde1))
         bsa.textSize = fTr
         l8.addView(bsa)
 
@@ -360,7 +341,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l9.gravity = gravityTxtC
         val txtBsa = TextView(this)
         txtBsa.text = formatPesos.format(12000)
-        txtBsa.setTextColor(resources.getColor(R.color.Verde1))
+        txtBsa.setTextColor(ContextCompat.getColor(this,R.color.Verde1))
         txtBsa.textSize = fTr
         l9.addView(txtBsa)
 
@@ -393,10 +374,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         txtBa.setTextColor(color)
         txtBa.textSize = fTr
         l11.addView(txtBa)
-        /*
-        val idBa = generateViewId()
-        txtBa.id = idBa
-        l11.setOnClickListener { opcionesSiNo("BA",idBa) }*/
 
         val trB5 = TableRow(this)
         trB5.addView(l10)
@@ -440,72 +417,65 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
             )
         )
     }
-
+    //MD FUNCION DE ITEM SELECCIONADO
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View, position: Int, id: Long) {
-        //textView_msg!!.text = "Selected : "+languages[position]
-        //Toast.makeText(this, "Selected : "+languages[position], Toast.LENGTH_SHORT).show()
         Toast.makeText(this, "Selected : $id ", Toast.LENGTH_SHORT).show()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
     }
-
-    //limita el max num caracteres de un editext
-    fun EditText.setMaxLength(maxLength: Int) {
-        filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
-    }
 }
-    /*
-    fun pagosAtiempo(idTxt: Int){
-        //se genera la cadena
-        var numPagos = 16
-        val txtPagos = findViewById<TextView>(idTxt)
-        val list: MutableList<String> = ArrayList()
-        for (i in 1..numPagos){
-            list.add("$i")
-        }
-        // add a list
-        //val animals = arrayOf("horse", "cow", "camel", "sheep", "goat")
-        // setup the alert builder
-        val builder = AlertDialog.Builder(this)
-        builder.setIcon(R.drawable.ic_alert)
-        builder.setTitle("Selecciona el número de pagos realizados a tiempo")
-        builder.setItems(list.toTypedArray()) { _, which ->
-            //Toast.makeText(this,"Valor = $which", Toast.LENGTH_SHORT).show()
-            txtPagos.text = "${which+1}"
-            /*
-            when (which) {
-                0 -> { /* horse */ }
-                1 -> { /* cow   */ }
-                2 -> { /* camel */ }
-                3 -> { /* sheep */ }
-                4 -> { /* goat  */ }
-            */
-        }
+/*
+fun pagosAtiempo(idTxt: Int){
+    //se genera la cadena
+    var numPagos = 16
+    val txtPagos = findViewById<TextView>(idTxt)
+    val list: MutableList<String> = ArrayList()
+    for (i in 1..numPagos){
+        list.add("$i")
+    }
+    // add a list
+    //val animals = arrayOf("horse", "cow", "camel", "sheep", "goat")
+    // setup the alert builder
+    val builder = AlertDialog.Builder(this)
+    builder.setIcon(R.drawable.ic_alert)
+    builder.setTitle("Selecciona el número de pagos realizados a tiempo")
+    builder.setItems(list.toTypedArray()) { _, which ->
+        //Toast.makeText(this,"Valor = $which", Toast.LENGTH_SHORT).show()
+        txtPagos.text = "${which+1}"
+        /*
+        when (which) {
+            0 -> { /* horse */ }
+            1 -> { /* cow   */ }
+            2 -> { /* camel */ }
+            3 -> { /* sheep */ }
+            4 -> { /* goat  */ }
+        */
+    }
 // create and show the alert dialog
-        val dialog = builder.create()
-        dialog.show()
+    val dialog = builder.create()
+    dialog.show()
+}
+fun opcionesSiNo(seccion: String,idTxt: Int){
+    val txt = findViewById<TextView>(idTxt)
+    val opciones = arrayOf("Sí", "No")
+    var title = "¿Prestamo liquidado?"
+    if(seccion == "BA"){
+        title = "¿Bolsa Acumulada?"
     }
-    fun opcionesSiNo(seccion: String,idTxt: Int){
-        val txt = findViewById<TextView>(idTxt)
-        val opciones = arrayOf("Sí", "No")
-        var title = "¿Prestamo liquidado?"
-        if(seccion == "BA"){
-            title = "¿Bolsa Acumulada?"
-        }
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-        builder.setItems(opciones) { _, which ->
-            //Toast.makeText(this,"Valor = $which", Toast.LENGTH_SHORT).show()
-            txt.text = "${which + 1}"
+    val builder = AlertDialog.Builder(this)
+    builder.setTitle(title)
+    builder.setItems(opciones) { _, which ->
+        //Toast.makeText(this,"Valor = $which", Toast.LENGTH_SHORT).show()
+        txt.text = "${which + 1}"
 
-            when (which) {
-                0 -> { txt.text = "Sí" }
-                1 -> { txt.text = "No" }
-            }
+        when (which) {
+            0 -> { txt.text = "Sí" }
+            1 -> { txt.text = "No" }
         }
-        val dialog = builder.create()
-        dialog.show()
     }
+    val dialog = builder.create()
+    dialog.show()
+}
 */

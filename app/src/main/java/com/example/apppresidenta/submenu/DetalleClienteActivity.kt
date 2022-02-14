@@ -1,4 +1,4 @@
-package com.example.apppresidenta
+package com.example.apppresidenta.submenu
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -11,11 +11,14 @@ import android.widget.TableLayout
 import android.widget.TableLayout.LayoutParams.MATCH_PARENT
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.R
+import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
@@ -25,15 +28,15 @@ import java.util.*
 
 class DetalleClienteActivity : AppCompatActivity() {
 
-    //FORMATO EN PESOS MXM
+    //MD FORMATO EN PESOS MXM
     private val mx = Locale("es", "MX")
     private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
     lateinit var progressBar: CircularProgressIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detalle_cliente)
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        setContentView(R.layout.detalle_cliente_activity)
+        //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this,"true")
 
         mostrarFormato(false)
@@ -49,12 +52,13 @@ class DetalleClienteActivity : AppCompatActivity() {
             progressBar = findViewById(R.id.cargando)
             progressBar.visibility = View.INVISIBLE
         }
-        /*Se agrega logo y titulo del la actividad*/
+        /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Detalle Cliente"
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
+        supportActionBar?.setBackgroundDrawable(getDrawable(R.drawable.barra_v6))
 
         //pintarTablaDetalle()
     }
@@ -79,7 +83,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.imaWhats).visibility = valor
     }
     private fun detalleCliente(credit_id: Int) {
-        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        /**************   MD  ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
 
         val alertError = FuncionesGlobales.mostrarAlert(this,"error",true,"Detalle Cliente",getString(R.string.error),false)
         val jsonParametros = JSONObject()
@@ -93,7 +97,7 @@ class DetalleClienteActivity : AppCompatActivity() {
                 jsonParametros,
                 Response.Listener { response ->
                     try {
-                        //Obtiene su respuesta json
+                        //MD OBTIENE SU RESPUESTA JSON
                         val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
                         if(jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
                         {
@@ -135,7 +139,7 @@ class DetalleClienteActivity : AppCompatActivity() {
             }
         try {
             val queue = Volley.newRequestQueue(this)
-            //primero borramos el cache y enviamos despues la peticion
+            //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
         }catch(e: Exception){
@@ -154,7 +158,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.imaCel).setOnClickListener{ GeneralUtils.llamarContacto(this, telefono) }
         findViewById<ImageView>(R.id.imaWhats).setOnClickListener{ validacionesEnvioWhats(telefono,getString(R.string.mensaje_whats) +" "+ nombre) }
 
-        //se obtiene la tabla
+        //SE OBTIENE LA TABLA
         val tabla = findViewById<TableLayout>(R.id.tblDetalle)
         val fTr = 18F
         //ENCABEZADO
@@ -178,7 +182,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val prest = TextView(this)
         prest.text = "Prestamo"
         prest.setPadding(25, 20, 25, 20)
-        prest.setTextColor(resources.getColor(R.color.Azul1))
+        prest.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         prest.setTypeface(null, Typeface.BOLD)
         prest.textSize = fTr
         trP.addView(prest)
@@ -186,7 +190,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val txtPrestamo = TextView(this)
         txtPrestamo.text = formatPesos.format(jsonResults.getDouble("credit_amount"))
         txtPrestamo.setPadding(25, 20, 25, 20)
-        txtPrestamo.setTextColor(resources.getColor(R.color.Azul1))
+        txtPrestamo.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtPrestamo.setTypeface(null, Typeface.BOLD)
         txtPrestamo.textSize = fTr
         trP.addView(txtPrestamo)
@@ -199,7 +203,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val Mp = TextView(this)
         Mp.text = "Monto a Pagar"
         Mp.setPadding(25, 20, 25, 20)
-        Mp.setTextColor(resources.getColor(R.color.Azul1))
+        Mp.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         Mp.setTypeface(null, Typeface.BOLD)
         Mp.textSize = fTr
         trMp.addView(Mp)
@@ -207,7 +211,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val txtMp = TextView(this)
         txtMp.text = formatPesos.format(jsonResults.getDouble("pays_total"))
         txtMp.setPadding(25, 20, 25, 20)
-        txtMp.setTextColor(resources.getColor(R.color.Azul1))
+        txtMp.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtMp.setTypeface(null, Typeface.BOLD)
         txtMp.textSize = fTr
         trMp.addView(txtMp)
@@ -220,7 +224,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val mtop = TextView(this)
         mtop.text = "Monto Pagado"
         mtop.setPadding(25, 20, 25, 20)
-        mtop.setTextColor(resources.getColor(R.color.Azul1))
+        mtop.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         mtop.setTypeface(null, Typeface.BOLD)
         mtop.textSize = fTr
         trMtop.addView(mtop)
@@ -228,7 +232,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val txtMtoP = TextView(this)
         txtMtoP.text = formatPesos.format(jsonResults.getDouble("payments"))
         txtMtoP.setPadding(25, 20, 25, 20)
-        txtMtoP.setTextColor(resources.getColor(R.color.Azul1))
+        txtMtoP.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtMtoP.setTypeface(null, Typeface.BOLD)
         txtMtoP.textSize = fTr
         trMtop.addView(txtMtoP)
@@ -241,7 +245,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val sv = TextView(this)
         sv.text = "Saldo vencido"
         sv.setPadding(25, 20, 25, 20)
-        sv.setTextColor(resources.getColor(R.color.Azul1))
+        sv.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         sv.setTypeface(null, Typeface.BOLD)
         sv.textSize = fTr
         trSV.addView(sv)
@@ -249,7 +253,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val txtSV = TextView(this)
         val saldoVencido = jsonResults.getDouble("min_pay")
         txtSV.text = formatPesos.format(saldoVencido)
-        txtSV.setTextColor(resources.getColor(R.color.Azul1))
+        txtSV.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtSV.setPadding(25, 20, 25, 20)
         txtSV.setTypeface(null, Typeface.BOLD)
         txtSV.textSize = fTr
@@ -264,7 +268,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtda.text = "Días de atraso"
         txtda.setPadding(25, 20, 25, 20)
         txtda.gravity = Gravity.LEFT
-        txtda.setTextColor(resources.getColor(R.color.Azul1))
+        txtda.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtda.setTypeface(null, Typeface.BOLD)
         txtda.textSize = fTr
         trDA.addView(txtda)
@@ -273,7 +277,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         var dias_atraso = jsonResults.getInt("due")
         txtDa.text = "$dias_atraso"
         txtDa.setPadding(25, 20, 25, 20)
-        txtDa.setTextColor(resources.getColor(R.color.Azul1))
+        txtDa.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtDa.setTypeface(null, Typeface.BOLD)
         txtDa.textSize = fTr
         txtDa.gravity = Gravity.CENTER

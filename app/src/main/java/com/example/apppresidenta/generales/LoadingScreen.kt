@@ -1,4 +1,4 @@
-package com.example.apppresidenta
+package com.example.apppresidenta.generales
 
 import android.app.Dialog
 import android.content.Context
@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import android.widget.TextView
+import com.example.apppresidenta.R
 
 
 object LoadingScreen {

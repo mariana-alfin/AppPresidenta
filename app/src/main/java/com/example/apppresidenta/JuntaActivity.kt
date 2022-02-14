@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.text.Html
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.util.DisplayMetrics
@@ -17,12 +15,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import android.widget.TableLayout.generateViewId
-import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.generales.LoadingScreen
+import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.utils.GeneralUtils.Companion.eliminaVariableSesion
 import com.example.apppresidenta.utils.GeneralUtils.Companion.eliminarFotos
 import com.example.apppresidenta.utils.GeneralUtils.Companion.obtenerCadenaB64DeImagen
@@ -35,7 +36,7 @@ import java.util.*
 
 
 class JuntaActivity : CameraBaseActivity() {
-    //FORMATO EN PESOS MXM
+    //MD FORMATO EN PESOS MXM
     private val mx = Locale("es", "MX")
     private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
     lateinit var progressBar: CircularProgressIndicator
@@ -54,11 +55,10 @@ class JuntaActivity : CameraBaseActivity() {
 
     var listClientes: MutableMap<Int, CteIds> = mutableMapOf(0 to CteIds(1, 1,1))
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.junta_activity)
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this, "true")
 
           val parametros = this.intent.extras
@@ -75,16 +75,12 @@ class JuntaActivity : CameraBaseActivity() {
         if(esEditar){
             solicitarUsoUbicacion(this)
         }
-        /*findViewById<TextView>(R.id.txtTitle).text = "Ingresa los pagos de los integrantes"
-        if (!esEditar) {
-            findViewById<TextView>(R.id.txtTitle).text = "Los pagos ya fueron guardados"
-        }*/
         //val fecha = FuncionesGlobales.convertFecha(fechaPago,"dd/MM/yyyy")
         val fecha = FuncionesGlobales.convertFecha(fechaPago,"dd-MMM-yy").replace(".-","-").uppercase()
         //findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: ${if (fecha.contains(".")) fecha.replace('.','-') else fecha}   "
         findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: $fecha"
         findViewById<Button>(R.id.btnGuardar).setOnClickListener { guardarJunta() }
-        //findViewById<Button>(R.id.btnGuardar).setOnClickListener { this.onBackPressed() } //ejeuta el persionar atras
+
         /*Se agrega logo y titulo del la actividad*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title =  "SEMANA $semana"
@@ -94,7 +90,6 @@ class JuntaActivity : CameraBaseActivity() {
 
         //pintarTablaJunta()
         mostrarFormato(false)
-        //pintarTablaJunta()
 
         if (ValGlobales.validarConexion(this)) {
             datosJunta(fechaPago, false)
@@ -111,7 +106,7 @@ class JuntaActivity : CameraBaseActivity() {
         onBackPressed()
         return false
     }
-    //AGREGA EL MENU DE OPCIONES
+    //MD AGREGA EL MENU DE OPCIONES
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu to use in the action bar
         val inflater = menuInflater
@@ -119,8 +114,7 @@ class JuntaActivity : CameraBaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    //FUNCIONES DE CADA OPTION
-    @RequiresApi(Build.VERSION_CODES.M)
+    //MD FUNCIONES DE CADA OPTION
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.iCamara -> {
@@ -136,6 +130,7 @@ class JuntaActivity : CameraBaseActivity() {
     }
 
     private fun copiarMontos() {
+        /* MD SE GENERA FUNCION PARA COPIAR LOS MONTOS*/
         val alert = FuncionesGlobales.mostrarAlert(this,"cuestion",true,"Pago completo"
             ,"¿Está seguro que todas las clientas pagaron completo?",true)
         alert.setPositiveButton("Aceptar") { _, _ ->
@@ -175,14 +170,11 @@ class JuntaActivity : CameraBaseActivity() {
         findViewById<Button>(R.id.btnGuardar).visibility = valor
     }
 
-    /*private fun tomarFoto() {
-        Toast.makeText(this, "TOMAR FOTOGRAFIA", Toast.LENGTH_SHORT).show()
-    }*/
-
+    //MD FUNCION PARA CAMBIAR EL SELECT POR EL TEXTO DEL SOLIDARIO
     private fun showOpcionesSolidario(v: View,menuRes: Int,idTxt: Int,idSelect: Int,idtxtPago: Int,montoCuota: Double) { //idtxtPago,mCuota
-        //se obtiene el txt por el id
+        //MD SE OBTIENE EL TXT POR EL ID
         val txt = findViewById<TextView>(idTxt)
-        //se obtiene el icono del combo por el id
+        //MD SE OBTIENE EL ICONO DEL COMBO POR EL ID
         val ddl = findViewById<ImageView>(idSelect)
         val popup = PopupMenu(this, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
@@ -213,7 +205,7 @@ class JuntaActivity : CameraBaseActivity() {
 
     private fun validaPagoSolidario(tipoSolidario: String, idtxtPago: Int, montoCuota: Double) {
         try {
-            //se obtiene el monto capturado en el pago para compararlo con la couta
+            //MD SE OBTIENE EL MONTO CAPTURADO EN EL PAGO PARA COMPARARLO CON LA COUTA
             val montoPago = findViewById<EditText>(idtxtPago)
             if((montoPago.text.toString().toDouble() == montoCuota) && (tipoSolidario == "DA" || tipoSolidario == "RE")){
            //   Toast.makeText(this, "monto pago debe de ser 0", Toast.LENGTH_SHORT).show()
@@ -225,9 +217,9 @@ class JuntaActivity : CameraBaseActivity() {
 
     }
 
-    //se reutiliza la funcion de datos del grupo del fragment MiGrupo
+    //MD SE REUTILIZA LA FUNCION DE DATOS DEL GRUPO DEL FRAGMENT MIGRUPO
     private fun datosJunta(fechaPago: String, esCopia: Boolean) {
-        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        /**************   MD  ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         val alertError = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta",getString(R.string.error),false)
@@ -260,7 +252,7 @@ class JuntaActivity : CameraBaseActivity() {
                     /*findViewById<TextView>(R.id.txtPruebas).text = "$codigoError"
                     Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()*/
                     if (codigoError == 422) {
-                        alertError.setMessage(Html.fromHtml("El ID de Crédito no se encontro."))
+                        alertError.setMessage("El ID de Crédito no se encontro.")
                     } else {
                         alertError.setMessage("Ocurrio un error")
                     }
@@ -277,7 +269,7 @@ class JuntaActivity : CameraBaseActivity() {
                 }
             }
         val queue = Volley.newRequestQueue(this)
-        //primero borramos el cache y enviamos despues la peticion
+        //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
         queue.cache.clear()
         queue.add(request)
         /*******  FIN ENVIO   *******/
@@ -285,7 +277,7 @@ class JuntaActivity : CameraBaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun pintarTablaJunta(jsonClientes: JSONArray, esCopia: Boolean) {
-        //se obtiene la tabla
+        //SE OBTIENE LA TABLA
         val tabla = findViewById<TableLayout>(R.id.tblJunta)
         tabla.removeAllViews()
         //ENCABEZADO
@@ -334,7 +326,7 @@ class JuntaActivity : CameraBaseActivity() {
         so.text = "______"
         //so.setPadding(0, 20, 0, 20)
         so.gravity = Gravity.CENTER
-        so.setTextColor(resources.getColor(R.color.Verde2))
+        so.setTextColor(ContextCompat.getColor(this,R.color.Verde2))
         so.setTypeface(null, Typeface.BOLD_ITALIC)
         so.textSize = fontTh
         trEn.addView(so)
@@ -347,40 +339,40 @@ class JuntaActivity : CameraBaseActivity() {
         val numClientes = jsonClientes.length()
         //val ctsList: MutableMap<String, String> = mutableMapOf()
         //for de los clientes
-        //SE BORRA LA LISTA DE CTES
+        //MD SE BORRA LA LISTA DE CTES PARA EVITAR DUPLICADOS
         listClientes.clear()
 
         /**     VARIABLES PARA TAMAÑOS      **/
-        //se obtiene la densidad del dispositivo para cambiar los tamaños
+        //MD SE OBTIENE LA DENSIDAD DEL DISPOSITIVO PARA CAMBIAR LOS TAMAÑOS
         val densidad = resources.displayMetrics.densityDpi
         val width =  resources.displayMetrics.widthPixels
         var witCte: Int
         var witPgo = 140
-         if(densidad < DisplayMetrics.DENSITY_HIGH){
-              witCte = 140
+        if(densidad < DisplayMetrics.DENSITY_HIGH){
+            witCte = 140
         }else if(densidad in DisplayMetrics.DENSITY_HIGH until DisplayMetrics.DENSITY_XHIGH){
-              witCte = 200
+            witCte = 200
         }else if(densidad == DisplayMetrics.DENSITY_XHIGH){
-              witCte = 220
+            witCte = 220
         }else if(densidad in DisplayMetrics.DENSITY_XHIGH until DisplayMetrics.DENSITY_XXHIGH){
-              witCte = 380
-              witPgo = 200
+            witCte = 380
+            witPgo = 200
         }else if(densidad == DisplayMetrics.DENSITY_XXHIGH && width == 1080){
-             witCte = 380
-             witPgo = 175
+            witCte = 380
+            witPgo = 175
         }else if((densidad in DisplayMetrics.DENSITY_XXHIGH until DisplayMetrics.DENSITY_XXXHIGH) && width < 1200 && width != 1080){
-              witCte = 415
-              witPgo = 205
+            witCte = 415
+            witPgo = 205
         }else if((densidad >= DisplayMetrics.DENSITY_XXXHIGH) || width <= 1200){
-              witCte = 430
-              witPgo = 215
-        }else {//si la pantalla es mayor a 1200px el valor del nombre sera de una tercera parte
-              witCte = (width/3)
-              witPgo = 225
+            witCte = 430
+            witPgo = 215
+        }else {//MD SI LA PANTALLA ES MAYOR A 1200PX EL VALOR DEL NOMBRE SERA DE UNA TERCERA PARTE
+            witCte = (width/3)
+            witPgo = 225
         }
         /***       FIN VARIABLES       **/
         for (i in 0 until numClientes) {
-            //SE GENERA EL OBJETO CLIENTE DEL ARREGLO
+            //MD SE GENERA EL OBJETO CLIENTE DEL ARREGLO PARA ACCEDER A SUS DATOS
             val cte: JSONObject = jsonClientes.getJSONObject(i)
             val tr = TableRow(this)
             tr.setPadding(10,20,0,20)
@@ -396,9 +388,9 @@ class JuntaActivity : CameraBaseActivity() {
             chk.gravity = Gravity.RIGHT
             //chk.buttonDrawable
             //chk.setBackgroundColor(Color.parseColor("#00e2a5"))
-
+            val colorAzul = ContextCompat.getColor(this,R.color.Azul1)
             val cliente = TextView(this)
-            cliente.setTextColor(resources.getColor(R.color.Azul1))
+            cliente.setTextColor(colorAzul)
             cliente.textSize = (fontTr - 1)
             //cliente.maxWidth = 230
             cliente.maxWidth = witCte
@@ -406,7 +398,7 @@ class JuntaActivity : CameraBaseActivity() {
             val couta = TextView(this)
             val mCuota = cte.getDouble("pay")
             couta.text = formatPesos.format(mCuota)
-            couta.setTextColor(resources.getColor(R.color.Azul1))
+            couta.setTextColor(colorAzul)
             couta.textSize = fontTr
 
             val pago = EditText(this)
@@ -415,7 +407,7 @@ class JuntaActivity : CameraBaseActivity() {
             pago.inputType =
                 InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
             pago.keyListener = DigitsKeyListener.getInstance(".0123456789")
-            pago.setTextColor(resources.getColor(R.color.Azul1))
+            pago.setTextColor(colorAzul)
             pago.textSize = fontTr
             pago.gravity = Gravity.CENTER
             //pago.width = 140
@@ -423,8 +415,7 @@ class JuntaActivity : CameraBaseActivity() {
             //pago.maxWidth = 180
             pago.maxWidth = witPgo
             pago.setMaxLength(7)
-            //pago.tint(Color.RED)
-            pago.getBackground().setColorFilter(resources.getColor(R.color.Azul3), PorterDuff.Mode.SRC_ATOP)
+            pago.background.setColorFilter(colorAzul, PorterDuff.Mode.SRC_ATOP)
 
             val lS = LinearLayout(this)
             val sol = TextView(this)
@@ -432,7 +423,7 @@ class JuntaActivity : CameraBaseActivity() {
             sol.id = idT
             sol.setTypeface(null, Typeface.BOLD)
             sol.textSize = (fontTr + 1)
-            sol.setTextColor(resources.getColor(R.color.Verde5))
+            sol.setTextColor(ContextCompat.getColor(this,R.color.Verde5))
             sol.setPadding(15,0,0,0)
             sol.gravity = Gravity.CENTER
 
@@ -440,21 +431,21 @@ class JuntaActivity : CameraBaseActivity() {
             val idS = generateViewId()
             checlSol.id = idS
             checlSol.setImageResource(R.drawable.drop_down_36)
-            checlSol.setColorFilter(resources.getColor(R.color.Azul1))
+            checlSol.setColorFilter(colorAzul)
             lS.setOnClickListener { v: View ->
                 showOpcionesSolidario(v, R.menu.opciones_solidario, idT, idS, idtxtPago, mCuota)
             }
 
-            //CUANDO ES COPIA DE MONTOS SE ASIGNA EL MONTO DE LA CUOTA AL PAGO Y SE PONE NO APLICA AL SOLIDARIO
+            //MD CUANDO ES COPIA DE MONTOS SE ASIGNA EL MONTO DE LA CUOTA AL PAGO Y SE PONE NO APLICA AL SOLIDARIO
             if (esCopia) {
                 pago.setText(cte.getString("pay"))// cte.getString("pay")
                 sol.setText("NA")
                 checlSol.visibility = View.GONE
                 LoadingScreen.hideLoading()
             }
-            //SE AGREGAN LOS VALORES
+            //MD SE AGREGAN LOS VALORES
             cliente.text = cte.getString("customer_name")//+ " $witCte w$width $witPgo"
-            //SE AGREGA A LA LISTA DE IDs
+            //MD SE AGREGA A LA LISTA DE IDs PARA ACCEDER A SU CONTENIDO EN LA VALIDACION DE DATOS
             listClientes.put(cte.getInt("credit_id"), CteIds(idtxtPago, idT, idCk))
 
             //SE AGREGA COLUMNA CLIENTE
@@ -480,7 +471,10 @@ class JuntaActivity : CameraBaseActivity() {
         }
 
     }
-
+    /* MD SE GENERA FUNCION PARA VALIDAR SI E SPOSIBLE GUARDAR LOS DATOS DE LA JUNTA
+          PARA ELLO SE VALIDA QUE TODOS LOS DATOS ESTEN CAPTURADOS
+          Y SE CONSTRUYE EL JSON DE LOS DATOS DE CLIENTES
+       */
     private fun guardarJunta() {
         //VARIABLE PARA SABER SI HAY VACIOS PARA CONTINUAR ESTA DEBE DE ESTAR EN CERO
         var hayVacios = 0
@@ -489,7 +483,7 @@ class JuntaActivity : CameraBaseActivity() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val rutaFotoActual = prefs.getString("RUTA_FOTO","")
 
-        //se genera el json y se envia el metodo para enviarlo al ws
+        //MD SE GENERA EL JSON Y SE ENVIA EL METODO PARA ENVIARLO AL WS
         //var clientes = "\"clientes\" : [ "
         var clientes = "\"tasks\" : [ "
         //SE RECORRE EL LISTADO DE CLIENTES Y LOS IDS DE SUS INPUTS
@@ -515,10 +509,10 @@ class JuntaActivity : CameraBaseActivity() {
                     //respuesta += "solidario = ${txtSolidario.text}"
                     //clientes += " \"solidario\" : \"${txtSolidario.text}\" }," //MD SE QUITA Y SE USA RESULT-TYPE-ID
                       val solidario_v =  when(txtSolidario.text){
-                            "DA"->{1}//1}
-                            "RE"->{1}//2}
-                            "NA"->{1}//3}
-                          else -> {1}//3}
+                          "DA"->{11}
+                          "RE"->{12}
+                          "NA"->{13}
+                          else -> {13}
                       }
                     clientes += " \"result_type_id\" : \"${solidario_v}\"," //MD SE QUITA Y SE USA RESULT-TYPE-ID
                 } else {
@@ -542,18 +536,20 @@ class JuntaActivity : CameraBaseActivity() {
         //SE MUESTRA PARA PRUEBAS
         //findViewById<TextView>(R.id.txtJson).text = clientesString
 
-        //SI HAY VACIOS ES 0 CONTINUA DE LO CONTRARIO NO
+        //MD SI HAY VACIOS ES 0 CONTINUA DE LO CONTRARIO NO
         if (hayVacios == 0 && rutaFotoActual != "") {
             val alertCorrecto = FuncionesGlobales.mostrarAlert(this,"cuestion",true,"¿Está seguro de continuar?","na",true)
             alertCorrecto.setPositiveButton("Aceptar") { _, _ ->
-                generarJson(clientesString)
+                //MD SE VALIDA QUE EXISTA CONEXION PARA ENVIAR LOS DATOS
+                if (ValGlobales.validarConexion(this)) {
+                    generarJson(clientesString)
+                }
             }
             alertCorrecto.setNegativeButton("Cancelar") { dialog, _ ->
                 dialog.cancel()
             }
             alertCorrecto.create()
             alertCorrecto.show()
-
         }
         else if(rutaFotoActual == ""){
             val alert = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta","Es necesario tomar foto como evidencia, para continuar",false)
@@ -574,7 +570,7 @@ class JuntaActivity : CameraBaseActivity() {
         val parametros = this.intent.extras
         val idPago = parametros!!.getInt("idPago", 0)
         val fechaPago = parametros.getString("fechaPago", "")
-        //se genera el json
+        //MD SE GENERA EL JSON COMPLEMENTARIO DE LA SOLICITUD
         var JSJunta = ""
         val hoy = FuncionesGlobales.obtenerFecha("yyyy-MM-dd")
         val valSolicitud = "{" +
@@ -602,14 +598,15 @@ class JuntaActivity : CameraBaseActivity() {
     }
 
     private fun enviarJunta(jsonJunta: JSONObject) {
+        /* MD FUNCION QUE TOMA EL JSON DE LOS DATOS DE LA JUNTA Y LO ENVIA */
         LoadingScreen.displayLoadingWithText(this, "Enviando Información...",false)
-        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        /**************   MD  ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val alertError = FuncionesGlobales.mostrarAlert(this,"error",true,"Guardar Junta",getString(R.string.error),false)
 
         val request = object : JsonObjectRequest(
             Method.POST,
             getString(R.string.urlGuardarJunta),
-            jsonJunta,
+            jsonJunta,// <- MD SE ENVIA DIRECTAMENTE EL JSON GENERADO CON LOS DATOS DE LA JUNTA
             Response.Listener { response ->
                 try {
                     //Obtiene su respuesta json
@@ -629,7 +626,7 @@ class JuntaActivity : CameraBaseActivity() {
                             val directorio = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString()
                             eliminarFotos(directorio)
 
-                            //se finaliza la actividad
+                            //MD SE FINALIZA LA ACTIVIDAD
                             finish()
                             }
                         alertCorrecto.create()
@@ -641,20 +638,15 @@ class JuntaActivity : CameraBaseActivity() {
                     LoadingScreen.hideLoading()
                 } catch (e: Exception) {
                     LoadingScreen.hideLoading()
-                    //alertError.setMessage(e.message)
                     alertError.show()
                 }
             },
             Response.ErrorListener { error ->
-                //val errorD = VolleyError(String(error.networkResponse.data))
                 val responseError = String(error.networkResponse.data)
                 val dataError = JSONObject(responseError)
                 try {
                     val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
-                    val message = jsonData.getString("message")
-                }catch (e: Exception){
-
-                }
+                }catch (e: Exception){}
                 alertError.show()
                 LoadingScreen.hideLoading()
             })
@@ -670,7 +662,7 @@ class JuntaActivity : CameraBaseActivity() {
         }
         try {
             val queue = Volley.newRequestQueue(this)
-            //primero borramos el cache y enviamos despues la peticion
+            //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
         }catch(e: Exception){

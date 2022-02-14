@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.text.method.DigitsKeyListener
@@ -16,14 +15,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import android.widget.TableLayout.generateViewId
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.generales.LoadingScreen
+import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray

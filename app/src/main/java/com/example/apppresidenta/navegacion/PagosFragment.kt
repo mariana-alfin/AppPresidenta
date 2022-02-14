@@ -1,4 +1,4 @@
-package com.example.apppresidenta.ui.pagos
+package com.example.apppresidenta.navegacion
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,13 +9,14 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.*
-import com.example.apppresidenta.databinding.PagosNotificationsBinding
+import com.example.apppresidenta.databinding.PagosFragmentBinding
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.ValGlobales
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
@@ -25,16 +26,13 @@ import java.util.*
 
 class PagosFragment : Fragment() {
 
-    private lateinit var pagosViewModel: PagosViewModel
-    private var _binding: PagosNotificationsBinding? = null
+    private var _binding: PagosFragmentBinding? = null
 
-    //FORMATO EN PESOS MXM
+    //MD VARIABLES DE FORMATO EN PESOS MXM
     private val mx = Locale("es", "MX")
     private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
     lateinit var progressBar: CircularProgressIndicator
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,30 +40,22 @@ class PagosFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        pagosViewModel =
-            ViewModelProvider(this).get(PagosViewModel::class.java)
 
-        _binding = PagosNotificationsBinding.inflate(inflater, container, false)
+        _binding = PagosFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        /* val textView: TextView = binding.textNotifications
-         notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-             textView.text = it
-         })*/
-        //INDICA QUE SE HABILITARA EL MENU DE OPCIONES
+        //MD INDICA QUE SE HABILITARA EL MENU DE OPCIONES
         setHasOptionsMenu(true)
-        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        //MD SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(activity as AppCompatActivity,"true")
         //llenarTbPagos()
         mostrarFormato(false)
-       if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
+        if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
             val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
             val prestamo = prefs.getInt("CREDITO_ID", 0)
             val pagoSemanal = prefs.getFloat("MONTO_SEMANAL", 0.0F)
-           obtenerSaldoConciliar(prestamo) //se obtiene el saldo por conciliar
-           datosPagos(prestamo,pagoSemanal)
-
-
+            obtenerSaldoConciliar(prestamo) //MD SE OBTIENE EL SALDO POR CONCILIAR
+            datosPagos(prestamo,pagoSemanal)
 
         } else {
             binding.txtCargando.text = getString(R.string.noConexion)
@@ -94,7 +84,7 @@ class PagosFragment : Fragment() {
     }
 
     private fun datosPagos(prestamo: Int,pagoSemanal: Float) {
-        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        /**************   MD  ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         /*val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         val pagoSemanal = prefs.getFloat("MONTO_SEMANAL", 0.0F)
@@ -131,7 +121,7 @@ class PagosFragment : Fragment() {
                     }
                 },
                 Response.ErrorListener { error ->
-                    //val errorD = VolleyError(String(error.networkResponse.data))
+                    //MD MANEJO DE ERROES EN LA RESPUESTA
                     val responseError = String(error.networkResponse.data)
                     val dataError = JSONObject(responseError)
                     var mensaje = getString(R.string.error)
@@ -141,10 +131,10 @@ class PagosFragment : Fragment() {
                         val message = jsonData.getString("message")
                         val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         mensaje = if(code == 422 && jsonData.getString("results").contains("credit_id")) {
-                                        jResul.getString("credit_id")
-                                    } else {
-                                        message
-                                    }
+                            jResul.getString("credit_id")
+                        } else {
+                            message
+                        }
 
                     } catch (e: Exception) {
                         mensaje = getString(R.string.error)
@@ -166,7 +156,7 @@ class PagosFragment : Fragment() {
             }
         try {
             val queue = Volley.newRequestQueue(activity)
-            //primero borramos el cache y enviamos despues la peticion
+            //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
         }
@@ -178,12 +168,10 @@ class PagosFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun llenarTbPagos(jsonPagos: JSONArray, pagoSemanal: Float) {
-
         val txt = binding.txtPagoSemanal
-        //txt.text = " Pago semanal: ${formatPesos.format(pagoSemanal)}  "
         txt.text = "  ${formatPesos.format(pagoSemanal)}  "
         txt.gravity = Gravity.CENTER
-        //SE OBTIENE LA TABLA
+        //MD SE OBTIENE LA TABLA
         val tabla = binding.tblPagos
         val trEn = TableRow(activity)
         val fontTh = 18F
@@ -230,7 +218,7 @@ class PagosFragment : Fragment() {
             )
         )
         val numPagos = jsonPagos.length()
-        //for del numero de pagos
+        //MD FOR DEL NUMERO DE PAGOS
         for (i in 0 until numPagos) {
             //SE GENERA EL OBJETO CLIENTE DEL ARREGLO
             val pago: JSONObject = jsonPagos.getJSONObject(i)
@@ -300,8 +288,8 @@ class PagosFragment : Fragment() {
     }
 
     private fun obtenerSaldoConciliar(prestamo: Int){
-        //FORMATO EN PESOS MXM SIN DECIMALES
-        //formatPesos.maximumFractionDigits = 0
+        //MD FORMATO EN PESOS MXM SIN DECIMALES
+        //formatPesos.maximumFractionDigits = 0 //MD ES PARA QUE NO TENGA DECIMALES
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Guardar Junta",getString(R.string.error),false)
         val jsonParametros = JSONObject()
@@ -315,7 +303,7 @@ class PagosFragment : Fragment() {
             jsonParametros,
             Response.Listener { response ->
                 try {
-                    //Obtiene su respuesta json
+                    //OBTIENE SU RESPUESTA JSON
                     val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
                     if (jsonData.getInt("code") == 200) {
                         val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
@@ -327,12 +315,12 @@ class PagosFragment : Fragment() {
                             saldoConciliar += pago.getDouble("amount")
                             pagosConciliar += "${pago.getString("payment_id")},"
                             binding.txtSaldoConciliar.text = "Saldo por Conciliar ${formatPesos.format(saldoConciliar)}"
-                            //se agrega la accion al boton
+                            //MD SE AGREGA LA ACCION AL BOTON
                             binding.iConciliar.setOnClickListener { juntaConciliacion(saldoConciliar,pagosConciliar) }
                         }
-                        if(saldoConciliar != 0.0){
-                                binding.iConciliar.visibility =  View.VISIBLE
-                                binding.txtSaldoConciliar.visibility =  View.VISIBLE
+                        if(saldoConciliar != 0.0){//MD SOLO SI EL SALDO A CONCILIAR ES MAYOR A 0 SE MUESTRA
+                            binding.iConciliar.visibility =  View.VISIBLE
+                            binding.txtSaldoConciliar.visibility =  View.VISIBLE
 
                         }
                     } else {
@@ -378,7 +366,7 @@ class PagosFragment : Fragment() {
         }
         try {
             val queue = Volley.newRequestQueue(activity)
-            //primero borramos el cache y enviamos despues la peticion
+            //PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
             /*******  FIN ENVIO   *******/
@@ -389,25 +377,25 @@ class PagosFragment : Fragment() {
     }
     private fun juntaConciliacion(saldoConciliar: Double,idPagos: String) {
         val junta = Intent(activity, JuntaConciliacionActivity::class.java)
-        //enviamos datos
+        //MD ENVIAMOS DATOS
         junta.putExtra("saldoConciliar", saldoConciliar)
         junta.putExtra("idPagos", idPagos)
         startActivity(junta)
     }
     private fun generarJunta(esEditar: Boolean, idPago: Int, numPago: Int, fechaPago: String) {
         val junta = Intent(activity, JuntaActivity::class.java)
-        //enviamos datos
+        //MD ENVIAMOS DATOS
         junta.putExtra("esEdicion", esEditar)
         junta.putExtra("idPago", idPago)
         junta.putExtra("numPago", numPago)
         junta.putExtra("fechaPago", fechaPago)
         startActivity(junta)
     }
-
-    //AGREGA EL MENU DE OPCIONES A LA VISTA
+/*
+    //MD AGREGA EL MENU DE OPCIONES A LA VISTA
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
-    }
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

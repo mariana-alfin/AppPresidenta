@@ -1,4 +1,4 @@
-package com.example.apppresidenta.ui.inicio
+package com.example.apppresidenta.navegacion
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,13 +19,12 @@ import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.FuncionesGlobales
-import com.example.apppresidenta.FuncionesGlobales.Companion.setMaxLength
-import com.example.apppresidenta.LoadingScreen
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
+import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.R
-import com.example.apppresidenta.ValGlobales
-import com.example.apppresidenta.databinding.InicioFragmentBinding
-//import com.example.apppresidenta.databinding.Inicio2FragmentBinding
+import com.example.apppresidenta.generales.ValGlobales
+import com.example.apppresidenta.databinding.Inicio2FragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
@@ -39,7 +38,7 @@ import kotlin.collections.HashMap
 
 class InicioFragment : Fragment() {
 
-    private var _binding: InicioFragmentBinding? = null
+    private var _binding: Inicio2FragmentBinding? = null
     private val binding get() = _binding!!
     lateinit var progressBar: CircularProgressIndicator
 
@@ -50,7 +49,7 @@ class InicioFragment : Fragment() {
     ): View {
         try {
 
-            _binding = InicioFragmentBinding.inflate(inflater, container, false)
+            _binding = Inicio2FragmentBinding.inflate(inflater, container, false)
             val root: View = binding.root
 
             //MD INDICA QUE SE HABILITARA EL MENU DE OPCIONES
@@ -93,7 +92,7 @@ class InicioFragment : Fragment() {
         binding.txtBonificacionAcumulada.visibility = valor
         binding.txtBonificacion.visibility = valor
         //binding.tblInicio.visibility = valor
-        binding.tblInicio.visibility = valor
+        binding.lblInicio.visibility = valor
     }
 
     //MD AGREGA EL MENU DE OPCIONES A LA VISTA

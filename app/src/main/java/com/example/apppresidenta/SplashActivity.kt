@@ -4,12 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import com.example.apppresidenta.navegacion.Navegacion
 
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_inicio_app)
         validarSesion()
     }
 
@@ -22,7 +22,8 @@ class SplashActivity : AppCompatActivity() {
         val intent: Intent = if(sesionActiva){
             Intent(this, Navegacion::class.java)
         }else{
-            Intent(this, MainActivity::class.java)
+            //Intent(this, MainActivity::class.java)
+            Intent(this, LoginActivity::class.java)
         }
 
         startActivity(intent)

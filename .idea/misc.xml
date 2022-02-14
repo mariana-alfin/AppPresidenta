@@ -3,6 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout-xhdpi/main_activity.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/inicio2_fragment.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/junta_activity.xml" value="0.2984375" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/login_activity.xml" value="0.18854166666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/mi_cuenta_activity.xml" value="0.1359375" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/mi_grupo_fragment.xml" value="0.18854166666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/nip_activity.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/registro_activity.xml" value="0.18854166666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1359375" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/main_menu.xml" value="0.1359375" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/menu_inicio.xml" value="0.1359375" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/opciones_solidario.xml" value="0.1359375" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable-v24/copy.xml" value="0.22916666666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable-v24/ic_help_24.xml" value="0.2296875" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas/app/src/main/res/drawable-xxhdpi/ic_error.xml" value="0.3828125" />

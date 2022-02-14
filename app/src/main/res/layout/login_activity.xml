@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/barra"
+    tools:context=".LoginActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="110dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/icono_app" />
+
+
+        <!--<EditText
+              android:id="@+id/txtNoCliente"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="30dp"
+              android:backgroundTint="@color/white"
+              android:ems="10"
+              android:inputType="number"
+              android:maxLength="15"
+              android:layout_gravity="center"
+              android:gravity="center"
+              style="@style/textVerde"
+              android:hint="NO CLIENTE"
+              android:textColorHint="@color/Verde2"
+              android:textSize="20dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="0.512"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+              <EditText
+              android:id="@+id/txtNip"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginStart="50dp"
+              android:layout_marginEnd="50dp"
+              android:layout_marginTop="30dp"
+              android:backgroundTint="@color/white"
+              android:ems="10"
+              android:inputType="numberPassword"
+              android:maxLength="4"
+              android:layout_gravity="center"
+              android:gravity="center"
+              style="@style/textVerde"
+              android:hint="NIP"
+              app:counterEnabled="true"
+              app:counterMaxLength="4"
+              android:textColorHint="@color/Verde2"
+              android:textSize="20dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="0.512"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/tCliente" />
+              -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="10dp"
+            android:textColorHint="@color/Verde3"
+            app:hintTextColor="@color/Verde1"
+            app:boxStrokeColor="@color/Verde3"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxStrokeWidth="2dp"
+            android:hint="No Cliente"
+            app:startIconDrawable="@drawable/ic_user1"
+            app:startIconTint="@color/Verde1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtNoCliente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/Verde2"
+                android:textSize="18dp"
+                android:inputType="number"
+                android:maxLength="15"
+                android:layout_gravity="center"
+                android:gravity="center"
+                style="@style/textWhite"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tNip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="30dp"
+            android:textColorHint="@color/Verde3"
+            app:hintTextColor="@color/white"
+            app:boxStrokeColor="@color/Verde1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            app:boxStrokeWidthFocused="2dp"
+            app:boxStrokeWidth="2dp"
+            app:counterEnabled="true"
+            app:errorEnabled="true"
+            app:counterMaxLength="4"
+            app:counterTextColor="@color/Verde3"
+            android:hint="NIP"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="@color/Verde1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tCliente">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtNip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:inputType="numberPassword"
+                android:maxLength="4"
+                style="@style/textWhite"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/txtOlvida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="12dp"
+            android:text="¿Olvidaste tu contraseña?"
+            style="@style/textWhite"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tNip" />
+
+        <Button
+            android:id="@+id/btnIniSesion"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:textSize="17sp"
+            android:gravity="center_horizontal"
+            android:text="INICIAR SESIÓN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtOlvida"  />
+
+        <TextView
+            android:id="@+id/txtAunno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="¿Aún no formas parte de este plan de recompensas?"
+            style="@style/textVerde"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnIniSesion" />
+
+        <Button
+            android:id="@+id/btnRegistro"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:textSize="17sp"
+            android:gravity="center_horizontal"
+            android:text="REGISTRATE"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtAunno" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

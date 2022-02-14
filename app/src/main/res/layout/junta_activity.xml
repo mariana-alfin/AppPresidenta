@@ -46,7 +46,7 @@
 
             <TextView
                 android:id="@+id/txtDatosPago"
-                android:background="@drawable/borde_redon_azul"
+                android:background="@drawable/borde_r_azul"
                 android:padding="8dp"
                 style="@style/textAzulTitulos"
                 android:layout_width="wrap_content"

@@ -7,6 +7,9 @@
         android:icon="@drawable/ic_help_24"
         app:showAsAction="always"/>
     <item
+        android:id="@+id/iCuenta"
+        android:title="Mi Cuenta" />
+    <item
         android:id="@+id/iCalculadora"
         android:title="Calculadora" />
     <item
