@@ -2,6 +2,7 @@ package com.example.apppresidenta
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -51,7 +52,16 @@ class MainActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.txtUsuario).hint = "Ingresar $densidad"
         */
     }
-
+    //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {//AL PRECIONAR ENTER VALIDA EL FORMULARIO DE REGISTRO
+                validarFormulario()
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
+        }
+    }
     override fun onBackPressed() {
         val home = Intent(this, LoginActivity::class.java)
         startActivity(home)

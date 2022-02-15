@@ -2,6 +2,7 @@ package com.example.apppresidenta
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,16 @@ class NIPActivity : AppCompatActivity() {
         textChangueNip()
         findViewById<Button>(R.id.btnConfirmarNip).setOnClickListener { confirmarNIP() }
     }
-
+    //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {
+                confirmarNIP()
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
+        }
+    }
     override fun onBackPressed() {
         FuncionesGlobales.mostrarAlert(this,"advertencia",true,"Registro","Para continuar debe de terminar el proceso.",false).show()
     }

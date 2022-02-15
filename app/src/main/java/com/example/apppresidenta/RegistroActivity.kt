@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -51,6 +52,16 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         val appSignature = AppSignatureHelper(this)
         findViewById<TextView>(R.id.txtAppHashKey).text = appSignature.appSignatures.toString() //SOLO PARA PRUEBAS SE MUESTRA
         startSMSListener()//SE INICIA EL RECEPTOR DE LOS SMS
+    }
+    //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {
+                validarCodigo()
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
+        }
     }
     override fun onBackPressed() {
         //FUNCION QUE SE EJECUTA AL PERSIONAR EL BOTON ATRAS DE MOMENTO NO DEBE DE HACER NADA

@@ -2,6 +2,7 @@ package com.example.apppresidenta.navegacion
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.text.HtmlCompat
@@ -152,9 +154,9 @@ class InicioFragment : Fragment() {
                             //txtDiaPago.text = "Tu día de pago son los ${jsonResults.getString("pay_day")}"
                             txtDiaPago.text = jsonResults.getString("pay_day")
                             val bonificacion = 858
-                            txtBonificacionAcumulada.text = "  ${formatPesos.format(bonificacion)}  "
+                            txtBonificacionAcumulada.text = "  ${formatPesos.format(1235)}  "
                             //txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
-                            txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
+                            txtBonificacion.text = "  ${formatPesos.format(289)}  "
                             txtPago.text = formatPesos.format(jsonResults.getDouble("pay"))
                             /*MD SE GUARDA EN SESSION EL MONTO PAGO DEL CREDITO PARA LA VISTA DE PAGOS*/
                             val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -394,7 +396,7 @@ class InicioFragment : Fragment() {
             8.toDp(context)
         )
         textInputLayout.layoutParams = layoutParams
-        textInputLayout.hint = "Un asesor se pondrá en contacto con usted."
+        textInputLayout.hint = "Un gerente se pondrá en contacto con usted."
         textInputLayout.counterMaxLength = 150
         textInputLayout.id = View.generateViewId()
         textInputLayout.tag = "textInputLayoutTag"

@@ -73,19 +73,13 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         val idPagos = parametros.getString("idPagos", "")
         idPagosArray = idPagos.substring(0, idPagos.length - 1)
 
-        //Se solicita la ubicacion
-        solicitarUsoUbicacion(this)
-
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val FECHA_PAGO_CONCILIACION = prefs.getString("FECHA_PAGO_CONCILIACION", "")
         val fecha = FuncionesGlobales.convertFecha(FECHA_PAGO_CONCILIACION!!, "dd-MMM-yy").replace(".-", "-").uppercase()
         //findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: ${if (fecha.contains(".")) fecha.replace('.','-') else fecha}   "
         findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: $fecha"
         findViewById<Button>(R.id.btnGuardar).setOnClickListener {
-            guardarJunta(
-                FECHA_PAGO_CONCILIACION
-            )
-        }
+            guardarJunta(FECHA_PAGO_CONCILIACION)}
 
         /*MD SE AGREGA LOGO, TITULO Y SUBTITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -1,5 +1,6 @@
 package com.example.apppresidenta.submenu
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -10,6 +11,8 @@ import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import com.example.apppresidenta.generales.FuncionesGlobales
@@ -31,6 +34,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.calculadora_activity)
+
         for (i in 1..numPagos) {
             listPagos.add("$i")
         }
