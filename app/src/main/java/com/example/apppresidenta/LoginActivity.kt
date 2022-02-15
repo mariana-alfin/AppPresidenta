@@ -2,6 +2,7 @@ package com.example.apppresidenta
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -27,7 +28,16 @@ class LoginActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnRegistro).setOnClickListener { realizarRegistro() }
         findViewById<TextView>(R.id.txtNoCliente).requestFocus()
     }
-
+    //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {//AL PRECIONAR ENTER INICIA SESION
+                iniciarSesion()
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
+        }
+    }
     private fun iniciarSesion() {
         if (ValGlobales.validarConexion(this)) {
             val idCliente: String = findViewById<EditText>(R.id.txtNoCliente).text.toString()
