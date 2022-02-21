@@ -1,6 +1,5 @@
 package com.example.apppresidenta.submenu
 
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -11,21 +10,16 @@ import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
-import com.example.apppresidenta.R
-import java.text.NumberFormat
 import java.util.*
 
 
 class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
     //MD FORMATO EN PESOS MXM
-    private val mx = Locale("es", "MX")
-    private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
 
     var numPagos = 16
     val listPagos: MutableList<String> = ArrayList()
@@ -40,7 +34,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         }
         /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF'>Calculadora</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF'>Calculadora</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -76,7 +70,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         bs.textSize = fTr
 
         val txtBonS = TextView(this)
-        txtBonS.text = formatPesos.format(750)
+        txtBonS.text = FuncionesGlobales.convertPesos(750.0,2)
         txtBonS.setTextColor(color)
         txtBonS.setPadding(left, 0, 5, 0)
         txtBonS.gravity = gravityTxt
@@ -102,7 +96,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         Mp.textSize = fTr
 
         val txtMp = TextView(this)
-        txtMp.text = formatPesos.format(24256)
+        txtMp.text = FuncionesGlobales.convertPesos(24256.0,0)
         txtMp.setPadding(left, 0, 5, 0)
         txtBonS.gravity = gravityTxt
         txtMp.setTextColor(ContextCompat.getColor(this,R.color.Verde1))
@@ -127,7 +121,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         Ba.textSize = fTr
 
         val txtBa = TextView(this)
-        txtBa.text = formatPesos.format(19768)
+        txtBa.text = FuncionesGlobales.convertPesos(19768.0,0)
         txtBa.setPadding(left, 0, 5, 0)
         txtBa.gravity = gravityTxt
         txtBa.setTextColor(color)
@@ -203,7 +197,6 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l2.setBackgroundResource(R.drawable.borde_celda)
         l2.gravity = gravityTxtC
         val txtPsP = EditText(this)
-        //txtPsP.text = formatPesos.format(25000)
         txtPsP.hint = "$25,000"
         txtPsP.setPadding(5, 20, 10, 20)
         txtPsP.inputType =
@@ -344,7 +337,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l9.setPadding(0, topBottom, 0, topBottom)
         l9.gravity = gravityTxtC
         val txtBsa = TextView(this)
-        txtBsa.text = formatPesos.format(12000)
+        txtBsa.text =FuncionesGlobales.convertPesos(12000.0,0)
         txtBsa.setTextColor(ContextCompat.getColor(this,R.color.Verde1))
         txtBsa.textSize = fTr
         l9.addView(txtBsa)
@@ -374,7 +367,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l11.setPadding(0, topBottom, 0, topBottom)
         l11.gravity = gravityTxtC
         val txtBa = TextView(this)
-        txtBa.text = formatPesos.format(4000)
+        txtBa.text = FuncionesGlobales.convertPesos(4000.0,0)
         txtBa.setTextColor(color)
         txtBa.textSize = fTr
         l11.addView(txtBa)
@@ -403,7 +396,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
         l13.setPadding(0, topBottom, 0, topBottom)
         l13.gravity = gravityTxtC
         val txtBonificacion = TextView(this)
-        txtBonificacion.text = formatPesos.format(16000)
+        txtBonificacion.text = FuncionesGlobales.convertPesos(16000.0,0)
         txtBonificacion.setTypeface(null, Typeface.BOLD_ITALIC)
         txtBonificacion.setTextColor(Color.WHITE)
         txtBonificacion.textSize = fTr + 2

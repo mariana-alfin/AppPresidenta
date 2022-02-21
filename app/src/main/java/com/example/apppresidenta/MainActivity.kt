@@ -22,7 +22,6 @@ import com.example.apppresidenta.navegacion.Navegacion
 import com.example.apppresidenta.utils.GeneralUtils.Companion.obtenerTokenNotificaciones
 import org.json.JSONObject
 import org.json.JSONTokener
-import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
@@ -141,18 +140,12 @@ class MainActivity : AppCompatActivity() {
                         val jsonResults =
                             JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         //se guarda en sesion el numero de prestamo
-                        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-                        val editor = prefs.edit()
-                        editor.putInt("CREDITO_ID", jsonResults.getInt("credit_id"))
-                        editor.apply()
+                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
                         //Toast.makeText(this, "INICIA SESION", Toast.LENGTH_SHORT).show()
 
                         /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
                         y este se registra/actualiza en nuestro servidor junto con el numero imei*/
                         //obtenerTokenNotificaciones(this,idCliente,numeroCelular)//preguntar
-                        //SE ENVIA EL SMS
-                        enviarMensaje()
-
                         val registro = Intent(this, RegistroActivity::class.java)
                         registro.putExtra("celular", numeroCelular)
                         startActivity(registro)
@@ -219,16 +212,6 @@ class MainActivity : AppCompatActivity() {
         /*******  FIN ENVIO   *******/
     }
 
-    /***********  ENVIO DE SMS  **********/
-    private fun enviarMensaje() {
-        //SE GENERA EL CODIGO VERIFICADOR Y SE ENVIA
-        val codigo = Random.nextInt(1000, 9999)
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val editor = prefs.edit()
-        editor.putString("CODIGO_VERIFICADOR", codigo.toString())
-        editor.apply()
-    }
-
     /***********  FIN DE ENVIO DE SMS  **********/
     private fun iniciarSesionWS(idCliente: String, numeroCelular: String) {
         LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
@@ -265,10 +248,7 @@ class MainActivity : AppCompatActivity() {
                             JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         //findViewById<TextView>(R.id.txtPruebas).text = jsonResults.getString("credit_id") +"\n"+response.getString("data")
                         //se guarda en sesion el numero de prestamo
-                        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-                        val editor = prefs.edit()
-                        editor.putInt("CREDITO_ID", jsonResults.getInt("credit_id"))
-                        editor.apply()
+                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
                         //Toast.makeText(this, "INICIA SESION", Toast.LENGTH_SHORT).show()
 
                         /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
@@ -418,7 +398,6 @@ class MainActivity : AppCompatActivity() {
                 }
             },
             Response.ErrorListener {
-
                 dialogNo.show()
                 Toast.makeText(this, "Respuesta: error", Toast.LENGTH_SHORT).show()
             }
@@ -442,114 +421,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-    fun errores() {
-
-        //val stringRequest = object : JsonObjectRequest(
-        val jsonParametros = JSONObject()
-        jsonParametros.put("customer_id", "53557")
-        jsonParametros.put("cell_phone", "9631350884")
-
-        val request = object : JsonObjectRequest(
-            Method.POST,
-            getString(R.string.urlLogin),
-            jsonParametros,
-            Response.Listener { response ->
-                try {
-                    //Obtiene su respuesta json
-                    //Toast.makeText(this, "Respuesta: $response", Toast.LENGTH_SHORT).show()
-                    val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
-                    findViewById<TextView>(R.id.txtPruebas).text = jsonData.getString("message")
-                    if (jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
-                    {
-                        val jsonResults =
-                            JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                        findViewById<TextView>(R.id.txtPruebas).text =
-                            jsonResults.getString("credit_id") + "\n" + response.getString("data")
-                        //se guarda en sesion el numero de prestamo
-                        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-                        val editor = prefs.edit()
-                        editor.putInt("CREDITO_ID", jsonResults.getInt("credit_id"))
-                        editor.apply()
-                        Toast.makeText(this, "Respuesta: correcto", Toast.LENGTH_SHORT).show()
-                        Toast.makeText(this, "Respuesta: $response", Toast.LENGTH_SHORT).show()
-                    } else if (jsonData.getInt("code") == 422) {
-                        val jsonResults =
-                            JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                        findViewById<TextView>(R.id.txtPruebas).text =
-                            jsonResults.getString("customer_id")
-                    }
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Respuesta: Exception", Toast.LENGTH_SHORT).show()
-                }
-            },
-            Response.ErrorListener { error ->
-                //val errorD = VolleyError(String(error.networkResponse.data))
-                val responseBody = String(error.networkResponse.data)
-                val data = JSONObject(responseBody)
-                try {
-                    val jsonData = JSONTokener(data.getString("error")).nextValue() as JSONObject
-                    val code = jsonData.getInt("code")
-                    val message = jsonData.getString("message")
-                    var mensaje = "Ocurrio un error"
-                    val jResul =
-                        JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                    val esCell_phone = jsonData.getString("results").contains("cell_phone")
-                    val esCustomer_id = jsonData.getString("results").contains("customer_id")
-
-                    if (code == 422 && esCell_phone) {
-                        mensaje = jResul.getString("cell_phone")
-                    } else if (code == 422 && esCustomer_id) {
-                        mensaje = jResul.getString("customer_id")
-                    } else {
-                        mensaje = message
-                    }
-                    findViewById<TextView>(R.id.txtPruebas).text = mensaje
-                } catch (e: Exception) {
-                    findViewById<TextView>(R.id.txtPruebas).text = e.toString()
-                }
-
-
-                //val errors = data.getJSONArray("error")
-                //val jsonMessage = errors.getJSONObject(0)
-                //val message = jsonMessage.getString("message")
-
-                //errorD.localizedMessage.toString()
-            }
-            /* override fun onErrorResponse(error: VolleyError) {
-                 Toast.makeText(this@MainActivity, "Register Error!$error", Toast.LENGTH_SHORT)
-                     .show()
-                 var body: String
-
-                 //get status code here
-                 //get status code here
-                 val statusCode = java.lang.String.valueOf(error.networkResponse.statusCode)
-                 val data = java.lang.String.valueOf(error.networkResponse.data)
-                 val errorD = VolleyError(String(error.networkResponse.data))
-                 //get response body and parse with appropriate encoding
-                 //get response body and parse with appropriate encoding
-                 try {
-                     body = String(error.networkResponse.data)
-                 } catch (e: UnsupportedEncodingException) {
-                     // exception
-                 }
-                 findViewById<TextView>(R.id.txtPruebas).text = errorD.toString()
-             }*/) {
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Content-Type"] = "application/json"
-                headers["X-Header-Email"] = "apicartera@alfin.com"
-                headers["X-Header-Password"] = "password"
-                headers["X-Header-Api-Key"] = "1df6a7c1-3057-4dcd-a73a-26bbc46bc860"
-                return headers
-            }
-        }
-        try {
-            val queue = Volley.newRequestQueue(this)
-            queue.cache.clear()
-            queue.add(request)
-        } catch (e: Exception) {
-            Toast.makeText(this, "Peticion: Exception", Toast.LENGTH_SHORT).show()
-        }
-    }
-}
+ }

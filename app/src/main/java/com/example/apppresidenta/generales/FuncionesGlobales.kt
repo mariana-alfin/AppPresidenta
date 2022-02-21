@@ -2,6 +2,7 @@ package com.example.apppresidenta.generales
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.text.InputFilter
 import android.widget.EditText
@@ -14,6 +15,7 @@ import com.example.apppresidenta.submenu.CalculadoraActivity
 import com.example.apppresidenta.submenu.HistorialActivity
 import com.example.apppresidenta.submenu.MiCuentaActivity
 import java.text.DateFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,6 +41,7 @@ class FuncionesGlobales {
             val editor = prefs.edit()
             editor.remove("CREDITO_ID")
             editor.remove("PRESIDENTA")
+            editor.remove("ID_PRESIDENTA")
             editor.remove("SESION_ACTIVA")
             editor.remove("MONTO_SEMANAL")
             editor.remove("FECHA_PAGO_CONCILIACION")
@@ -49,6 +52,20 @@ class FuncionesGlobales {
             //val inicio = Intent(activity, MainActivity::class.java)
             val inicio = Intent(activity, LoginActivity::class.java)
             return inicio
+        }
+        fun guardarVariableSesion(context: Context, tipoVal: String, variable: String, valorVariable: String) {
+            //SE GUARDA EN SESION LA VARIABLE Y EL VALOR RECIVIDOS
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val editor = prefs.edit()
+           if(tipoVal == "Float"){
+               editor.putFloat(variable,valorVariable.toFloat())
+           }else if(tipoVal == "Int"){
+               editor.putInt(variable,valorVariable.toInt())
+           }else if(tipoVal == "String"){
+               editor.putString(variable,valorVariable)
+           }
+            //editor.putFloat("MONTO_SEMANAL",jsonResults.getDouble("pay").toFloat())
+            editor.apply()
         }
 
         fun redireccionarOpcion(activity: AppCompatActivity, option: String): Intent {
@@ -119,6 +136,15 @@ class FuncionesGlobales {
             }
             return dialog
         }
-
+        fun convertPesos(monto: Double, numDecimales: Int): String {
+            /** MD SE GENERA FUNCION PARA DAR FORMATO DE PESOS
+             * RECIVE EL MONTO Y EL NUMERO DE DECIMALES A MOSTRAR
+             * RETRORNA EL VALOR YA FORMATEADO
+             */
+            val mx = Locale("es", "MX")
+            val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
+            formatPesos.maximumFractionDigits = numDecimales //MD ES PARA QUE NO TENGA DECIMALES
+            return formatPesos.format(monto)
+        }
     }
 }

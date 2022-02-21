@@ -16,21 +16,17 @@ import androidx.core.content.ContextCompat
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.R
+import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
 import org.json.JSONTokener
-import java.text.NumberFormat
 import java.util.*
 
 class DetalleClienteActivity : AppCompatActivity() {
 
-    //MD FORMATO EN PESOS MXM
-    private val mx = Locale("es", "MX")
-    private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
     lateinit var progressBar: CircularProgressIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,7 +184,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         trP.addView(prest)
 
         val txtPrestamo = TextView(this)
-        txtPrestamo.text = formatPesos.format(jsonResults.getDouble("credit_amount"))
+        txtPrestamo.text = FuncionesGlobales.convertPesos(jsonResults.getDouble("credit_amount"),0)
         txtPrestamo.setPadding(25, 20, 25, 20)
         txtPrestamo.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtPrestamo.setTypeface(null, Typeface.BOLD)
@@ -209,7 +205,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         trMp.addView(Mp)
 
         val txtMp = TextView(this)
-        txtMp.text = formatPesos.format(jsonResults.getDouble("pays_total"))
+        txtMp.text = FuncionesGlobales.convertPesos(jsonResults.getDouble("pays_total"),0)
         txtMp.setPadding(25, 20, 25, 20)
         txtMp.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtMp.setTypeface(null, Typeface.BOLD)
@@ -230,7 +226,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         trMtop.addView(mtop)
 
         val txtMtoP = TextView(this)
-        txtMtoP.text = formatPesos.format(jsonResults.getDouble("payments"))
+        txtMtoP.text = FuncionesGlobales.convertPesos(jsonResults.getDouble("payments"),0)
         txtMtoP.setPadding(25, 20, 25, 20)
         txtMtoP.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtMtoP.setTypeface(null, Typeface.BOLD)
@@ -252,7 +248,7 @@ class DetalleClienteActivity : AppCompatActivity() {
 
         val txtSV = TextView(this)
         val saldoVencido = jsonResults.getDouble("min_pay")
-        txtSV.text = formatPesos.format(saldoVencido)
+        txtSV.text = FuncionesGlobales.convertPesos(saldoVencido,0)
         txtSV.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtSV.setPadding(25, 20, 25, 20)
         txtSV.setTypeface(null, Typeface.BOLD)

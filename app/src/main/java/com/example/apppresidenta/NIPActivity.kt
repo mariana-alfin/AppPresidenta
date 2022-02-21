@@ -14,6 +14,8 @@ class NIPActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nip_activity)
+        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        FuncionesGlobales.guardarPestanaSesion(this, "MainActivity")
         /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)//flecha atras<
         supportActionBar?.title = HtmlCompat.fromHtml("<font color='#2C3B62'>" + getString(R.string.crea_nip) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
@@ -57,6 +59,15 @@ class NIPActivity : AppCompatActivity() {
                 registrarNip(nip)
 
             } else {
+                findViewById<EditText>(R.id.nip1).setText("")
+                findViewById<EditText>(R.id.nip3).setText("")
+                findViewById<EditText>(R.id.nip4).setText("")
+                findViewById<EditText>(R.id.nip2).setText("")
+                findViewById<EditText>(R.id.nipC1).setText("")
+                findViewById<EditText>(R.id.nipC3).setText("")
+                findViewById<EditText>(R.id.nipC4).setText("")
+                findViewById<EditText>(R.id.nipC2).setText("")
+                findViewById<EditText>(R.id.nip1).requestFocus()
                 FuncionesGlobales.mostrarAlert(
                     this,
                     "advertencia",

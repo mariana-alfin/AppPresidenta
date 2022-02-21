@@ -180,7 +180,7 @@
                             android:gravity="center"
                             android:layout_weight="1"
                             android:paddingTop="10dp"
-                            android:textSize="24sp"
+                            android:textSize="22sp"
                             android:text="$10,738" />
                         <TextView
                             style="@style/textAzul"
@@ -217,6 +217,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_weight="1"
                             android:paddingTop="10dp"
+                            android:textSize="18sp"
                             android:text="24/12/2021" />
 
                         <TextView
@@ -416,7 +417,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:text="BEATRIZ PAREDES JOAQUINA LOPEZ"  />
 
                         <TextView

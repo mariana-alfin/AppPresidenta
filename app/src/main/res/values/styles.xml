@@ -21,7 +21,7 @@
 
     <style name="textAzul" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/Azul1</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
@@ -43,7 +43,7 @@
     </style>
     <style name="textVerdeTitulos" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/Verde2</item>
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
 
@@ -58,5 +58,12 @@
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">sans-serif</item>
     </style>
-
+    <style name="MyAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/Verde3</item>
+        <item name="colorPrimary">@color/Amarillo</item>
+        <item name="android:colorBackground">@color/Azul3</item>
+        <item name="android:textColor">@color/Naranja</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

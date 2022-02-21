@@ -8,7 +8,8 @@
     <string name="ingresar">     Ingresar       </string>
     <string name="usuario">Usuario</string>
     <string name="title_activity_calculadora">calculadora_activity</string>
-
+    <string name="espera">Espere un momento \n Cargando información …</string>
+    <string name="ganar">AÚN PUEDES GANAR</string>
 
     <!--EXPERSIONES REGULARES -->
 
@@ -24,6 +25,9 @@
     <string name="urlDetalleCliente">https://api.micartera.test.alfin.com.mx/api/customer-credit-status</string>
     <string name="urlGuardarJunta">https://api.micartera.test.alfin.com.mx/api/group-task-create</string>
     <string name="urlEnviarEmail">https://api.micartera.test.alfin.com.mx/api/group-help-sendmail</string>
+    <string name="urlHistorialGrupo">https://api.micartera.test.alfin.com.mx/api/group-credits</string>
+    <string name="urlJuntasPgo">https://api.micartera.test.alfin.com.mx/api/group-task-show</string>
+    <string name="urlDatosJuntasPgo">https://api.micartera.test.alfin.com.mx/api/group-task-members</string>
 
     <string name="urlPagosConciliar">https://api.micartera.test.alfin.com.mx/api/group-payments</string>
     <string name="urlGuardarJuntaConciliacion">https://api.micartera.test.alfin.com.mx/api/group-task-concilied</string>
@@ -50,6 +54,7 @@
     <!--mensajes -->
     <string name="noConexion">No es posible mostrar información \n No cuenta con conexión a Internet</string>
     <string name="error">Ocurrio un error. Favor de intentarlo más tarde.</string>
+    <string name="errorServidor">Ocurrio un error. Favor de intentarlo más tarde.</string>
 
     <!--Strings para GeneralUtils.kt-->
     <!--Instalacion de Apps-->
@@ -76,7 +81,6 @@
 
     <!--Strings para Registro de Token Firebase-->
     <string name="url_registro_token">http://34.133.226.228/Servicios.svc/rest/AltaTokenFirebase</string>
-    <string name="espera">Espere un momento \n Cargando información …</string>
-    <string name="ganar">AÚN PUEDES GANAR</string>
+
     <!--Strings para Registro de Token Firebase-->
 </resources>

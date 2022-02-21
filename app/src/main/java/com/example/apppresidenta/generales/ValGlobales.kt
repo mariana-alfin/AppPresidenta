@@ -11,22 +11,27 @@ class ValGlobales {
     companion object{
         fun validarConexion(activity: AppCompatActivity): Boolean {
             //MD FUNCION PARA VALIDAR LA CONEXION DE INTERNET
-            val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            try {
+                val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
 
-            capabilities.also {
-                if (it != null){
-                    // Si hay conexión a Internet en este momento
-                    if (it.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
-                        return true
-                    else if (it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
-                        return true
+                capabilities.also {
+                    if (it != null){
+                        // Si hay conexión a Internet en este momento
+                        if (it.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
+                            return true
+                        else if (it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
+                            return true
+                        }
                     }
                 }
+                // No hay conexión a Internet en este momento
+                FuncionesGlobales.mostrarAlert(activity,"advertencia",true,"CONEXION","No cuenta con conexión a Internet",false).show()
+                return false
+            }catch (e: Exception){
+                //Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
+                return false
             }
-            // No hay conexión a Internet en este momento
-            FuncionesGlobales.mostrarAlert(activity,"advertencia",true,"CONEXION","No cuenta con conexión a Internet",false).show()
-            return false
         }
         fun validarConexionObsoleto(activity: AppCompatActivity):Boolean{
             val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -42,6 +47,7 @@ class ValGlobales {
                 // No hay conexión a Internet en este momento
             }
         }
+
     }
 
 }

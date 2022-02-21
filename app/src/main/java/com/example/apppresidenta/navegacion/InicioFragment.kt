@@ -2,7 +2,6 @@ package com.example.apppresidenta.navegacion
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,7 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.text.HtmlCompat
@@ -21,21 +19,18 @@ import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.apppresidenta.R
+import com.example.apppresidenta.databinding.Inicio2FragmentBinding
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
 import com.example.apppresidenta.generales.LoadingScreen
-import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.ValGlobales
-import com.example.apppresidenta.databinding.Inicio2FragmentBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.json.JSONObject
 import org.json.JSONTokener
-import java.text.NumberFormat
-import java.util.*
-import kotlin.collections.HashMap
 
 
 class InicioFragment : Fragment() {
@@ -60,7 +55,13 @@ class InicioFragment : Fragment() {
             FuncionesGlobales.guardarPestanaSesion(activity as AppCompatActivity, "true")
             mostrarFormato(false)
             if (ValGlobales.validarConexion(activity as AppCompatActivity)) {
-                datosDelCredito()
+                try {
+                    datosDelCredito()
+
+                }catch (e: java.lang.Exception){
+                    Toast.makeText(activity,"sf", Toast.LENGTH_SHORT).show()
+                }
+
             } else {
                 binding.txtCargando.text = getString(R.string.noConexion)
                 binding.txtCargando.gravity = Gravity.CENTER
@@ -107,11 +108,6 @@ class InicioFragment : Fragment() {
     }
     //MD HACE LA CONEXION CON EL WS PARA OBTENER LOS DATOS
     private fun datosDelCredito() {
-        //FORMATO EN PESOS MXM
-        val mx = Locale("es", "MX")
-        val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
-        formatPesos.maximumFractionDigits = 0
-
         val txtDiaPago: TextView = binding.txtDiaPago
         val txtBonificacionAcumulada: TextView = binding.txtBonificacionAcumulada
         val txtBonificacion: TextView = binding.txtBonificacion
@@ -134,102 +130,114 @@ class InicioFragment : Fragment() {
             getString(R.string.error),
             false
         )
-        val jsonParametros = JSONObject()
-        jsonParametros.put("credit_id", prestamo)
-
-        val request =
-            @SuppressLint("SetTextI18n") //<-- MD SE AGREGA PARA ADMITIR UNA VARIEDAD DE CONFIGURACIONES REGIONALES SIN TENER QUE MODIFICAR CÓDIGO EN LA CONCATENACION DE CADENAS
-            object : JsonObjectRequest(
-                Method.POST,
-                getString(R.string.urlDatosCredito),
-                jsonParametros,
-                Response.Listener { response ->
-                    try {
-                        // MD OBTIENE SU RESPUESTA JSON
-                        val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
-                        if(jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
-                        {
-                            val jsonResults = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                            val noPago =  jsonResults.getString("period") + " de " +jsonResults.getString("pays")
-                            //txtDiaPago.text = "Tu día de pago son los ${jsonResults.getString("pay_day")}"
-                            txtDiaPago.text = jsonResults.getString("pay_day")
-                            val bonificacion = 858
-                            txtBonificacionAcumulada.text = "  ${formatPesos.format(1235)}  "
-                            //txtBonificacion.text = "  ${formatPesos.format(bonificacion)}  "
-                            txtBonificacion.text = "  ${formatPesos.format(289)}  "
-                            txtPago.text = formatPesos.format(jsonResults.getDouble("pay"))
-                            /*MD SE GUARDA EN SESSION EL MONTO PAGO DEL CREDITO PARA LA VISTA DE PAGOS*/
-                            val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-                            val editor = prefs.edit()
-                            editor.putFloat("MONTO_SEMANAL", jsonResults.getDouble("pay").toFloat())
-                            editor.putString("FECHA_PAGO_CONCILIACION", jsonResults.getString("next_pay_date"))
-                            editor.apply()
-                            /*****************/
-                            //txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
-                            txtFPago.text = FuncionesGlobales.convertFecha(
-                                jsonResults.getString("next_pay_date"),
-                                "dd-MMM-yy"
-                            ).replace(".-","-").uppercase()
-
-
-                            txtNoPago.text = noPago
-                            txtMtoPag.text = formatPesos.format(jsonResults.getDouble("payments"))
-                            txtPagos.text = jsonResults.getString("due_pay")
-                            txtSaldoVencido.text = formatPesos.format(jsonResults.getDouble("min_pay"))
-                            txtAsesor.text = jsonResults.getString("zone_name")
-                            mostrarFormato(true)
-                        }else{
-                            alertError.show()
-
-                        }
-
-                    } catch (e: Exception) {
-                        if (e.message != null){
-                            alertError.show()
-                        }
-                    }
-
-                },
-                Response.ErrorListener { error ->
-                    //val errorD = VolleyError(String(error.networkResponse.data))
-                    val responseError = String(error.networkResponse.data)
-                    val dataError = JSONObject(responseError)
-                    var mensaje = getString(R.string.error)
-                    try {
-                        val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
-                        val code = jsonData.getInt("code")
-                        val message = jsonData.getString("message")
-                        val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                        if(code == 422 && jsonData.getString("results").contains("credit_id")){
-                            mensaje = jResul.getString("credit_id")
-                        }else{
-                            mensaje = message
-                        }
-                    }catch (e: Exception){
-                        mensaje = getString(R.string.error)
-                    }
-                    progressBar = binding.cargando
-                    progressBar.visibility = View.INVISIBLE
-                    binding.txtCargando.text = mensaje
-                    alertError.setMessage(mensaje)
-                    alertError.show()
-                }
-            ) {
-                override fun getHeaders(): Map<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["Content-Type"] = getString(R.string.content_type)
-                    headers["X-Header-Email"] = getString(R.string.header_email)
-                    headers["X-Header-Password"] = getString(R.string.header_password)
-                    headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
-                    return headers
-                }
-            }
         try {
+            val jsonParametros = JSONObject()
+            jsonParametros.put("credit_id", prestamo)
+
+            val request =
+                @SuppressLint("SetTextI18n") //<-- MD SE AGREGA PARA ADMITIR UNA VARIEDAD DE CONFIGURACIONES REGIONALES SIN TENER QUE MODIFICAR CÓDIGO EN LA CONCATENACION DE CADENAS
+                object : JsonObjectRequest(
+                    Method.POST,
+                    getString(R.string.urlDatosCredito),
+                    jsonParametros,
+                    Response.Listener { response ->
+                        try {
+                            // MD OBTIENE SU RESPUESTA JSON
+                            val jsonData =
+                                JSONTokener(response.getString("data")).nextValue() as JSONObject
+                            if (jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
+                            {
+                                val jsonResults =
+                                    JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                                val noPago =
+                                    jsonResults.getString("period") + " de " + jsonResults.getString(
+                                        "pays"
+                                    )
+                                //txtDiaPago.text = "Tu día de pago son los ${jsonResults.getString("pay_day")}"
+                                txtDiaPago.text = jsonResults.getString("pay_day")
+                                val bonificacion = 858
+                                txtBonificacionAcumulada.text = "  ${FuncionesGlobales.convertPesos(1235.0,0)}  "
+                                txtBonificacion.text = "  ${FuncionesGlobales.convertPesos(289.0,0)}  "
+                                txtPago.text = FuncionesGlobales.convertPesos(jsonResults.getDouble("pay"),0)
+                                /*MD SE GUARDA EN SESSION EL MONTO PAGO DEL CREDITO PARA LA VISTA DE PAGOS*/
+                                FuncionesGlobales.guardarVariableSesion(requireActivity(),"Float","MONTO_SEMANAL",jsonResults.getString("pay"))
+                                FuncionesGlobales.guardarVariableSesion(requireActivity(),"String","FECHA_PAGO_CONCILIACION",jsonResults.getString("next_pay_date"))
+
+                                /*****************/
+                                //txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
+                                txtFPago.text = FuncionesGlobales.convertFecha(
+                                    jsonResults.getString("next_pay_date"), "dd-MMM-yy"
+                                ).replace(".-", "-").uppercase()
+
+
+                                txtNoPago.text = noPago
+                                txtMtoPag.text =
+                                    FuncionesGlobales.convertPesos(jsonResults.getDouble("payments"),0)
+                                txtPagos.text = jsonResults.getString("due_pay")
+                                txtSaldoVencido.text =
+                                    FuncionesGlobales.convertPesos(jsonResults.getDouble("min_pay"),0)
+                                txtAsesor.text = jsonResults.getString("zone_name")
+                                mostrarFormato(true)
+                            } else {
+                                alertError.show()
+
+                            }
+
+                        } catch (e: Exception) {
+                            if (e.message != null) {
+                                alertError.show()
+                            }
+                        }
+
+                    },
+                    Response.ErrorListener { error ->
+                        //val errorD = VolleyError(String(error.networkResponse.data))
+                        var mensaje = getString(R.string.error)
+                        try {
+                            val responseError = String(error.networkResponse.data)
+                            val dataError = JSONObject(responseError)
+
+                            val jsonData =
+                                JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                            val code = jsonData.getInt("code")
+                            val message = jsonData.getString("message")
+                            val jResul =
+                                JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+
+                            if (code == 422 && jsonData.getString("results").contains("credit_id")){
+                                mensaje = jResul.getString("credit_id")
+                            } else {
+                                mensaje = message
+                            }
+
+                        } catch (e: Exception) {
+                            val codigo = error.networkResponse.statusCode
+                                mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+
+                        }
+                        progressBar = binding.cargando
+                        progressBar.visibility = View.INVISIBLE
+                        binding.txtCargando.text = mensaje
+                        alertError.setMessage(mensaje)
+                        alertError.show()
+                    }
+                ) {
+                    override fun getHeaders(): Map<String, String> {
+                        val headers = HashMap<String, String>()
+                        headers["Content-Type"] = getString(R.string.content_type)
+                        headers["X-Header-Email"] = getString(R.string.header_email)
+                        headers["X-Header-Password"] = getString(R.string.header_password)
+                        headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
+                        return headers
+                    }
+                }
+
             val queue = Volley.newRequestQueue(activity)
             //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
             queue.add(request)
-        }catch(e: Exception){
+        }catch (e: Exception) {
+            // Couldn't properly decode data to string
             alertError.show()
         }
         /*******  FIN ENVIO   *******/
@@ -320,6 +328,7 @@ class InicioFragment : Fragment() {
             getString(R.string.error),
             false
         )
+        try {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         val jsonParametros = JSONObject()
@@ -366,7 +375,6 @@ class InicioFragment : Fragment() {
                 return headers
             }
         }
-        try {
             val queue = Volley.newRequestQueue(activity)
             //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()

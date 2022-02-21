@@ -47,7 +47,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8">
 
-
             <EditText
                 android:id="@+id/cod1"
                 android:layout_width="50dp"
@@ -57,6 +56,7 @@
                 android:inputType="number"
                 android:maxLength="1"
                 android:textSize="30sp"
+                android:backgroundTint="@color/Verde3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -153,7 +153,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="164dp"
             android:text="TextView"
-            android:visibility="invisible"
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

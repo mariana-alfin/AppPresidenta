@@ -80,10 +80,10 @@ class LoginActivity : AppCompatActivity() {
         val alerError = FuncionesGlobales.mostrarAlert(this,"error",true,"Iniciar Sesión",getString(R.string.error),false)
 
         val jsonParametros = JSONObject()
-        //jsonParametros.put("customer_id", "164492")
-        //jsonParametros.put("cell_phone", "7752344223")
+        jsonParametros.put("customer_id", "164492")
+        jsonParametros.put("cell_phone", "7752344223")/*
         jsonParametros.put("customer_id", "171199")
-        jsonParametros.put("cell_phone", "2461072260")
+        jsonParametros.put("cell_phone", "2461072260")*/
 
         val request = object : JsonObjectRequest(
             Method.POST,
@@ -99,10 +99,7 @@ class LoginActivity : AppCompatActivity() {
                         val jsonResults =
                             JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         //se guarda en sesion el numero de prestamo
-                        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-                        val editor = prefs.edit()
-                        editor.putInt("CREDITO_ID", jsonResults.getInt("credit_id"))
-                        editor.apply()
+                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
                         /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
                         y este se registra/actualiza en nuestro servidor junto con el numero imei*/
                         //GeneralUtils.obtenerTokenNotificaciones(this, idCliente, numeroCelular)

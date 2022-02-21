@@ -29,6 +29,10 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registro_activity)
+        //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
+        FuncionesGlobales.guardarPestanaSesion(this, "MainActivity")
+        //ME SE ENVIA EL MENSAJE CON EL CODIGO
+        enviarCodigo()
         /*MD se agrega logo y titulo del la actividad*/
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)//flecha atras
         supportActionBar?.title = HtmlCompat.fromHtml("<font color='#2C3B62'>"+ getString(R.string.vCodigo)+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -175,10 +179,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         //SE DEBE DE COMPLETAR CON EL WS PENDIENTE
         //SE GENERA EL CODIGO Y SE ENVIA EN EL SMS
         val codigo = Random.nextInt(1000,9999)
-        val prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(this)
-        val editor = prefs.edit()
-        editor.putString("CODIGO_VERIFICADOR",codigo.toString())
-        editor.apply()
+        FuncionesGlobales.guardarVariableSesion(this,"String","CODIGO_VERIFICADOR",codigo.toString())
         //SOLO PARA PRUEBAS
         findViewById<TextView>(R.id.txtCodigoP).text = codigo.toString()
     }

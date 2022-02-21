@@ -27,6 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppPresidenta">
         <activity
+            android:name=".DetalleJuntaActivity"
+            android:exported="false" />
+        <activity
             android:name=".submenu.MiCuentaActivity"
             android:exported="false" />
         <activity

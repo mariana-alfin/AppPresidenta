@@ -30,14 +30,10 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
-import java.text.NumberFormat
 import java.util.*
 
 /*MD ESTE ACTIVITY ES UN REPLICA DE JUNTA LA UNICA DIFERENCIA ES QUE NO SE TOMA FOTOGRAFIA Y SE ENVIAN LOS ID_PAGOS RECIVIDOS*/
 class JuntaConciliacionActivity : CameraBaseActivity() {
-    //FORMATO EN PESOS MXM
-    private val mx = Locale("es", "MX")
-    private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
     lateinit var progressBar: CircularProgressIndicator
 
     class CteIds {
@@ -75,15 +71,17 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val FECHA_PAGO_CONCILIACION = prefs.getString("FECHA_PAGO_CONCILIACION", "")
-        val fecha = FuncionesGlobales.convertFecha(FECHA_PAGO_CONCILIACION!!, "dd-MMM-yy").replace(".-", "-").uppercase()
+        val fecha = FuncionesGlobales.convertFecha(FECHA_PAGO_CONCILIACION!!, "dd-MMM-yy")
+            .replace(".-", "-").uppercase()
         //findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: ${if (fecha.contains(".")) fecha.replace('.','-') else fecha}   "
         findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: $fecha"
         findViewById<Button>(R.id.btnGuardar).setOnClickListener {
-            guardarJunta(FECHA_PAGO_CONCILIACION)}
+            guardarJunta(FECHA_PAGO_CONCILIACION)
+        }
 
         /*MD SE AGREGA LOGO, TITULO Y SUBTITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = formatPesos.format(saldoConciliar)
+        supportActionBar?.title = FuncionesGlobales.convertPesos(saldoConciliar,2)
         supportActionBar?.subtitle = "Saldo por Conciliar"
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -226,8 +224,6 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
     //SE REUTILIZA LA FUNCION DE DATOS DEL GRUPO DEL FRAGMENT MIGRUPO
     private fun datosJunta(fechaPago: String, esCopia: Boolean) {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val prestamo = prefs.getInt("CREDITO_ID", 0)
         val alertError = FuncionesGlobales.mostrarAlert(
             this,
             "error",
@@ -236,52 +232,51 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             getString(R.string.error),
             false
         )
-        val jsonParametros = JSONObject()
-        jsonParametros.put("credit_id", prestamo)
-        jsonParametros.put("pay_date", fechaPago)
-
-        val request =
-            @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
-            object : JsonObjectRequest(
-                Method.POST,
-                getString(R.string.urlMiembrosGrupo),
-                jsonParametros,
-                Response.Listener { response ->
-                    try {
-                        //Obtiene su respuesta json
-                        val jsonData =
-                            JSONTokener(response.getString("data")).nextValue() as JSONObject
-                        if (jsonData.getInt("code") == 200) {
-                            val jsonResults = jsonData.getJSONArray("results")
-                            pintarTablaJunta(jsonResults, esCopia)
-                        }
-                    } catch (e: Exception) {
-                    }
-                },
-                Response.ErrorListener {
-                    val codigoError = it.networkResponse.statusCode
-                    /*findViewById<TextView>(R.id.txtPruebas).text = "$codigoError"
-                    Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()*/
-                    if (codigoError == 422) {
-                        alertError.setMessage("El ID de Crédito no se encontro.")
-                    } else {
-                        alertError.setMessage("Ocurrio un error")
-                    }
-                    alertError.show()
-
-                }
-            ) {
-                override fun getHeaders(): Map<String, String> {
-                    val headers = HashMap<String, String>()
-                    headers["Content-Type"] = getString(R.string.content_type)
-                    headers["X-Header-Email"] = getString(R.string.header_email)
-                    headers["X-Header-Password"] = getString(R.string.header_password)
-                    headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
-                    return headers
-                }
-            }
-
         try {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+            val prestamo = prefs.getInt("CREDITO_ID", 0)
+            val jsonParametros = JSONObject()
+            jsonParametros.put("credit_id", prestamo)
+            jsonParametros.put("pay_date", fechaPago)
+
+            val request =
+                @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
+                object : JsonObjectRequest(
+                    Method.POST,
+                    getString(R.string.urlMiembrosGrupo),
+                    jsonParametros,
+                    Response.Listener { response ->
+                        try {
+                            //Obtiene su respuesta json
+                            val jsonData =
+                                JSONTokener(response.getString("data")).nextValue() as JSONObject
+                            if (jsonData.getInt("code") == 200) {
+                                val jsonResults = jsonData.getJSONArray("results")
+                                pintarTablaJunta(jsonResults, esCopia)
+                            }
+                        } catch (e: Exception) {
+                        }
+                    },
+                    Response.ErrorListener { error ->
+                        val codigoError = error.networkResponse.statusCode
+                        if (codigoError == 422) {
+                            alertError.setMessage("El ID de Crédito no se encontro.")
+                        } else {
+                            alertError.setMessage("Error: $codigoError \n${getString(R.string.errorServidor)}")
+                        }
+                        alertError.show()
+
+                    }
+                ) {
+                    override fun getHeaders(): Map<String, String> {
+                        val headers = HashMap<String, String>()
+                        headers["Content-Type"] = getString(R.string.content_type)
+                        headers["X-Header-Email"] = getString(R.string.header_email)
+                        headers["X-Header-Password"] = getString(R.string.header_password)
+                        headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
+                        return headers
+                    }
+                }
             val queue = Volley.newRequestQueue(this)
             //primero borramos el cache y enviamos despues la peticion
             queue.cache.clear()
@@ -407,7 +402,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
 
             val couta = TextView(this)
             val mCuota = cte.getDouble("pay")
-            couta.text = formatPesos.format(mCuota)
+            couta.text = FuncionesGlobales.convertPesos(mCuota,2)
             couta.setTextColor(colorAzul)
             couta.textSize = fontTr
 
@@ -491,7 +486,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                 val txtPago = findViewById<EditText>(pgo.value)       //TEXT DE MONTO PAGO
                 if (txtPago.text.isNotEmpty()) {                      //SOLO SI NO ESTA VACIO SE AGREGA ALA SUMA
                     sumaPagos += txtPago.text.toString().toDouble()
-                    findViewById<TextView>(R.id.txtSuma).text = formatPesos.format(sumaPagos)
+                    findViewById<TextView>(R.id.txtSuma).text = FuncionesGlobales.convertPesos(sumaPagos,2)
                     if (sumaPagos > saldoPorConciliar) {
                         Toast.makeText(
                             this,
@@ -626,19 +621,25 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         val latitude = prefs.getString("LATITUD", "")
         val longitude = prefs.getString("LONGITUD", "")
 
-        val valGeoreferencia = "\"georeference_data\" : { "+
+        val valGeoreferencia = "\"georeference_data\" : { " +
                 " \"longitude\" :$longitude," +
-                " \"latitude\" : $latitude,"+
+                " \"latitude\" : $latitude," +
                 " \"image\" : null}"
 
         //JSJuntaC = "$valSolicitud ${pagosStrings.substring(0, pagosStrings.length - 1)}]}"
-        JSJuntaC = "$valSolicitud ${pagosStrings.substring(0, pagosStrings.length - 1)}], $valGeoreferencia}"
+        JSJuntaC = "$valSolicitud ${
+            pagosStrings.substring(
+                0,
+                pagosStrings.length - 1
+            )
+        }], $valGeoreferencia}"
         try {
             val jsonJuntaC = JSONObject(JSJuntaC)
             Log.e("DatosJunta", jsonJuntaC.toString());
             enviarJuntaConciliacion(jsonJuntaC)
             //findViewById<TextView>(R.id.txtJson).text = jsonJuntaC.toString()
-        } catch (e: Exception) {  }
+        } catch (e: Exception) {
+        }
     }
 
     private fun enviarJuntaConciliacion(jsonJuntaC: JSONObject) {
@@ -674,11 +675,9 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                     if (jsonData.getInt("code") == 201)//si la peticion fue correcta se continua con el login
                     {
                         alertCorrecto.setPositiveButton("Aceptar") { _, _ ->
-
                             //Se elimina la ruta de la fotografia y ubicacion para generar una nueva junta
                             GeneralUtils.eliminaVariableSesion(this, "LATITUD")
                             GeneralUtils.eliminaVariableSesion(this, "LONGITUD")
-
                             //se finaliza la actividad
                             finish()
                         }
@@ -695,15 +694,16 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                 }
             },
             Response.ErrorListener { error ->
-                val responseError = String(error.networkResponse.data)
-                val dataError = JSONObject(responseError)
+                var mensaje = getString(R.string.error)
                 try {
-                    val jsonData =
-                        JSONTokener(dataError.getString("error")).nextValue() as JSONObject
-                    alertError.setMessage(jsonData.toString())
+                    val responseError = String(error.networkResponse.data)
+                    val dataError = JSONObject(responseError)
+                    JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                 } catch (e: Exception) {
+                    val codigo = error.networkResponse.statusCode
+                    mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
                 }
-
+                alertError.setMessage(mensaje)
                 alertError.show()
                 LoadingScreen.hideLoading()
             }) {

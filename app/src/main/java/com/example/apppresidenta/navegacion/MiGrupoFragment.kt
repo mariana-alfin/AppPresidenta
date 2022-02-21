@@ -16,11 +16,11 @@ import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.example.apppresidenta.submenu.DetalleClienteActivity
-import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.R
-import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.databinding.MiGrupoFragmentBinding
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.ValGlobales
+import com.example.apppresidenta.submenu.DetalleClienteActivity
 import com.example.apppresidenta.utils.GeneralUtils.Companion.enviarMensajeWhatsApp
 import com.example.apppresidenta.utils.GeneralUtils.Companion.llamarContacto
 import com.example.apppresidenta.utils.GeneralUtils.Companion.mostrarAlertInstalarApp
@@ -29,7 +29,6 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
-import java.text.NumberFormat
 import java.util.*
 
 
@@ -37,9 +36,6 @@ class MiGrupoFragment : Fragment() {
 
     private var _binding: MiGrupoFragmentBinding? = null
 
-    // MD VARIABLES DE FORMATO EN PESOS MXM
-    private val mx = Locale("es", "MX")
-    private val formatPesos: NumberFormat = NumberFormat.getCurrencyInstance(mx)
     lateinit var progressBar: CircularProgressIndicator
 
     private val binding get() = _binding!!
@@ -70,11 +66,11 @@ class MiGrupoFragment : Fragment() {
 
         return root
     }
-/*
+
     //MD AGREGA EL MENU DE OPCIONES A LA VISTA
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
-    }*/
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -91,11 +87,12 @@ class MiGrupoFragment : Fragment() {
 
     private fun datosDelGrupo() {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Mi Grupo",getString(R.string.error),false)
+        try {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
         //val prestamo = 119483 //para pruebas
         val fecha = "" //para pruebas
-        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Mi Grupo",getString(R.string.error),false)
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", prestamo)
         jsonParametros.put("pay_date", fecha)
@@ -124,10 +121,10 @@ class MiGrupoFragment : Fragment() {
                     }
                 }, Response.ErrorListener { error ->
                     // MD MANEJO DE ERRORES EN LA RESPUESTA DE LA PETICION AL WS
-                    val responseError = String(error.networkResponse.data)
-                    val dataError = JSONObject(responseError)
                     var mensaje = getString(R.string.error)
                     try {
+                        val responseError = String(error.networkResponse.data)
+                        val dataError = JSONObject(responseError)
                         val jsonData =
                             JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                         val code = jsonData.getInt("code")
@@ -139,13 +136,14 @@ class MiGrupoFragment : Fragment() {
                         } else {
                             mensaje = message
                         }
-
                     } catch (e: Exception) {
-                        mensaje = getString(R.string.error)
+                        val codigo = error.networkResponse.statusCode
+                            mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
                     }
                     progressBar = binding.cargando
                     progressBar.visibility = View.INVISIBLE
                     binding.txtCargando.text = mensaje
+                    alertError.setMessage(mensaje)
                     alertError.show()
                 }
             ) {
@@ -162,6 +160,10 @@ class MiGrupoFragment : Fragment() {
         //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
         queue.cache.clear()
         queue.add(request)
+            }catch (e: Exception) {
+            // Couldn't properly decode data to string
+            alertError.show()
+        }
         /*******  FIN ENVIO   *******/
     }
 
@@ -257,10 +259,8 @@ class MiGrupoFragment : Fragment() {
 
             //SOLO SI ES LA PRESIDENTA SE GUARDA EN SESION EL NOMBRE
             if (cte.getString("group_rol") == "P") {
-                val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-                val editor = prefs.edit()
-                editor.putString("PRESIDENTA", cte.getString("customer_name"))
-                editor.apply()
+                FuncionesGlobales.guardarVariableSesion(requireActivity(),"String","PRESIDENTA",cte.getString("customer_name"))
+                FuncionesGlobales.guardarVariableSesion(requireActivity(),"String","ID_PRESIDENTA",cte.getString("credit_id"))
             }
 
             val tr1 = TableRow(activity)
@@ -304,7 +304,7 @@ class MiGrupoFragment : Fragment() {
             mensaje.setColorFilter(Color.GREEN)
 
             txtN.text = cte.getString("customer_name") //+" $densidad $width m$witCte"
-            txtP.text = formatPesos.format(cte.getDouble("pay"))
+            txtP.text = FuncionesGlobales.convertPesos(cte.getDouble("pay"),0)
 
             call.setOnClickListener { llamarContacto(context, cte.getString("cell_phone")) }
             mensaje.setOnClickListener {

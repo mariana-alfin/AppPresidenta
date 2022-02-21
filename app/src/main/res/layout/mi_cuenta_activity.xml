@@ -49,6 +49,7 @@
 
                     <TextView
                         style="@style/textAzul2Titulos"
+                        android:id="@+id/txtPresidenta"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -71,7 +72,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/borde_r_azule_2"
+                    android:background="@drawable/borde_r_azul"
                     android:defaultFocusHighlightEnabled="true"
                     android:elevation="@dimen/elevationCajas"
                     android:orientation="vertical">
@@ -99,6 +100,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/textBackTitulos"
+                            android:id="@+id/idCredito"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
@@ -113,10 +115,11 @@
                         android:textColorHint="@color/Azul3"
                         app:boxStrokeWidth="2dp"
                         app:startIconDrawable="@drawable/ic_user1"
-                        app:startIconTint="@color/Verde1">
+                        app:startIconTint="@color/Verde3">
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/textBackTitulos"
+                            android:id="@+id/idCliente"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
@@ -166,7 +169,7 @@
                         android:textColorHint="@color/Azul3"
                         app:boxStrokeWidth="2dp"
                         app:startIconDrawable="@drawable/ic_curp2"
-                        app:startIconTint="@color/purple_200">
+                        app:startIconTint="@color/Azul3">
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/textBackTitulos"
@@ -186,7 +189,7 @@
                         android:textColorHint="@color/Azul3"
                         app:boxStrokeWidth="2dp"
                         app:startIconDrawable="@drawable/ic_cell2"
-                        app:startIconTint="@color/teal_700">
+                        app:startIconTint="@color/Verde3">
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/textBackTitulos"
@@ -210,6 +213,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/textBackTitulos"
+                            android:id="@+id/tarjetaCliente"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
@@ -226,7 +230,7 @@
                         android:textColorHint="@color/Azul3"
                         app:boxStrokeWidth="2dp"
                         app:startIconDrawable="@drawable/ic_direccion"
-                        app:startIconTint="@color/Naranja">
+                        app:startIconTint="@color/Verde3">
 
                         <com.google.android.material.textfield.TextInputEditText
                             style="@style/textBackTitulos"
