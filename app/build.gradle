@@ -33,6 +33,13 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src\\main\\res', 'src\\main\\res\\2'
+            }
+        }
+    }
 }
 
 dependencies {

@@ -224,6 +224,14 @@ class MiGrupoFragment : Fragment() {
         txtP.textSize = fontTh
         trEn.addView(txtP)
 
+        val txt = TextView(activity)
+        txt.text = "___"
+        txt.alpha = 0.0F
+        txt.setTextColor(colorTH)
+        txt.setTypeface(null, Typeface.BOLD_ITALIC)
+        txt.textSize = fontTh
+        trEn.addView(txt)
+
         val txtL = TextView(activity)
         txtL.text = "Contacto".uppercase()
         txtL.gravity = Gravity.CENTER
@@ -296,12 +304,21 @@ class MiGrupoFragment : Fragment() {
             txtP.textSize = fontTr
             txtP.gravity = Gravity.CENTER
 
+            val linea2 = LinearLayout(activity)
             val call = ImageView(activity)
+            call.setPadding(0,0,30,0)
             call.setImageResource(R.drawable.call_24)
 
             val mensaje = ImageView(activity)
             mensaje.setImageResource(R.drawable.ic_whats)
             mensaje.setColorFilter(Color.GREEN)
+
+            val txt = TextView(activity)
+            txt.setTextColor(colorTr)
+            txt.textSize = fontTr
+            txt.text ="__"
+            txt.alpha = 0.0F
+            txt.gravity = Gravity.CENTER
 
             txtN.text = cte.getString("customer_name") //+" $densidad $width m$witCte"
             txtP.text = FuncionesGlobales.convertPesos(cte.getDouble("pay"),0)
@@ -317,8 +334,11 @@ class MiGrupoFragment : Fragment() {
             linea.setOnClickListener { detalleCliente(cte.getInt("credit_id")) }
             tr1.addView(linea)
             tr1.addView(txtP)
-            tr1.addView(call)
-            tr1.addView(mensaje)
+            tr1.addView(txt)
+            linea2.addView(call)
+            linea2.addView(mensaje)
+            linea2.gravity =  Gravity.CENTER
+            tr1.addView(linea2)
 
             tabla.addView(
                 tr1,

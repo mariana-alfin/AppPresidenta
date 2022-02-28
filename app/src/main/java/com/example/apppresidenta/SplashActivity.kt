@@ -2,8 +2,8 @@ package com.example.apppresidenta
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.example.apppresidenta.navegacion.Navegacion
 
 class SplashActivity : AppCompatActivity() {
@@ -21,6 +21,7 @@ class SplashActivity : AppCompatActivity() {
 
         val intent: Intent = if(sesionActiva){
             Intent(this, Navegacion::class.java)
+            //Intent(this, BonificacionesActivity::class.java)
         }else{
             //Intent(this, MainActivity::class.java)
             Intent(this, LoginActivity::class.java)

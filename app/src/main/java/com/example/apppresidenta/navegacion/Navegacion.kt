@@ -7,9 +7,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.R
 import com.example.apppresidenta.databinding.NavegacionActivityBinding
+import com.example.apppresidenta.generales.FuncionesGlobales
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Navegacion : AppCompatActivity() {
@@ -59,9 +59,11 @@ class Navegacion : AppCompatActivity() {
                 true
             }
             R.id.iCalculadora -> {
-                //showOption(item.title)
-                //redireccionarOpcion("CALCULADORA")
                 startActivity(FuncionesGlobales.redireccionarOpcion(this, "CALCULADORA"))
+                true
+            }
+            R.id.iBonificaciones -> {
+                startActivity(FuncionesGlobales.redireccionarOpcion(this, "MIS_BONIFICACIONES"))
                 true
             }
             R.id.iHistorial -> {

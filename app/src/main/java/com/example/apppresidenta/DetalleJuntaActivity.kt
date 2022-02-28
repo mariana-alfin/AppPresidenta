@@ -41,7 +41,7 @@ class DetalleJuntaActivity : AppCompatActivity() {
         /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title =
-            HtmlCompat.fromHtml("<font color='#FFFFFF'>Junta # $task_number</font> $pay_id",
+            HtmlCompat.fromHtml("<font color='#FFFFFF'>Junta # $task_number</font> ",//$pay_id",
                 HtmlCompat.FROM_HTML_MODE_LEGACY)
         supportActionBar?.subtitle = "Monto Capturado " + convertPesos(montoRecuperado, 2)
         supportActionBar?.setLogo(R.mipmap.icono_app)
@@ -275,7 +275,7 @@ class DetalleJuntaActivity : AppCompatActivity() {
 
             val lS = LinearLayout(this)
             val sol = TextView(this)
-            sol.text = converSolidario(cte.getInt("validate"))
+            sol.text = converSolidario(cte.getInt("result_type_id"))//+" --> "+cte.getString("result_type_id")
             sol.setTextColor(colorAzul)
             sol.textSize = fontTr
             sol.width = witPgo

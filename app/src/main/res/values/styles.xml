@@ -46,6 +46,11 @@
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
+    <style name="textVerdeTitulos18" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/Verde2</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+    </style>
 
     <style name="textBackTitulos" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/black</item>
@@ -65,5 +70,57 @@
         <item name="android:textColor">@color/Naranja</item>
         <item name="android:typeface">monospace</item>
         <item name="android:textSize">18sp</item>
+    </style>
+    <style name="txtBonAzul" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/Verde3</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:elevation">@dimen/elevationTitle</item>
+        <item name="android:background">@drawable/borde_azul</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="txtBonVerde" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/Azul3</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:elevation">@dimen/elevationTitle</item>
+        <item name="android:background">@drawable/borde_verde</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="txtSubBonVerde" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/Verde3</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">serif-monospace</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="txtSubBonAzul" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/Azul3</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">serif-monospace</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="txtWriteMonospace" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:elevation">@dimen/elevationTitle</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="txtAzulMonospace" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/Azul3</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:elevation">@dimen/elevationTitle</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:padding">5dp</item>
     </style>
 </resources>

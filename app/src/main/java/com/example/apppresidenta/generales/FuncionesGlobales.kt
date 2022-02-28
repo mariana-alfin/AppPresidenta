@@ -5,12 +5,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.text.InputFilter
+import android.util.TypedValue
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.example.apppresidenta.LoginActivity
 import com.example.apppresidenta.R
+import com.example.apppresidenta.submenu.BonificacionesActivity
 import com.example.apppresidenta.submenu.CalculadoraActivity
 import com.example.apppresidenta.submenu.HistorialActivity
 import com.example.apppresidenta.submenu.MiCuentaActivity
@@ -35,7 +37,22 @@ class FuncionesGlobales {
             //Toast.makeText(activity, "SE GUARDA EN SESION: $pestañaActiva", Toast.LENGTH_SHORT).show()
         }
 
+        fun eliminaSesion(activity: AppCompatActivity) {
+            //SE ELIMINAN TODAS LAS KEYS GUARDADAS AL MOMENTO
+            val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+            val editor = prefs.edit()
+            editor.remove("CREDITO_ID")
+            editor.remove("PRESIDENTA")
+            editor.remove("ID_PRESIDENTA")
+            editor.remove("SESION_ACTIVA")
+            editor.remove("MONTO_SEMANAL")
+            editor.remove("FECHA_PAGO_CONCILIACION")
+            //DEL SMS
+            editor.remove("CODIGO_VERIFICADOR")
+            editor.apply()
+        }
         fun cerrarSesion(activity: AppCompatActivity): Intent {
+            eliminaSesion(activity)
             //SE ELIMINAN TODAS LAS KEYS GUARDADAS AL MOMENTO
             val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
             val editor = prefs.edit()
@@ -73,6 +90,9 @@ class FuncionesGlobales {
                 "CALCULADORA" -> {
                     Intent(activity, CalculadoraActivity::class.java)
                 }
+                "MIS_BONIFICACIONES" -> {
+                    Intent(activity, BonificacionesActivity::class.java)
+                }
                 "MI_HISTORIAL" -> {
                     Intent(activity, HistorialActivity::class.java)
                 }
@@ -107,7 +127,9 @@ class FuncionesGlobales {
         fun EditText.setMaxLength(maxLength: Int) {
             filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
         }
-
+        fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
+        ).toInt()
         //SE GENERA UNA FUNCION PARA MOSTRAR ALERT'S PERSONALIZADOS
         fun mostrarAlert(activity: Activity, tipo: String,esPersonalizado: Boolean, titulo: String, mensaje: String, ejecutaAccion: Boolean): AlertDialog.Builder {
             val dialog = AlertDialog.Builder(activity, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
@@ -146,5 +168,6 @@ class FuncionesGlobales {
             formatPesos.maximumFractionDigits = numDecimales //MD ES PARA QUE NO TENGA DECIMALES
             return formatPesos.format(monto)
         }
+
     }
 }

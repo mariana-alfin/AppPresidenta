@@ -700,11 +700,13 @@ class JuntaActivity : CameraBaseActivity() {
                             alertCorrecto.show()
 
                         } else {
+                            alertError.setMessage("entra al else")
                             alertError.show()
                         }
                         LoadingScreen.hideLoading()
                     } catch (e: Exception) {
                         LoadingScreen.hideLoading()
+                        alertError.setMessage(e.message)
                         alertError.show()
                     }
                 },

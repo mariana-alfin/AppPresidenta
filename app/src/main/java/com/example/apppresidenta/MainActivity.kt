@@ -33,29 +33,22 @@ class MainActivity : AppCompatActivity() {
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this, "MainActivity")
         supportActionBar?.hide()
-        findViewById<Button>(R.id.btnLogin).setOnClickListener { validarFormulario() }
         findViewById<TextView>(R.id.txtUsuario).requestFocus()
-        /*
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val prestamo = prefs.getInt("CREDITO_ID", 0)
-        Toast.makeText(this, "CREDITO_ID : $prestamo", Toast.LENGTH_SHORT).show()
-        var densidad = ""
-            when (resources.displayMetrics.densityDpi) {
-                DisplayMetrics.DENSITY_LOW -> densidad = "ldpi"
-                DisplayMetrics.DENSITY_MEDIUM -> densidad = "mdpi"
-                DisplayMetrics.DENSITY_HIGH -> densidad ="hdpi"
-                DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_280 -> densidad = "xhdpi"
-                DisplayMetrics.DENSITY_XXHIGH, DisplayMetrics.DENSITY_360, DisplayMetrics.DENSITY_400, DisplayMetrics.DENSITY_420,DisplayMetrics.DENSITY_440,DisplayMetrics.DENSITY_450 -> densidad = "xxhdpi"
-                DisplayMetrics.DENSITY_XXXHIGH, DisplayMetrics.DENSITY_560 -> densidad = "xxxhdpi"
-            }
-        findViewById<EditText>(R.id.txtUsuario).hint = "Ingresar $densidad"
-        */
+        val parametros = this.intent.extras
+        val recuperarNip = parametros!!.getBoolean("recuperarNip", false)
+        if (recuperarNip){
+            //Toast.makeText(this, "SE RECUPERARA NIP", Toast.LENGTH_SHORT).show()
+            findViewById<Button>(R.id.btnLogin).text = "RECUPERAR NIP"
+            findViewById<Button>(R.id.btnLogin).setOnClickListener { validarFormulario(recuperarNip) }
+        }else{
+            findViewById<Button>(R.id.btnLogin).setOnClickListener { validarFormulario(false) }
+        }
     }
     //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         return when (keyCode) {
             KeyEvent.KEYCODE_ENTER -> {//AL PRECIONAR ENTER VALIDA EL FORMULARIO DE REGISTRO
-                validarFormulario()
+                validarFormulario(false)
                 true
             }
             else -> super.onKeyUp(keyCode, event)
@@ -67,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun validarFormulario() {
+    private fun validarFormulario(esRecuperarNIP: Boolean) {
         if (ValGlobales.validarConexion(this)) {
 
             val idCliente: String = findViewById<EditText>(R.id.txtUsuario).text.toString()
@@ -102,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (continua) {
-                registrarSesionWS(idCliente, numeroCelular)
+                registrarSesionWS(idCliente, numeroCelular,esRecuperarNIP)
             } else {
                 FuncionesGlobales.mostrarAlert(this, "error", true, "Registro", respuesta, false)
                     .show()
@@ -110,8 +103,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun registrarSesionWS(idCliente: String, numeroCelular: String) {
-        LoadingScreen.displayLoadingWithText(this, "Registrando información...", false)
+    private fun registrarSesionWS(idCliente: String, numeroCelular: String, esRecuperarNIP:Boolean) {
+        if(!esRecuperarNIP){
+            LoadingScreen.displayLoadingWithText(this, "Registrando información...", false)
+        }else{
+            LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
+        }
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val alerError = FuncionesGlobales.mostrarAlert(
             this,
@@ -124,6 +121,7 @@ class MainActivity : AppCompatActivity() {
         val jsonParametros = JSONObject()
         jsonParametros.put("customer_id", idCliente)
         jsonParametros.put("cell_phone", numeroCelular)
+        jsonParametros.put("nip", "1235")
 
         val request = object : JsonObjectRequest(
             Method.POST,
@@ -148,6 +146,7 @@ class MainActivity : AppCompatActivity() {
                         //obtenerTokenNotificaciones(this,idCliente,numeroCelular)//preguntar
                         val registro = Intent(this, RegistroActivity::class.java)
                         registro.putExtra("celular", numeroCelular)
+                        registro.putExtra("recuperarNip", esRecuperarNIP)
                         startActivity(registro)
                         finish()
                     } else {
@@ -188,7 +187,7 @@ class MainActivity : AppCompatActivity() {
                     //findViewById<TextView>(R.id.txtPruebas).text = e.toString()
 
                 }
-                alerError.show()
+                //alerError.show()
                 LoadingScreen.hideLoading()
             }) {
             override fun getHeaders(): Map<String, String> {
@@ -401,7 +400,6 @@ class MainActivity : AppCompatActivity() {
                 dialogNo.show()
                 Toast.makeText(this, "Respuesta: error", Toast.LENGTH_SHORT).show()
             }
-
         ) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
@@ -419,6 +417,20 @@ class MainActivity : AppCompatActivity() {
             dialogNo.show()
             Toast.makeText(this, "Peticion: Exception", Toast.LENGTH_SHORT).show()
         }
-
     }
  }
+/* MD PARA VER QUE TAMAÑO DE PANTALLA ES
+       val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+       val prestamo = prefs.getInt("CREDITO_ID", 0)
+       Toast.makeText(this, "CREDITO_ID : $prestamo", Toast.LENGTH_SHORT).show()
+       var densidad = ""
+           when (resources.displayMetrics.densityDpi) {
+               DisplayMetrics.DENSITY_LOW -> densidad = "ldpi"
+               DisplayMetrics.DENSITY_MEDIUM -> densidad = "mdpi"
+               DisplayMetrics.DENSITY_HIGH -> densidad ="hdpi"
+               DisplayMetrics.DENSITY_XHIGH, DisplayMetrics.DENSITY_280 -> densidad = "xhdpi"
+               DisplayMetrics.DENSITY_XXHIGH, DisplayMetrics.DENSITY_360, DisplayMetrics.DENSITY_400, DisplayMetrics.DENSITY_420,DisplayMetrics.DENSITY_440,DisplayMetrics.DENSITY_450 -> densidad = "xxhdpi"
+               DisplayMetrics.DENSITY_XXXHIGH, DisplayMetrics.DENSITY_560 -> densidad = "xxxhdpi"
+           }
+       findViewById<EditText>(R.id.txtUsuario).hint = "Ingresar $densidad"
+       */

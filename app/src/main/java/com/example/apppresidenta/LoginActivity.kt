@@ -1,13 +1,13 @@
 package com.example.apppresidenta
 
 import android.content.Intent
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -24,10 +24,19 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.login_activity)
         FuncionesGlobales.guardarPestanaSesion(this, "MainActivity")
         supportActionBar?.hide()
-        findViewById<Button>(R.id.btnIniSesion).setOnClickListener { iniciarSesion() }
+        //findViewById<Button>(R.id.btnIniSesion).setOnClickListener { iniciarSesion() }
+        findViewById<Button>(R.id.btnIniSesion).setOnClickListener {
+            FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID","197223")
+            val inicio = Intent(this, Navegacion::class.java)
+            startActivity(inicio)
+            finish()
+        }//para pruebas en lo que funciona el ws
         findViewById<Button>(R.id.btnRegistro).setOnClickListener { realizarRegistro() }
         findViewById<TextView>(R.id.txtNoCliente).requestFocus()
+        findViewById<TextView>(R.id.txtOlvida).paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        findViewById<TextView>(R.id.txtOlvida).setOnClickListener { recuperarNip() }
     }
+
     //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         return when (keyCode) {
@@ -38,6 +47,14 @@ class LoginActivity : AppCompatActivity() {
             else -> super.onKeyUp(keyCode, event)
         }
     }
+
+    private fun recuperarNip() {
+        val inicio = Intent(this, MainActivity::class.java)
+        inicio.putExtra("recuperarNip",true)
+        startActivity(inicio)
+        finish()
+    }
+
     private fun iniciarSesion() {
         if (ValGlobales.validarConexion(this)) {
             val idCliente: String = findViewById<EditText>(R.id.txtNoCliente).text.toString()
@@ -274,6 +291,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun realizarRegistro() {
         val registro = Intent(this, MainActivity::class.java)
+        registro.putExtra("ES_REGISTRO",true)
         startActivity(registro)
         finish()
     }

@@ -59,6 +59,7 @@ class HistorialActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        finish()
         return false
     }
 

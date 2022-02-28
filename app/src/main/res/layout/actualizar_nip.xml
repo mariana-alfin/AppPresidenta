@@ -1,0 +1,47 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+    android:layout_width = "match_parent"
+    android:gravity = "center"
+    android:layout_height = "match_parent"
+    android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/Nnip1"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="30dp"  />
+
+        <EditText
+            android:id="@+id/Nnip2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="30dp"  />
+
+        <EditText
+            android:id="@+id/Nnip3"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="30dp"  />
+
+        <EditText
+            android:id="@+id/Nnip4"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="numberPassword"
+            android:maxLength="1"
+            android:textSize="30dp" />
+    </LinearLayout>

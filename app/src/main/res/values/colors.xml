@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
     <color name="Azul1">#2C3B62</color>
+    <color name="Azul2">#487eb0</color>
     <color name="Azul3">#1F2C49</color>
     <color name="Verde1">#3C8943</color>
     <color name="Verde2">#6BA94C</color>
@@ -18,5 +19,6 @@
     <color name="AzulElectrico">#0984E3</color>
     <color name="RojoAlertas">#D63031</color>
     <color name="Naranja">#FDCB6E</color>
+    <color name="WET">#34495E</color>
 
 </resources>

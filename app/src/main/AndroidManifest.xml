@@ -27,6 +27,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppPresidenta">
         <activity
+            android:name=".submenu.BonificacionesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".submenu.RecuperarNIPActivity"
+            android:exported="false" />
+        <activity
             android:name=".DetalleJuntaActivity"
             android:exported="false" />
         <activity

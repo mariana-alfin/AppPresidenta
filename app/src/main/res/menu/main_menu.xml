@@ -5,6 +5,9 @@
         android:id="@+id/iCalculadora"
         android:title="Calculadora" />
     <item
+        android:id="@+id/iBonificaciones"
+        android:title="Mis Bonificaciones" />
+    <item
         android:id="@+id/iCuenta"
         android:title="Mi Cuenta" />
     <item

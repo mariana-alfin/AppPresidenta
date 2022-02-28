@@ -7,8 +7,21 @@
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable-v24/ic_help_24.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable-v24/miembro.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_azul.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_azul_b.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_r_azul.xml" value="0.25052083333333336" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_r_azul_2.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_r_azule_2.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_r_ver_2.xml" value="0.3390625" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_r_verde5.xml" value="0.3390625" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_redon_azul.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_redondeado_verde.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_relleno.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_verde.xml" value="0.25052083333333336" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_verde5.xml" value="0.3390625" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/borde_verde_b.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/camera.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/color_tr.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/fondo_azul.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/fondo_blanco.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/fondo_verde.xml" value="0.22135416666666666" />
@@ -17,11 +30,15 @@
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_cell2.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_clientas_grupo.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_correcto.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_curp.xml" value="0.3828125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_editar.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_inicio_g.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_launcher_background.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_mujer2.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_nip2.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_no_pago.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_pagos.xml" value="0.22135416666666666" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_pagos_c.xml" value="0.3390625" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_pags3.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_si_pago.xml" value="0.22135416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/ic_user1.xml" value="0.22135416666666666" />
@@ -32,6 +49,8 @@
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/drawable/splash_screen.xml" value="0.3828125" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout-xhdpi/main_activity.xml" value="0.33" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/activity_main.xml" value="1.23125" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/actualizar_nip.xml" value="0.25625" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/bonificaciones_activity.xml" value="0.25" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/detalle_junta_activity.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/historial_activity.xml" value="0.2984375" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/inicio2_fragment.xml" value="0.33" />
@@ -42,10 +61,11 @@
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/mi_grupo_fragment.xml" value="0.18854166666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/nip_activity.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/pagos_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/recuperar_nip_activity.xml" value="0.35260416666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/layout/registro_activity.xml" value="0.18854166666666666" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1359375" />
-        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/main_menu.xml" value="0.1359375" />
-        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/menu_inicio.xml" value="0.1359375" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/main_menu.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/menu_inicio.xml" value="0.25" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/menu_taps.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/menu/opciones_solidario.xml" value="0.1359375" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-Versionado/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.22135416666666666" />

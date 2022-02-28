@@ -48,8 +48,8 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/textAzul2Titulos"
                         android:id="@+id/txtPresidenta"
+                        style="@style/textAzul2Titulos"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_gravity="center_horizontal"
@@ -87,6 +87,7 @@
                         android:gravity="center"
                         android:text="DATOS CREDITICIOS"
                         android:textSize="17sp" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -99,13 +100,14 @@
                         app:startIconTint="@color/Azul3">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            style="@style/textBackTitulos"
                             android:id="@+id/idCredito"
+                            style="@style/textBackTitulos"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:text="174262" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -118,13 +120,12 @@
                         app:startIconTint="@color/Verde3">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            style="@style/textBackTitulos"
                             android:id="@+id/idCliente"
+                            style="@style/textBackTitulos"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:text="174263" />
-
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -165,26 +166,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:hint="CURP"
-                        android:textColorHint="@color/Azul3"
-                        app:boxStrokeWidth="2dp"
-                        app:startIconDrawable="@drawable/ic_curp2"
-                        app:startIconTint="@color/Azul3">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/textBackTitulos"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:text="GUPCS840325MDFZRR06" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
                         android:hint="TELEFONO"
                         android:textColorHint="@color/Azul3"
                         app:boxStrokeWidth="2dp"
@@ -197,7 +178,6 @@
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:text="5538792978" />
-
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -212,34 +192,82 @@
                         app:startIconTint="@color/Azul3">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            style="@style/textBackTitulos"
                             android:id="@+id/tarjetaCliente"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:text="0226478965845845" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:hint="DOMICILIO"
-                        android:textColorHint="@color/Azul3"
-                        app:boxStrokeWidth="2dp"
-                        app:startIconDrawable="@drawable/ic_direccion"
-                        app:startIconTint="@color/Verde3">
-
-                        <com.google.android.material.textfield.TextInputEditText
                             style="@style/textBackTitulos"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
-                            android:text="C Flores 23 Col. Palmas Hidalgo" />
-
+                            android:text="0226478965845845"/>
                     </com.google.android.material.textfield.TextInputLayout>
+                    <RelativeLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:hint="NIP"
+                            android:orientation="horizontal"
+                            android:textColorHint="@color/Azul3"
+                            app:boxStrokeWidth="2dp"
+                            app:startIconDrawable="@drawable/ic_lock"
+                            app:startIconTint="@color/Azul3">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/textBackTitulos"
+                                android:id="@+id/txtNips"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="****"  />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageButton
+                            android:id="@+id/btnEditarNip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@android:color/transparent"
+                            android:padding="30dp"
+                            android:elevation="@dimen/elevationCajas"
+                            android:src="@drawable/ic_editar" />
+
+                        <TextView
+                            android:id="@+id/file_type_logo_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="20dp"
+                            android:background="@drawable/save" />
+
+                    </RelativeLayout>
+
+                    <!-- <com.google.android.material.textfield.TextInputLayout
+                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_margin="10dp"
+                         android:hint="DOMICILIO"
+                         android:textColorHint="@color/Azul3"
+                         app:boxStrokeWidth="2dp"
+                         app:startIconDrawable="@drawable/ic_direccion"
+                         app:startIconTint="@color/Verde3">
+
+                         <com.google.android.material.textfield.TextInputEditText
+                             style="@style/textBackTitulos"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:enabled="false"
+                             android:text="C Flores 23 Col. Palmas Hidalgo" />
+                     </com.google.android.material.textfield.TextInputLayout>-->
                 </LinearLayout>
             </LinearLayout>
             <!--<LinearLayout

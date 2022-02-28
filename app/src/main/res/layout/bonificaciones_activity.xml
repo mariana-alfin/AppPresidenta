@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".submenu.BonificacionesActivity">
+
+
+
+
+        <LinearLayout
+            android:id="@+id/lbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/elevationCajas"
+            android:orientation="vertical"
+            android:weightSum="1"
+            android:layout_margin="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/borde_r_verde5"
+                android:elevation="@dimen/elevationCajas"
+                android:weightSum="1">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="BONIFICACIÓN"
+                    android:textColorHint="@color/Verde5"
+                    app:boxStrokeWidth="2dp"
+                    app:startIconDrawable="@drawable/ic_peso1"
+                    app:startIconTint="@color/Azul3">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/txtSubBonVerde"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="$200" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="PAGO SEMANAL"
+                    android:textColorHint="@color/Azul3"
+                    app:boxStrokeWidth="2dp"
+                    app:startIconDrawable="@drawable/ic_pago_semanal"
+                    app:startIconTint="@color/Verde5">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/txtSubBonAzul"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="$120" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:hint="RESERVA"
+                    android:textColorHint="@color/Verde1"
+                    app:boxStrokeWidth="2dp"
+                    app:startIconDrawable="@drawable/ic_pagos_c"
+                    app:startIconTint="@color/Azul3">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/txtSubBonVerde"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="$80" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+    <LinearLayout
+       android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tabla"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lbl"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TableRow
+                android:background="@color/Azul1" >
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Semanas"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Pago \n Semanal"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Reserva"
+                    android:textColor="@color/white" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="7 pagadas"
+                    android:textColor="@color/Azul3" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="$840"
+                    android:textColor="@color/Azul3" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="$560"
+                    android:textColor="@color/Azul3" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="9 x pagar"
+                    android:textColor="@color/Azul3" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="$1080"
+                    android:textColor="@color/Azul3" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="$720"
+                    android:textColor="@color/Azul3" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:gravity="right"
+                    android:text="Total"
+                    android:textColor="@color/Azul3" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="$1920"
+                    android:textColor="@color/Azul3" />
+
+                <TextView
+                    style="@style/txtWriteMonospace"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:text="$1280"
+                    android:textColor="@color/Azul3" />
+            </TableRow>
+
+
+        </TableLayout>
+
+    </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbarStyle="insideInset"
+            android:scrollbarThumbVertical="@color/Verde5"
+            android:scrollbarTrackVertical="@color/Verde3"
+            android:scrollbarSize="5dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabla">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableLayout
+                    android:id="@+id/tblBonificaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tblBonificaciones" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+        </LinearLayout>
+        <!--
+         <TableLayout
+        android:id="@+id/tableCalculadora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl"
+        app:layout_constraintVertical_bias="0.0">
+         <TableRow
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp">
+        <TextView
+            style="@style/txtBonVerde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:elevation="@dimen/elevationTitle"
+            android:gravity="center"
+            android:text="BONIFICACION"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/txtBonificacion"
+            style="@style/txtBonAzul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:elevation="@dimen/elevationTitle"
+            android:gravity="center"
+            android:text="$200"
+            android:textColor="@color/white" />
+
+    </TableRow>
+
+    <TableRow
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp">
+
+        <TextView
+            style="@style/txtBonVerde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/borde_r_azul"
+            android:text="PAGO SEMANAL" />
+
+        <TextView
+            android:id="@+id/txtPagoSemanal"
+            style="@style/txtBonVerde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/borde_r_ver_2"
+            android:gravity="center"
+            android:text="$120" />
+    </TableRow>
+
+    <TableRow
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="5dp">
+
+        <TextView
+            style="@style/txtBonVerde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:background="@drawable/borde_verde_b"
+            android:text="RESERVA"
+            android:textColor="@color/Verde5" />
+
+        <TextView
+            android:id="@+id/txtReserva"
+            style="@style/txtBonAzul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="$80"
+            android:background="@drawable/borde_azul_b"
+            android:textColor="@color/Verde5" />
+    </TableRow>
+    -->
+        <!--
+            <TableRow  android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5" />
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5" />
+
+                <TextView
+                    style="@style/txtSubBonAzul"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/fondo_blanco"
+                    android:text="PAGO SEMANAL" />
+
+                <TextView
+                    style="@style/txtSubBonAzul"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="0"
+                    android:background="@drawable/fondo_blanco"
+                    android:gravity="center"
+                    android:text="RESERVA" />
+            </TableRow>
+
+            <TableRow android:padding="5dp">
+
+                <TextView
+                    style="@style/txtBonAzul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_r_azul_2"
+                    android:padding="1dp"
+                    android:text="Semanas \n Pagadas" />
+
+                <TextView
+                    style="@style/txtBonVerde"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:padding="1dp"
+                    android:text="7" />
+
+                <TextView
+                    style="@style/txtBonAzul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_azul_b"
+                    android:padding="1dp"
+                    android:text="$512" />
+
+                <TextView
+                    style="@style/txtBonVerde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:padding="1dp"
+                    android:text="$560" />
+            </TableRow>
+
+            <TableRow android:padding="5dp">
+
+                <TextView
+                    style="@style/txtBonVerde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_r_ver_2"
+                    android:padding="1dp"
+                    android:text="Semanas \n X Pagar" />
+
+                <TextView
+                    style="@style/txtBonAzul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_azul_b"
+                    android:padding="1dp"
+                    android:text="9" />
+
+                <TextView
+                    style="@style/txtBonVerde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:padding="1dp"
+                    android:text="$1080" />
+
+                <TextView
+                    style="@style/txtBonAzul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_azul_b"
+                    android:padding="1dp"
+                    android:text="$720" />
+            </TableRow>
+
+            <TableRow android:padding="5dp">
+
+                <TextView
+                    style="@style/txtBonAzul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_r_azul_2"
+                    android:padding="1dp"
+                    android:text="Total" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:padding="1dp" />
+
+                <TextView
+                    style="@style/txtBonAzul"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_azul_b"
+                    android:padding="1dp"
+                    android:text="$1920" />
+
+                <TextView
+                    style="@style/txtBonVerde"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/borde_verde_b"
+                    android:padding="1dp"
+                    android:text="$1280" />
+            </TableRow>
+            </TableLayout>
+            -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+            <TableRow android:background="#0079D6" android:padding="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="UserId" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="User Name" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Location" />
+            </TableRow>
+            <TableRow android:background="#DAE8FC" android:padding="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Suresh Dasari" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Hyderabad" />
+            </TableRow>
+            <TableRow android:background="#DAE8FC" android:padding="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rohini Alavala" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Guntur" />
+            </TableRow>
+            <TableRow android:background="#DAE8FC" android:padding="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="3" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Trishika Dasari" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Guntur" />
+            </TableRow>
+        </TableLayout>
+    -->

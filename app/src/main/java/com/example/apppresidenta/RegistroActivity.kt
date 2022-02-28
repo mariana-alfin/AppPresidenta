@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.example.apppresidenta.generales.AppSignatureHelper
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.ReceptorSMS
@@ -26,6 +26,7 @@ import kotlin.random.Random
 
 class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
     private var smsReceiver: ReceptorSMS? = null
+    var recuperarNip: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registro_activity)
@@ -41,21 +42,25 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         supportActionBar?.setDisplayUseLogoEnabled(true)
         supportActionBar?.setBackgroundDrawable(getDrawable(R.drawable.barra_bc6))
 
-        findViewById<Button>(R.id.btnVCodigo).setOnClickListener { validarCodigo() }
-        findViewById<Button>(R.id.btnReenvCodigo).setOnClickListener { reenviarCodigo() }
-
         textChangueCodigo()//onchangue de text
-        findViewById<EditText>(R.id.cod1).requestFocus()
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        findViewById<TextView>(R.id.txtCodigoP).text = prefs.getString("CODIGO_VERIFICADOR", "0")
+        val prefs = getDefaultSharedPreferences(this)
         val parametros = this.intent.extras
         val celularEnvio = parametros!!.getString("celular", "")
+        recuperarNip = parametros!!.getBoolean("recuperarNip", false)
+        findViewById<TextView>(R.id.txtCodigoP).text = prefs.getString("CODIGO_VERIFICADOR", "0")
         findViewById<TextView>(R.id.textView8).text = "Hemos enviado un mensaje SMS con tu código de verificación al número $celularEnvio, por favor ingrésalo."
 
         //MD SE OBTIENE EL HASHKEY DE LA APP PARA LA LECTURA DEL SMS
         val appSignature = AppSignatureHelper(this)
         findViewById<TextView>(R.id.txtAppHashKey).text = appSignature.appSignatures.toString() //SOLO PARA PRUEBAS SE MUESTRA
         startSMSListener()//SE INICIA EL RECEPTOR DE LOS SMS
+        /*
+        if(recuperarNip){
+            //Toast.makeText(this, "SE RECUPERARA NIP", Toast.LENGTH_SHORT).show()
+        }*/
+        findViewById<Button>(R.id.btnVCodigo).setOnClickListener { validarCodigo() }
+        findViewById<Button>(R.id.btnReenvCodigo).setOnClickListener { reenviarCodigo() }
+        findViewById<EditText>(R.id.cod1).requestFocus()
     }
     //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
@@ -140,7 +145,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
                 findViewById<EditText>(R.id.cod2).text.toString() +
                 findViewById<EditText>(R.id.cod3).text.toString() +
                 findViewById<EditText>(R.id.cod4).text.toString()
-        val prefs = android.preference.PreferenceManager.getDefaultSharedPreferences(this)
+        val prefs = getDefaultSharedPreferences(this)
         val codigoVerificador = prefs.getString("CODIGO_VERIFICADOR", "0")
         var respuesta = ""
         var continua = false
@@ -153,6 +158,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         //SI EL CODIGO ES CORRECTO SE CONTINUA
         if(continua){
             val registraNip = Intent(this, NIPActivity::class.java)
+            registraNip.putExtra("recuperarNip", recuperarNip)
             startActivity(registraNip)
         }else{
             Toast.makeText(applicationContext,respuesta,Toast.LENGTH_SHORT).show()
