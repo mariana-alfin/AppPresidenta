@@ -275,8 +275,17 @@ class DetalleJuntaActivity : AppCompatActivity() {
 
             val lS = LinearLayout(this)
             val sol = TextView(this)
-            sol.text = converSolidario(cte.getInt("result_type_id"))//+" --> "+cte.getString("result_type_id")
-            sol.setTextColor(colorAzul)
+            val solidario = converSolidario(cte.getInt("result_type_id"))
+            var colorSolidario = when (solidario){
+                "DA" -> {ContextCompat.getColor(this, R.color.Verde3)}
+                "RE" -> {Color.RED}
+                "NA" -> {Color.BLACK}
+                else -> {Color.BLACK}
+            }
+            sol.text = solidario//+" --> "+cte.getString("result_type_id")
+            //sol.setTextColor(colorAzul)
+            sol.typeface = Typeface.DEFAULT_BOLD
+            sol.setTextColor(colorSolidario)
             sol.textSize = fontTr
             sol.width = witPgo
 
@@ -300,7 +309,7 @@ class DetalleJuntaActivity : AppCompatActivity() {
 
     fun converSolidario(valor: Int):String{
         val solidario = when (valor) {
-            1, 11 -> {
+            11 -> {
                 "DA"
             }
             12 -> {

@@ -15,6 +15,7 @@ import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.FuncionesGlobales
 
 class BonificacionesActivity : AppCompatActivity() {
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.bonificaciones_activity)

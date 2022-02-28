@@ -92,7 +92,8 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:hint="NÚMERO DE CRÉDITO"
                         android:textColorHint="@color/Azul3"
                         app:boxStrokeWidth="2dp"
@@ -105,14 +106,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
-                            android:text="174262" />
+                            android:text="174262"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:hint="NÚMERO DE CLIENTE"
                         android:textColorHint="@color/Azul3"
                         app:boxStrokeWidth="2dp"
@@ -125,7 +131,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
-                            android:text="174263" />
+                            android:text="174263"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -177,7 +185,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
-                            android:text="5538792978" />
+                            android:text="5538792978"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -197,7 +207,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
-                            android:text="0226478965845845"/>
+                            android:text="0226478965845845"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
                     <RelativeLayout
                         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -225,7 +237,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:enabled="false"
-                                android:text="****"  />
+                                android:text="****"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
