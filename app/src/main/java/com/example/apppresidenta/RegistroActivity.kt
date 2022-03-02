@@ -54,10 +54,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         val appSignature = AppSignatureHelper(this)
         findViewById<TextView>(R.id.txtAppHashKey).text = appSignature.appSignatures.toString() //SOLO PARA PRUEBAS SE MUESTRA
         startSMSListener()//SE INICIA EL RECEPTOR DE LOS SMS
-        /*
-        if(recuperarNip){
-            //Toast.makeText(this, "SE RECUPERARA NIP", Toast.LENGTH_SHORT).show()
-        }*/
+
         findViewById<Button>(R.id.btnVCodigo).setOnClickListener { validarCodigo() }
         findViewById<Button>(R.id.btnReenvCodigo).setOnClickListener { reenviarCodigo() }
         findViewById<EditText>(R.id.cod1).requestFocus()
@@ -157,8 +154,12 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         }
         //SI EL CODIGO ES CORRECTO SE CONTINUA
         if(continua){
+            val parametros = this.intent.extras
+            val idCliente = parametros!!.getString("idCliente", "0")
+
             val registraNip = Intent(this, NIPActivity::class.java)
             registraNip.putExtra("recuperarNip", recuperarNip)
+            registraNip.putExtra("idCliente", idCliente)
             startActivity(registraNip)
         }else{
             Toast.makeText(applicationContext,respuesta,Toast.LENGTH_SHORT).show()

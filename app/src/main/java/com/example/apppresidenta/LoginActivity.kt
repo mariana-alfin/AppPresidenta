@@ -24,13 +24,13 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.login_activity)
         FuncionesGlobales.guardarPestanaSesion(this, "MainActivity")
         supportActionBar?.hide()
-        //findViewById<Button>(R.id.btnIniSesion).setOnClickListener { iniciarSesion() }
-        findViewById<Button>(R.id.btnIniSesion).setOnClickListener {
+        findViewById<Button>(R.id.btnIniSesion).setOnClickListener { iniciarSesion() }
+        /*findViewById<Button>(R.id.btnIniSesion).setOnClickListener {
             FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID","197223")
             val inicio = Intent(this, Navegacion::class.java)
             startActivity(inicio)
             finish()
-        }//para pruebas en lo que funciona el ws
+        }*///para pruebas en lo que funciona el ws
         findViewById<Button>(R.id.btnRegistro).setOnClickListener { realizarRegistro() }
         findViewById<TextView>(R.id.txtNoCliente).requestFocus()
         findViewById<TextView>(R.id.txtOlvida).paintFlags = Paint.UNDERLINE_TEXT_FLAG
@@ -85,11 +85,95 @@ class LoginActivity : AppCompatActivity() {
             }
 
             if (continua) {
-                iniciarSesionWS(idCliente, nip)
+                loginWS(idCliente, nip)
             } else {
                 FuncionesGlobales.mostrarAlert(this,"error",true,"Iniciar Sesión",respuesta,false).show()
             }
         }
+    }
+    private fun loginWS(idCliente: String, nip: String) {
+        LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
+        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        val alerError = FuncionesGlobales.mostrarAlert(this,"error",true,"Iniciar Sesión",getString(R.string.error),false)
+
+
+        var json = ""
+        val valSolicitud = "{" +
+                " \"customer_id\" :$idCliente," +
+                " \"nip\" : \"$nip\","
+        val valDevice = "\"device\" : { " +
+                " \"token\" :${getString(R.string.tokenPruebas)} }"
+        json = "$valSolicitud $valDevice }"
+        val jsonParametros = JSONObject(json)
+
+        val request = object : JsonObjectRequest(
+            Method.POST,
+            getString(R.string.urlLogin),
+            jsonParametros,
+            Response.Listener { response ->
+                try {
+                    //Obtiene su respuesta json
+                    val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
+                    if (jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
+                    {
+                        // Toast.makeText(this, "Respuesta: ${response.getString("data")}", Toast.LENGTH_SHORT).show()
+                        val jsonResults =
+                            JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                        //se guarda en sesion el numero de prestamo
+                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
+                        FuncionesGlobales.guardarVariableSesion(this,"String","NOMBRE_GPO",jsonResults.getString("group_name"))
+                        FuncionesGlobales.guardarVariableSesion(this,"String","PRESIDENTA",jsonResults.getString("customer_name"))
+                        FuncionesGlobales.guardarVariableSesion(this,"String","ID_PRESIDENTA",idCliente)
+                        /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
+                        y este se registra/actualiza en nuestro servidor junto con el numero imei*/
+                        //GeneralUtils.obtenerTokenNotificaciones(this, idCliente, numeroCelular)
+                        //findViewById<TextView>(R.id.textView).text = response.getString("data")
+                        val inicio = Intent(this, Navegacion::class.java)
+                        startActivity(inicio)
+                        finish()
+                        LoadingScreen.hideLoading()
+                    } else {
+                        alerError.show()
+                        LoadingScreen.hideLoading()
+                    }
+                } catch (e: Exception) {
+                    LoadingScreen.hideLoading()
+                    alerError.show()
+                }
+            },
+            Response.ErrorListener { error ->
+                val responseError = String(error.networkResponse.data)
+                val dataError = JSONObject(responseError)
+                try {
+                    val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                    //val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                    val codigo = error.networkResponse.statusCode
+                    if(codigo == 422){
+                        alerError.setMessage("Credenciales invalidas. Favor de verificarlo")
+                    }
+                }catch (e: Exception){ }
+                alerError.show()
+                LoadingScreen.hideLoading()
+            })
+        {
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = getString(R.string.content_type)
+                headers["X-Header-Email"] = getString(R.string.header_email)
+                headers["X-Header-Password"] = getString(R.string.header_password)
+                headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
+                return headers
+            }
+        }
+        try {
+            val queue = Volley.newRequestQueue(this)
+            //primero borramos el cache y enviamos despues la peticion
+            queue.cache.clear()
+            queue.add(request)
+        }catch(e: Exception){
+            alerError.show()
+        }
+        /*******  FIN ENVIO   *******/
     }
     private fun iniciarSesionWS(idCliente: String, nip: String) {
         LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
@@ -291,7 +375,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun realizarRegistro() {
         val registro = Intent(this, MainActivity::class.java)
-        registro.putExtra("ES_REGISTRO",true)
+        registro.putExtra("recuperarNip",false)
         startActivity(registro)
         finish()
     }

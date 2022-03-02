@@ -190,17 +190,29 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
             app:strokeColor="@color/Verde3"
             app:strokeWidth="2dp" />
+
         <TextView
             android:id="@+id/textView11"
+            style="@style/textVerde"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
             android:text="@string/rec_nip"
-            style="@style/textVerde"
             android:textSize="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnConfirmarNip" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="57dp"
+            android:text="TextView"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

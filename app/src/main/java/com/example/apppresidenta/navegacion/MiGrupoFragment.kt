@@ -63,13 +63,16 @@ class MiGrupoFragment : Fragment() {
             progressBar = binding.cargando
             progressBar.visibility = View.INVISIBLE
         }
-
         return root
     }
 
     //MD AGREGA EL MENU DE OPCIONES A LA VISTA
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val grupo = prefs.getString("NOMBRE_GPO", "--")
+        /*Se agrega logo y titulo del la actividad*/
+        (activity as AppCompatActivity).supportActionBar?.title = "$grupo"
     }
 
     override fun onDestroyView() {
@@ -266,10 +269,11 @@ class MiGrupoFragment : Fragment() {
             val cte: JSONObject = jsonClientes.getJSONObject(i)
 
             //SOLO SI ES LA PRESIDENTA SE GUARDA EN SESION EL NOMBRE
+            /*
             if (cte.getString("group_rol") == "P") {
-                FuncionesGlobales.guardarVariableSesion(requireActivity(),"String","PRESIDENTA",cte.getString("customer_name"))
+                //FuncionesGlobales.guardarVariableSesion(requireActivity(),"String","PRESIDENTA",cte.getString("customer_name"))
                 FuncionesGlobales.guardarVariableSesion(requireActivity(),"String","ID_PRESIDENTA",cte.getString("credit_id"))
-            }
+            }*/
 
             val tr1 = TableRow(activity)
             tr1.setPadding(10,10,10,10)
@@ -348,6 +352,9 @@ class MiGrupoFragment : Fragment() {
                 )
             )
         }
+        /*val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+        val grupo = prefs.getString("NOMBRE_GPO", "--")
+        binding.txtMiGpo.text = grupo*/
         mostrarFormato(true)
     }
     private fun validacionesEnvioWhats(telefono: String, nombreclienta: String) {

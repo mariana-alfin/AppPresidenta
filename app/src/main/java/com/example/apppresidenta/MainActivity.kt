@@ -25,7 +25,7 @@ import org.json.JSONTokener
 
 
 class MainActivity : AppCompatActivity() {
-
+    var recuperarNip: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -35,25 +35,28 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         findViewById<TextView>(R.id.txtUsuario).requestFocus()
         val parametros = this.intent.extras
-        val recuperarNip = parametros!!.getBoolean("recuperarNip", false)
-        if (recuperarNip){
+         recuperarNip = parametros!!.getBoolean("recuperarNip", false)
+        //Toast.makeText(this, "SE RECUPERARA NIP $recuperarNip", Toast.LENGTH_SHORT).show()
+        if (recuperarNip) {
             //Toast.makeText(this, "SE RECUPERARA NIP", Toast.LENGTH_SHORT).show()
             findViewById<Button>(R.id.btnLogin).text = "RECUPERAR NIP"
             findViewById<Button>(R.id.btnLogin).setOnClickListener { validarFormulario(recuperarNip) }
-        }else{
+        } else {
             findViewById<Button>(R.id.btnLogin).setOnClickListener { validarFormulario(false) }
         }
     }
+
     //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         return when (keyCode) {
             KeyEvent.KEYCODE_ENTER -> {//AL PRECIONAR ENTER VALIDA EL FORMULARIO DE REGISTRO
-                validarFormulario(false)
+                validarFormulario(recuperarNip)
                 true
             }
             else -> super.onKeyUp(keyCode, event)
         }
     }
+
     override fun onBackPressed() {
         val home = Intent(this, LoginActivity::class.java)
         startActivity(home)
@@ -95,7 +98,11 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (continua) {
-                registrarSesionWS(idCliente, numeroCelular,esRecuperarNIP)
+                if (esRecuperarNIP){ //ES RECUPERACION DE NIP
+                    recuperarNip(idCliente, numeroCelular)
+                }else{//ES REGISTRO
+                    registroClienteWS(idCliente, numeroCelular)
+                }
             } else {
                 FuncionesGlobales.mostrarAlert(this, "error", true, "Registro", respuesta, false)
                     .show()
@@ -103,52 +110,53 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun registrarSesionWS(idCliente: String, numeroCelular: String, esRecuperarNIP:Boolean) {
-        if(!esRecuperarNIP){
+    private fun registroClienteWS(idCliente: String,numeroCelular: String) {
             LoadingScreen.displayLoadingWithText(this, "Registrando información...", false)
-        }else{
-            LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
-        }
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val alerError = FuncionesGlobales.mostrarAlert(
             this,
             "error",
             true,
-            "Registro",
+            "Registro Cliente",
             getString(R.string.error),
             false
         )
         val jsonParametros = JSONObject()
         jsonParametros.put("customer_id", idCliente)
         jsonParametros.put("cell_phone", numeroCelular)
-        jsonParametros.put("nip", "1235")
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlLogin),
+            getString(R.string.urlValicionLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {
                     //Obtiene su respuesta json
                     //Toast.makeText(this, "Respuesta: $response", Toast.LENGTH_SHORT).show()
                     val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
-                    findViewById<TextView>(R.id.txtPruebas).text = jsonData.getString("message")
-                    if (jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
+                    //findViewById<TextView>(R.id.txtPruebas).text = jsonData.getString("message")
+                    if (jsonData.getInt("code") == 200)//si la peticion fue correcta indica que ya esta registrado por lo tanto no podemos continuar
                     {
-                        val jsonResults =
-                            JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
-                        //se guarda en sesion el numero de prestamo
-                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
-                        //Toast.makeText(this, "INICIA SESION", Toast.LENGTH_SHORT).show()
+                        val alert = FuncionesGlobales.mostrarAlert(
+                            this,
+                            "advertencia",
+                            true,
+                            "Registro",
+                            "El Cliente ya se encuentra registrado, debe de iniciar sesión para continuar.",
+                            true
+                        )
+                        alert.setPositiveButton("Aceptar") { _, _ ->
+                            //SE REALIZA LA PETICION DEL LOGIN
+                            val inicio = Intent(this, LoginActivity::class.java)
+                            startActivity(inicio)
+                            finish()
+                        }
+                        alert.setNegativeButton("Cancelar") { dialog, _ ->
+                            dialog.cancel()
+                        }
+                        alert.create()
+                        alert.show()
 
-                        /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
-                        y este se registra/actualiza en nuestro servidor junto con el numero imei*/
-                        //obtenerTokenNotificaciones(this,idCliente,numeroCelular)//preguntar
-                        val registro = Intent(this, RegistroActivity::class.java)
-                        registro.putExtra("celular", numeroCelular)
-                        registro.putExtra("recuperarNip", esRecuperarNIP)
-                        startActivity(registro)
-                        finish()
                     } else {
                         alerError.show()
                         LoadingScreen.hideLoading()
@@ -181,13 +189,121 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         mensaje = message
                     }
-                    //findViewById<TextView>(R.id.txtPruebas).text = mensaje
-                    alerError.setMessage(mensaje)
+                    //SI ES REGISTRO NO SE MUESTRA EL ALERT Y SE REALIZA EL REGISTRO DE LO CONTRARIO SI ES RECUPERACION DE NIP SI SE ENVIA ALA RECUERPACION DE NIP
+                    if (mensaje == "El ID del cliente no esta registrado.") {
+                        //<- ES REGISTRO
+                        enviarARegistro(numeroCelular,idCliente,false)
+                    } else {
+                        alerError.setMessage(mensaje)
+                        alerError.show()
+                    }
+
                 } catch (e: Exception) {
                     //findViewById<TextView>(R.id.txtPruebas).text = e.toString()
-
                 }
-                //alerError.show()
+                LoadingScreen.hideLoading()
+            }) {
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = getString(R.string.content_type)
+                headers["X-Header-Email"] = getString(R.string.header_email)
+                headers["X-Header-Password"] = getString(R.string.header_password)
+                headers["X-Header-Api-Key"] = getString(R.string.header_api_key)
+                return headers
+            }
+        }
+        try {
+            val queue = Volley.newRequestQueue(this)
+            //primero borramos el cache y enviamos despues la peticion
+            queue.cache.clear()
+            queue.add(request)
+        } catch (e: Exception) {
+            //dialogNo.setMessage("Ocurrio un error ${e.message}")
+            alerError.show()
+        }
+        /*******  FIN ENVIO   *******/
+    }
+    private fun recuperarNip(idCliente: String,numeroCelular: String) {
+         LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
+
+        /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
+        val alerError = FuncionesGlobales.mostrarAlert(
+            this,
+            "error",
+            true,
+            "Recuperar NIP",
+            getString(R.string.error),
+            false
+        )
+        val jsonParametros = JSONObject()
+        jsonParametros.put("customer_id", idCliente)
+        jsonParametros.put("cell_phone", numeroCelular)
+
+        val request = object : JsonObjectRequest(
+            Method.POST,
+            //getString(R.string.urlLogin),
+            getString(R.string.urlValicionLogin),
+            jsonParametros,
+            Response.Listener { response ->
+                try {
+                    //Obtiene su respuesta json
+                    //Toast.makeText(this, "Respuesta: $response", Toast.LENGTH_SHORT).show()
+                    val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
+                    findViewById<TextView>(R.id.txtPruebas).text = jsonData.getString("message")
+                    if (jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
+                    {
+                        val jsonResults =
+                            JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                        //se guarda en sesion el numero de prestamo
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "Int",
+                            "CREDITO_ID",
+                            jsonResults.getString("credit_id"))
+                        //Toast.makeText(this, "INICIA SESION", Toast.LENGTH_SHORT).show()
+
+                        /*SI LA PETICION RETORNA UN SUCCESS YA ESTA REGISTRADO POR LO TANTO PODEMOS CONTINUAR CON LA RECUPERACION DEL NIP*/
+                       enviarARegistro(numeroCelular,idCliente,true)
+
+                    } else {
+                        alerError.show()
+                        LoadingScreen.hideLoading()
+                    }
+                    LoadingScreen.hideLoading()
+                } catch (e: Exception) {
+                    LoadingScreen.hideLoading()
+                    alerError.show()
+                }
+            },
+            Response.ErrorListener { error ->
+                //val errorD = VolleyError(String(error.networkResponse.data))
+                val responseError = String(error.networkResponse.data)
+                val dataError = JSONObject(responseError)
+                try {
+                    val jsonData =
+                        JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                    val code = jsonData.getInt("code")
+                    val message = jsonData.getString("message")
+                    var mensaje = getString(R.string.error)
+                    val jResul =
+                        JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                    val esCell_phone = jsonData.getString("results").contains("cell_phone")
+                    val esCustomer_id = jsonData.getString("results").contains("customer_id")
+
+                    if (esCell_phone) {
+                        mensaje = jResul.getString("cell_phone")
+                    } else if (esCustomer_id) {
+                        mensaje = jResul.getString("customer_id")
+                    } else {
+                        mensaje = message
+                    }
+                        alerError.setMessage(mensaje)
+                        alerError.show()
+
+                    findViewById<TextView>(R.id.txtPruebas).text = mensaje
+
+                } catch (e: Exception) {
+                    //findViewById<TextView>(R.id.txtPruebas).text = e.toString()
+                }
                 LoadingScreen.hideLoading()
             }) {
             override fun getHeaders(): Map<String, String> {
@@ -211,7 +327,16 @@ class MainActivity : AppCompatActivity() {
         /*******  FIN ENVIO   *******/
     }
 
-    /***********  FIN DE ENVIO DE SMS  **********/
+    private fun enviarARegistro(numeroCelular:String,idCliente: String, recuperarNip: Boolean) {
+        val registro = Intent(this, RegistroActivity::class.java)
+        registro.putExtra("celular", numeroCelular)
+        registro.putExtra("idCliente", idCliente)
+        registro.putExtra("recuperarNip", recuperarNip)
+        startActivity(registro)
+        finish()
+    }
+
+
     private fun iniciarSesionWS(idCliente: String, numeroCelular: String) {
         LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
@@ -247,7 +372,10 @@ class MainActivity : AppCompatActivity() {
                             JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         //findViewById<TextView>(R.id.txtPruebas).text = jsonResults.getString("credit_id") +"\n"+response.getString("data")
                         //se guarda en sesion el numero de prestamo
-                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "Int",
+                            "CREDITO_ID",
+                            jsonResults.getString("credit_id"))
                         //Toast.makeText(this, "INICIA SESION", Toast.LENGTH_SHORT).show()
 
                         /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
@@ -353,7 +481,8 @@ class MainActivity : AppCompatActivity() {
 
     fun solicitudWs() {
         val dialogNo = AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
-            .setTitle(HtmlCompat.fromHtml("<font color='#3C8943'>Ingresar</font>", HtmlCompat.FROM_HTML_MODE_LEGACY))
+            .setTitle(HtmlCompat.fromHtml("<font color='#3C8943'>Ingresar</font>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY))
             .setMessage("OCURRIO UN ERROR, FAVOR DE INTENTARLO MAS TARDE.")
             .setPositiveButton("Aceptar") { dialog, which ->
                 dialog.cancel()
@@ -418,7 +547,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Peticion: Exception", Toast.LENGTH_SHORT).show()
         }
     }
- }
+}
 /* MD PARA VER QUE TAMAÑO DE PANTALLA ES
        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
        val prestamo = prefs.getInt("CREDITO_ID", 0)

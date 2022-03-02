@@ -43,6 +43,7 @@ class FuncionesGlobales {
             val editor = prefs.edit()
             editor.remove("CREDITO_ID")
             editor.remove("PRESIDENTA")
+            editor.remove("NOMBRE_GPO")
             editor.remove("ID_PRESIDENTA")
             editor.remove("SESION_ACTIVA")
             editor.remove("MONTO_SEMANAL")
@@ -52,19 +53,8 @@ class FuncionesGlobales {
             editor.apply()
         }
         fun cerrarSesion(activity: AppCompatActivity): Intent {
-            eliminaSesion(activity)
             //SE ELIMINAN TODAS LAS KEYS GUARDADAS AL MOMENTO
-            val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
-            val editor = prefs.edit()
-            editor.remove("CREDITO_ID")
-            editor.remove("PRESIDENTA")
-            editor.remove("ID_PRESIDENTA")
-            editor.remove("SESION_ACTIVA")
-            editor.remove("MONTO_SEMANAL")
-            editor.remove("FECHA_PAGO_CONCILIACION")
-            //DEL SMS
-            editor.remove("CODIGO_VERIFICADOR")
-            editor.apply()
+            eliminaSesion(activity)
             //REDIRECCIONAMOS AL INICIO
             //val inicio = Intent(activity, MainActivity::class.java)
             val inicio = Intent(activity, LoginActivity::class.java)

@@ -18,7 +18,11 @@
     <string name="rexNIP">[0-9]{4}+</string>
 
     <!--url -->
-    <string name="urlLogin">https://api.micartera.test.alfin.com.mx/api/customer-validations</string>
+    <string name="urlLogin">https://api.micartera.test.alfin.com.mx/api/user-nip-validate</string>
+    <string name="urlValicionLogin">https://api.micartera.test.alfin.com.mx/api/customer-validations</string>
+    <string name="urlRegistroCliente">https://api.micartera.test.alfin.com.mx/api/user-app-register</string>
+    <string name="urlActualizarNip">https://api.micartera.test.alfin.com.mx/api/user-nip-update</string>
+
     <string name="urlDatosCredito">https://api.micartera.test.alfin.com.mx/api/credit-group-status</string>
     <string name="urlMiembrosGrupo">https://api.micartera.test.alfin.com.mx/api/group-members-pays</string>
     <string name="urlPagosGrupo">https://api.micartera.test.alfin.com.mx/api/group-pays</string>
@@ -81,6 +85,7 @@
 
     <!--Strings para Registro de Token Firebase-->
     <string name="url_registro_token">http://34.133.226.228/Servicios.svc/rest/AltaTokenFirebase</string>
+    <string name="tokenPruebas">asdfasdfwfwefsdfsd</string>
 
     <!--Strings para Registro de Token Firebase-->
 </resources>
