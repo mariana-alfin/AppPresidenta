@@ -2,6 +2,7 @@ package com.example.apppresidenta.submenu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.LoadingScreen
+import com.example.apppresidenta.utils.GeneralUtils
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -91,12 +93,22 @@ class RecuperarNIPActivity : AppCompatActivity() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val idCliente = prefs.getString("ID_PRESIDENTA", "--")
         LoadingScreen.displayLoadingWithText(this, "Registrando información...", false)
+
+        val token = prefs.getString(getString(R.string.token), "")
+
+        Log.d("Token","Token firebase: $token")
+
+        //Se encripta el nip para enviar al WS
+        val nipEncriptado = GeneralUtils.encriptacion(this, nip, idCliente!!, 1)!!
+
+        Log.d("Token","Nip encriptado: $nipEncriptado $nip")
+
         var json = ""
         val valSolicitud = "{" +
                 " \"customer_id\" :$idCliente," +
-                " \"nip\" : \"$nip\","
+                " \"nip\" : \"$nipEncriptado\","
         val valDevice = "\"device\" : { " +
-                " \"token\" :${getString(R.string.tokenPruebas)}}"
+                " \"token\" :\"$token\"}"
         json = "$valSolicitud $valDevice }"
         val jsonParametros = JSONObject(json)
 

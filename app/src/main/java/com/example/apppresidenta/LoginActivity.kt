@@ -3,11 +3,13 @@ package com.example.apppresidenta
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -15,6 +17,8 @@ import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.navegacion.Navegacion
+import com.example.apppresidenta.utils.GeneralUtils
+import com.example.apppresidenta.utils.GeneralUtils.Companion.creacionComplementosApp
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -91,18 +95,28 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-    private fun loginWS(idCliente: String, nip: String) {
+    fun loginWS(idCliente: String, nip: String) {
         LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
         val alerError = FuncionesGlobales.mostrarAlert(this,"error",true,"Iniciar Sesión",getString(R.string.error),false)
 
+        //Se obtiene de las variables de sesion el token de firebase
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val token = prefs.getString(getString(R.string.token), "")
+
+        Log.d("Token","Token firebase: $token")
+
+        //Se encripta el nip para enviar al WS
+        val nipEncriptado = GeneralUtils.encriptacion(this, nip, idCliente, 1)!!
+
+        Log.d("Token","Nip encriptado: $nipEncriptado $nip")
 
         var json = ""
         val valSolicitud = "{" +
                 " \"customer_id\" :$idCliente," +
-                " \"nip\" : \"$nip\","
+                " \"nip\" : \"$nipEncriptado\","
         val valDevice = "\"device\" : { " +
-                " \"token\" :${getString(R.string.tokenPruebas)} }"
+                " \"token\" :\"$token\" }"
         json = "$valSolicitud $valDevice }"
         val jsonParametros = JSONObject(json)
 
@@ -128,6 +142,11 @@ class LoginActivity : AppCompatActivity() {
                         y este se registra/actualiza en nuestro servidor junto con el numero imei*/
                         //GeneralUtils.obtenerTokenNotificaciones(this, idCliente, numeroCelular)
                         //findViewById<TextView>(R.id.textView).text = response.getString("data")
+
+                        //Si el login es correcto se inscribe a los temas de las notificaciones de firebase
+                        //y se crean los canales para las notificaciones
+                        creacionComplementosApp(this)
+
                         val inicio = Intent(this, Navegacion::class.java)
                         startActivity(inicio)
                         finish()
@@ -201,9 +220,7 @@ class LoginActivity : AppCompatActivity() {
                             JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         //se guarda en sesion el numero de prestamo
                         FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
-                        /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
-                        y este se registra/actualiza en nuestro servidor junto con el numero imei*/
-                        //GeneralUtils.obtenerTokenNotificaciones(this, idCliente, numeroCelular)
+
                         val inicio = Intent(this, Navegacion::class.java)
                         startActivity(inicio)
                         finish()

@@ -19,6 +19,10 @@ import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.example.apppresidenta.generales.AppSignatureHelper
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.ReceptorSMS
+import com.example.apppresidenta.utils.GeneralUtils
+import com.example.apppresidenta.utils.GeneralUtils.Companion.registrarVariableSesion
+import com.example.apppresidenta.utils.GeneralUtils.Companion.validaFechaActual
+import com.example.apppresidenta.utils.GeneralUtils.Companion.validaIntentosSms
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -32,8 +36,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         setContentView(R.layout.registro_activity)
         //SE GUARDA EN SESSION EN QUE PESTAÑA SE QUEDO
         FuncionesGlobales.guardarPestanaSesion(this, "MainActivity")
-        //ME SE ENVIA EL MENSAJE CON EL CODIGO
-        enviarCodigo()
+
         /*MD se agrega logo y titulo del la actividad*/
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)//flecha atras
         supportActionBar?.title = HtmlCompat.fromHtml("<font color='#2C3B62'>"+ getString(R.string.vCodigo)+"</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -52,12 +55,24 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
 
         //MD SE OBTIENE EL HASHKEY DE LA APP PARA LA LECTURA DEL SMS
         val appSignature = AppSignatureHelper(this)
-        findViewById<TextView>(R.id.txtAppHashKey).text = appSignature.appSignatures.toString() //SOLO PARA PRUEBAS SE MUESTRA
-        startSMSListener()//SE INICIA EL RECEPTOR DE LOS SMS
 
         findViewById<Button>(R.id.btnVCodigo).setOnClickListener { validarCodigo() }
-        findViewById<Button>(R.id.btnReenvCodigo).setOnClickListener { reenviarCodigo() }
+        findViewById<Button>(R.id.btnReenvCodigo).setOnClickListener { reenviarCodigo(celularEnvio,appSignature.appSignatures.toString()) }
         findViewById<EditText>(R.id.cod1).requestFocus()
+
+        findViewById<TextView>(R.id.txtAppHashKey).text = appSignature.appSignatures.toString() //SOLO PARA PRUEBAS SE MUESTRA
+
+        val permitirIntento = validaIntentosSms(this)
+
+        if(permitirIntento) {
+            //Envio de SMS
+            enviarCodigo(celularEnvio,appSignature.appSignatures.toString())
+            //INICIA EL METODO QUE ESCUCHA
+            startSMSListener()//SE INICIA EL RECEPTOR DE LOS SMS
+        }
+        else{
+            Toast.makeText(this, "Se terminaron los intentos por este día", Toast.LENGTH_SHORT).show()
+        }
     }
     //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
@@ -182,15 +197,17 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         //INMEDIATAMENTE DESPUES DE LEER EL CODIGO SE DEBE DE VALIDAR QUE SEA CORRECTO PARA ABRIR VENTANA DE NIP
         validarCodigo()
     }
-    fun enviarCodigo(){
+    fun enviarCodigo(numeroCelular: String,appSignature: String){
         //SE DEBE DE COMPLETAR CON EL WS PENDIENTE
         //SE GENERA EL CODIGO Y SE ENVIA EN EL SMS
         val codigo = Random.nextInt(1000,9999)
         FuncionesGlobales.guardarVariableSesion(this,"String","CODIGO_VERIFICADOR",codigo.toString())
         //SOLO PARA PRUEBAS
         findViewById<TextView>(R.id.txtCodigoP).text = codigo.toString()
+
+        GeneralUtils.envioSms(this,numeroCelular,codigo.toString(),appSignature)
     }
-    fun reenviarCodigo(){
+    fun reenviarCodigo(numeroCelular: String,appSignature: String){
         //ENVIA NUEVAMENTE EL CODIGO
         //LIMPIA INPUTS
         findViewById<TextView>(R.id.cod1).text = ""
@@ -203,10 +220,18 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         findViewById<TextView>(R.id.cod2).background.setTint(Color.GRAY)
         findViewById<TextView>(R.id.cod3).background.setTint(Color.GRAY)
         findViewById<TextView>(R.id.cod4).background.setTint(Color.GRAY)
-        //METODO PENDIENTE
-        enviarCodigo()
-        //INICIA EL METODO QUE ESCUCHA
-        startSMSListener()
+
+        val permitirIntento = validaIntentosSms(this)
+
+        if(permitirIntento) {
+            //METODO PENDIENTE
+            enviarCodigo(numeroCelular, appSignature)
+            //INICIA EL METODO QUE ESCUCHA
+            startSMSListener()
+        }
+        else{
+            Toast.makeText(this, "Se terminaron los intentos por este día", Toast.LENGTH_SHORT).show()
+        }
     }
     /********  MD FUNCIONES PARA EJECUTAR LA ESCUCHA DE SMS   ********/
     /**

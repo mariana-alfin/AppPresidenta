@@ -85,7 +85,20 @@
 
     <!--Strings para Registro de Token Firebase-->
     <string name="url_registro_token">http://34.133.226.228/Servicios.svc/rest/AltaTokenFirebase</string>
+    <string name="token">TOKEN_FIREBASE</string>
     <string name="tokenPruebas">asdfasdfwfwefsdfsd</string>
-
     <!--Strings para Registro de Token Firebase-->
+
+    <!--Strings para Envio Sms-->
+    <string name="idApp">1000</string>
+    <string name="url_envio_sms">http://34.133.226.228:90/Servicios.svc/rest/ConfirmacionSms</string>
+    <!--Strings para Envio Sms-->
+
+    <!--Mensaje para error envio sms-->
+    <string name="error_sms">Ocurrio un error, favor de intentarlo más tarde.</string>
+    <!--fin mensaje para error envio sms-->
+
+    <!--String para configuracion del tema oscuro-->
+    <string name="configuracion_tema_llave" translatable="false">theme</string>
+    <!--Fin para configuracion del tema oscuro-->
 </resources>

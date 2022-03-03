@@ -380,7 +380,7 @@ class MainActivity : AppCompatActivity() {
 
                         /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
                         y este se registra/actualiza en nuestro servidor junto con el numero imei*/
-                        obtenerTokenNotificaciones(this, idCliente, numeroCelular)
+                        //obtenerTokenNotificaciones(this, idCliente, numeroCelular)
 
                         val home = Intent(this, Navegacion::class.java)
                         startActivity(home)

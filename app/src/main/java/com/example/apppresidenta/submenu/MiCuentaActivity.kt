@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageButton
@@ -22,6 +23,7 @@ import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.toDp
 import com.example.apppresidenta.generales.LoadingScreen
+import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.json.JSONObject
@@ -117,12 +119,22 @@ class MiCuentaActivity : AppCompatActivity() {
         LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val idCliente = prefs.getString("ID_PRESIDENTA", "--")
+
+        val token = prefs.getString(getString(R.string.token), "")
+
+        Log.d("Token","Token firebase: $token")
+
+        //Se encripta el nip para enviar al WS
+        val nipEncriptado = GeneralUtils.encriptacion(this, nipCaptura, idCliente!!, 1)!!
+
+        Log.d("Token","Nip encriptado: $nipEncriptado $nipCaptura")
+
             var json1 = ""
             val valSolicitud = "{" +
                     " \"customer_id\" :$idCliente," +
-                    " \"nip\" : \"$nipCaptura\","
+                    " \"nip\" : \"$nipEncriptado\","
             val valDevice = "\"device\" : { " +
-                    " \"token\" :${getString(R.string.tokenPruebas)}}"
+                    " \"token\" :\"$token\"}"
             json1 = "$valSolicitud $valDevice }"
         var jsonParametros = JSONObject(json1)
 

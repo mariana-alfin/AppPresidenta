@@ -2,6 +2,7 @@ package com.example.apppresidenta
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
@@ -9,12 +10,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.navegacion.Navegacion
+import com.example.apppresidenta.utils.GeneralUtils
+import com.example.apppresidenta.utils.GeneralUtils.Companion.encriptacion
+import kotlinx.android.synthetic.main.mi_cuenta_activity.*
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -113,14 +118,26 @@ class NIPActivity : AppCompatActivity() {
     private fun recuperarNip(nip: String) {
         LoadingScreen.displayLoadingWithText(this, "Registrando información...", false)
 
+        //Se obtiene de las variables de sesion el token de firebase
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val token = prefs.getString(getString(R.string.token), "")
+
+        Log.d("Token","Token firebase: $token")
+
         val parametros = this.intent.extras
         val idCliente = parametros!!.getString("idCliente", "0")
+
+        //Se encripta el nip para enviar al WS
+        val nipEncriptado = encriptacion(this,nip,idCliente,1)!!
+
+        Log.d("Token","Nip encriptado: $nipEncriptado $nip")
+
         var json = ""
         val valSolicitud = "{" +
                 " \"customer_id\" :$idCliente," +
-                " \"nip\" : \"$nip\","
+                " \"nip\" : \"$nipEncriptado\","
         val valDevice = "\"device\" : { " +
-                " \"token\" :${getString(R.string.tokenPruebas)}}"
+                " \"token\" :\"$token\"}"
         json = "$valSolicitud $valDevice }"
         val jsonParametros = JSONObject(json)
 
@@ -213,15 +230,27 @@ class NIPActivity : AppCompatActivity() {
 
     private fun login(idCliente: String,nip: String,esRegistro: Boolean, json: JSONObject) {
         LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
+
+        //Se obtiene de las variables de sesion el token de firebase
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val token = prefs.getString(getString(R.string.token), "")
+
+        Log.d("Token","Token firebase: $token")
+
+        //Se encripta el nip para enviar al WS
+        val nipEncriptado = encriptacion(this,nip,idCliente,1)!!
+
+        Log.d("Token","Nip encriptado: $nipEncriptado $nip")
+
         var jsonParametros = json
         //SI ES REGISTRO SE GENERA EL JSON CON LOS PARAMETRO DE LO CONTRARIO SE USAN LOS QUE LLEGAN
         if(esRegistro){
             var json1 = ""
             val valSolicitud = "{" +
                     " \"customer_id\" :$idCliente," +
-                    " \"nip\" : \"$nip\","
+                    " \"nip\" : \"$nipEncriptado\","
             val valDevice = "\"device\" : { " +
-                    " \"token\" :${getString(R.string.tokenPruebas)}}"
+                    " \"token\" :\"$token\"}"
             json1 = "$valSolicitud $valDevice }"
             jsonParametros = JSONObject(json1)
         }
@@ -246,6 +275,11 @@ class NIPActivity : AppCompatActivity() {
                         FuncionesGlobales.guardarVariableSesion(this,"String","NOMBRE_GPO",jsonResults.getString("group_name"))
                         FuncionesGlobales.guardarVariableSesion(this,"String","PRESIDENTA",jsonResults.getString("customer_name"))
                         FuncionesGlobales.guardarVariableSesion(this,"String","ID_PRESIDENTA",idCliente)
+
+                        //Si el login es correcto se inscribe a los temas de las notificaciones de firebase
+                        //y se crean los canales para las notificaciones
+                        GeneralUtils.creacionComplementosApp(this)
+
                         val inicio = Intent(this, Navegacion::class.java)
                         startActivity(inicio)
                         finish()
@@ -413,18 +447,30 @@ class NIPActivity : AppCompatActivity() {
         }*/
         LoadingScreen.displayLoadingWithText(this, "Registrando información...", false)
 
+        //Se obtiene de las variables de sesion el token de firebase
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val token = prefs.getString(getString(R.string.token), "")
+
+        Log.d("Token","Token firebase: $token")
+
         val parametros = this.intent.extras
         val idCliente = parametros!!.getString("idCliente", "0")
+
+        //Se encripta el nip para enviar al WS
+        val nipEncriptado = encriptacion(this,nip,idCliente,1)!!
+
+        Log.d("Token","Nip encriptado: $nipEncriptado $nip")
+
         var json = ""
         val valSolicitud = "{" +
                 " \"app_id\" :1," +
                 " \"customer_id\" :$idCliente," +
-                " \"nip\" : \"$nip\"," +
+                " \"nip\" : \"$nipEncriptado\"," +
                 " \"sms_code\" :null," +
                 " \"status\" : 1," +
                 " \"group_id\" :null,"
         val valDevice = "\"device\" : { " +
-                " \"token\" :${getString(R.string.tokenPruebas)} ,"+
+                " \"token\" :\"$token\" ,"+
                 " \"model\" :null,"+
                 " \"brand\" : null }"
         json = "$valSolicitud $valDevice }"
