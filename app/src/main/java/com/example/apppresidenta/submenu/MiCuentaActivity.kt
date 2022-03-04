@@ -23,6 +23,7 @@ import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.toDp
 import com.example.apppresidenta.generales.LoadingScreen
+import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -104,7 +105,9 @@ class MiCuentaActivity : AppCompatActivity() {
         alert.setPositiveButton("ACEPTAR") { dialog, which ->
                 // Respond to positive button press
                 if(input.text.toString().isNotEmpty()) {
-                     validaNip(input.text.toString())
+                    if (ValGlobales.validarConexion(this)) {
+                        validaNip(input.text.toString())
+                    }
                 }else{
                      ingresarNip(true)
                     }

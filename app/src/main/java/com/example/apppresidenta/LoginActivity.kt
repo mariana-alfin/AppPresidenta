@@ -165,11 +165,13 @@ class LoginActivity : AppCompatActivity() {
                 val dataError = JSONObject(responseError)
                 try {
                     val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
-                    //val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                    val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                     val codigo = error.networkResponse.statusCode
                     if(codigo == 422){
-                        alerError.setMessage("Credenciales invalidas. Favor de verificarlo")
+                      //  alerError.setMessage("Credenciales invalidas. Favor de verificarlo")
+                        alerError.setMessage(jResul.toString() + " parametros "+jsonParametros)
                     }
+                    alerError.setMessage(jResul.toString() + " parametros "+jsonParametros)
                 }catch (e: Exception){ }
                 alerError.show()
                 LoadingScreen.hideLoading()

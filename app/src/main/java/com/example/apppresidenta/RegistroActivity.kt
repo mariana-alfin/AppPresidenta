@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Button
@@ -20,10 +21,9 @@ import com.example.apppresidenta.generales.AppSignatureHelper
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.ReceptorSMS
 import com.example.apppresidenta.utils.GeneralUtils
-import com.example.apppresidenta.utils.GeneralUtils.Companion.registrarVariableSesion
-import com.example.apppresidenta.utils.GeneralUtils.Companion.validaFechaActual
 import com.example.apppresidenta.utils.GeneralUtils.Companion.validaIntentosSms
 import com.google.android.gms.auth.api.phone.SmsRetriever
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.random.Random
@@ -57,7 +57,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         val appSignature = AppSignatureHelper(this)
 
         findViewById<Button>(R.id.btnVCodigo).setOnClickListener { validarCodigo() }
-        findViewById<Button>(R.id.btnReenvCodigo).setOnClickListener { reenviarCodigo(celularEnvio,appSignature.appSignatures.toString()) }
+        findViewById<Button>(R.id.btnReenvCodigo2).setOnClickListener { reenviarCodigo(celularEnvio,appSignature.appSignatures.toString()) }
         findViewById<EditText>(R.id.cod1).requestFocus()
 
         findViewById<TextView>(R.id.txtAppHashKey).text = appSignature.appSignatures.toString() //SOLO PARA PRUEBAS SE MUESTRA
@@ -69,6 +69,26 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
             enviarCodigo(celularEnvio,appSignature.appSignatures.toString())
             //INICIA EL METODO QUE ESCUCHA
             startSMSListener()//SE INICIA EL RECEPTOR DE LOS SMS
+            /*MD SE ESTABLECE UN CONTADOR DE 60 SEGUNDO PARA PODER REENVIAR EL SMS*/
+            val btn = findViewById<Button>(R.id.btnReenvCodigo)
+            val btn2 = findViewById<Button>(R.id.btnReenvCodigo2)
+            val countDownTimer = object : CountDownTimer(60000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    btn.visibility = View.VISIBLE
+                    btn.isEnabled = false
+                    btn.text = java.lang.String.format(Locale.getDefault(),
+                        "Reenviar (%d)",
+                        millisUntilFinished / 1000L)
+                    btn2.visibility = View.INVISIBLE
+                }
+                override fun onFinish() {
+                    //    textView.text = "Pulse boton para reenviar Código"
+                    btn.visibility = View.INVISIBLE
+                    btn2.visibility = View.VISIBLE
+                    btn2.text = "Reenviar"
+                    btn2.isEnabled = true
+                }
+            }.start()
         }
         else{
             Toast.makeText(this, "Se terminaron los intentos por este día", Toast.LENGTH_SHORT).show()
@@ -232,6 +252,42 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         else{
             Toast.makeText(this, "Se terminaron los intentos por este día", Toast.LENGTH_SHORT).show()
         }
+        try {
+            val prefs = getDefaultSharedPreferences(this)
+            val intentos = prefs.getString("INTENTOS", "0")!!.toInt()
+            if (intentos == 2){
+                /*MD SE ESTABLECE UN CONTADOR DE 60 SEGUNDO PARA PODER REENVIAR EL SMS*/
+                val btn = findViewById<Button>(R.id.btnReenvCodigo)
+                val btn2 = findViewById<Button>(R.id.btnReenvCodigo2)
+                val countDownTimer = object : CountDownTimer(120000, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        btn.visibility = View.VISIBLE
+                        btn.isEnabled = false
+                        btn.text = java.lang.String.format(Locale.getDefault(),
+                            "Reenviar (%d)",
+                            millisUntilFinished / 1000L)
+                        btn2.visibility = View.INVISIBLE
+                    }
+                    override fun onFinish() {
+                        btn.visibility = View.INVISIBLE
+                        btn2.visibility = View.VISIBLE
+                        btn2.text = "Reenviar"
+                        btn2.isEnabled = true
+                    }
+                }.start()
+            }else{
+                val btn = findViewById<Button>(R.id.btnReenvCodigo)
+                val btn2 = findViewById<Button>(R.id.btnReenvCodigo2)
+                btn.isEnabled = false
+                btn.text = "Reenviar"
+                btn.visibility = View.VISIBLE
+                btn2.visibility = View.INVISIBLE
+                Toast.makeText(this, "Se terminaron los intentos por este día", Toast.LENGTH_SHORT).show()
+            }
+        }catch (e: Exception){
+
+        }
+
     }
     /********  MD FUNCIONES PARA EJECUTAR LA ESCUCHA DE SMS   ********/
     /**
@@ -243,13 +299,11 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         try {
             smsReceiver = ReceptorSMS()
             smsReceiver!!.initOTPListener(this)
-
             val intentFilter = IntentFilter()
             intentFilter.addAction(SmsRetriever.SMS_RETRIEVED_ACTION)
             this.registerReceiver(smsReceiver, intentFilter)
 
             val client = SmsRetriever.getClient(this)
-
             val task = client.startSmsRetriever()
             task.addOnSuccessListener {
                 // API successfully started
@@ -260,7 +314,6 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
     //MD SI LA LECTURA ES SUCCESS
     override fun onOTPReceived(otp: String) {

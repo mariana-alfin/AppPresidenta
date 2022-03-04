@@ -16,10 +16,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.LoadingScreen
+import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.navegacion.Navegacion
 import com.example.apppresidenta.utils.GeneralUtils
 import com.example.apppresidenta.utils.GeneralUtils.Companion.encriptacion
-import kotlinx.android.synthetic.main.mi_cuenta_activity.*
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -77,14 +77,14 @@ class NIPActivity : AppCompatActivity() {
             //SON IGUALES
             findViewById<TextView>(R.id.textView9).text = "nip $nip nipC $nipC"
             if (nip == nipC) {
-
-                //MD SI ES EL REGISTRO NORMAL CONTINUA CON REGISTRAR NIP DE LO CONTRARIO CON LA ACTUALIZACION DEL NIP
-                    if(!recuperarNip){
+                if (ValGlobales.validarConexion(this)) {
+                    //MD SI ES EL REGISTRO NORMAL CONTINUA CON REGISTRAR NIP DE LO CONTRARIO CON LA ACTUALIZACION DEL NIP
+                    if (!recuperarNip) {
                         registrarNip(nip)
-                    }else{
+                    } else {
                         recuperarNip(nip)
                     }
-
+                }
             } else {
                 findViewById<EditText>(R.id.nip1).setText("")
                 findViewById<EditText>(R.id.nip3).setText("")
