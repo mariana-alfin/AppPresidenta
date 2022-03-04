@@ -282,7 +282,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
                 btn.text = "Reenviar"
                 btn.visibility = View.VISIBLE
                 btn2.visibility = View.INVISIBLE
-                Toast.makeText(this, "Se terminaron los intentos por este día", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Se terminaron los intentos por este día", Toast.LENGTH_SHORT).show()
             }
         }catch (e: Exception){
 
