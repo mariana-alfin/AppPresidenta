@@ -58,10 +58,10 @@ class Navegacion : AppCompatActivity() {
                 startActivity(FuncionesGlobales.redireccionarOpcion(this, "MI_CUENTA"))
                 true
             }
-            R.id.iCalculadora -> {
+          /*  R.id.iCalculadora -> {
                 startActivity(FuncionesGlobales.redireccionarOpcion(this, "CALCULADORA"))
                 true
-            }
+            }*/
             R.id.iBonificaciones -> {
                 startActivity(FuncionesGlobales.redireccionarOpcion(this, "MIS_BONIFICACIONES"))
                 true

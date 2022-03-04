@@ -19,7 +19,6 @@ import com.example.apppresidenta.generales.FuncionesGlobales
 import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.navegacion.Navegacion
-import com.example.apppresidenta.utils.GeneralUtils.Companion.obtenerTokenNotificaciones
 import org.json.JSONObject
 import org.json.JSONTokener
 

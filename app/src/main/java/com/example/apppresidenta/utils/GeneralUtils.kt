@@ -15,25 +15,18 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Base64
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.preference.PreferenceManager
-import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.LoginActivity
 import com.example.apppresidenta.R
-import com.example.apppresidenta.RegistroActivity
+import com.example.apppresidenta.generales.FuncionesGlobales
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import org.json.JSONObject
-import org.json.JSONTokener
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileFilter
 import java.security.Key
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
@@ -244,8 +237,8 @@ class GeneralUtils {
             val appId = contexto!!.getString(R.string.idApp).toInt()
             val jsonParametros = JSONObject()
             jsonParametros.put("aplicacionId", appId)
-            jsonParametros.put("celular", numeroCelular)
-            //jsonParametros.put("celular", "5611363168")
+            //jsonParametros.put("celular", numeroCelular)
+            jsonParametros.put("celular", "5547999288")
             jsonParametros.put("mensaje", mensaje)
 
             val request = object : JsonObjectRequest(
@@ -256,6 +249,14 @@ class GeneralUtils {
                     try {
                         //Obtiene su respuesta json
                         Log.d("Envio SMS","Respuesta: $response")
+                        FuncionesGlobales.mostrarAlert(
+                            (contexto as Activity),
+                            "correcto",
+                            true,
+                            "Mensaje Enviado",
+                            "na",
+                            false
+                        ).show()
                         //Toast.makeText(contexto, "Respuesta: $response", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
                         Log.e("Envio SMS","Ocurrio un error en el envio sms: $e")

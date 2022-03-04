@@ -12,9 +12,9 @@
     <item
         android:id="@+id/iBonificaciones"
         android:title="Mis Bonificaciones" />
-    <item
+    <!--<item
         android:id="@+id/iCalculadora"
-        android:title="Calculadora" />
+        android:title="Calculadora" />-->
     <item
         android:id="@+id/iHistorial"
         android:title="Mi Historial"/>

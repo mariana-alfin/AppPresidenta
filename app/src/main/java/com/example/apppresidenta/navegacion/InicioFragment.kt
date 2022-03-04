@@ -249,7 +249,7 @@ class InicioFragment : Fragment() {
                 solicitarSoporte()
                 true
             }
-            R.id.iCalculadora -> {
+            /*R.id.iCalculadora -> {
                 //showOption(item.title)
                 //redireccionarOpcion("CALCULADORA")
                 startActivity(
@@ -259,7 +259,7 @@ class InicioFragment : Fragment() {
                     )
                 )
                 true
-            }
+            }*/
             R.id.iHistorial -> {
                 startActivity(
                     FuncionesGlobales.redireccionarOpcion(
