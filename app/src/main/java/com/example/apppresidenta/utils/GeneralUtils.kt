@@ -324,7 +324,7 @@ class GeneralUtils {
 
                 val diaMes = calendario.get(Calendar.DAY_OF_MONTH)
                 val diaAno = calendario.get(Calendar.DAY_OF_YEAR)
-                val semanaAno = calendario.get(Calendar.WEEK_OF_YEAR)
+                //val semanaAno = calendario.get(Calendar.WEEK_OF_YEAR)
                 val ano = calendario.get(Calendar.YEAR)
                 var diaLetra = ""
                 val numeroDia: Int = calendario.get(Calendar.DAY_OF_WEEK)
@@ -342,7 +342,7 @@ class GeneralUtils {
                 val diaParte2 = convertirCadenaToHex(diaLetra.substring(1,2))
                 val diaParte3 = convertirCadenaToHex(diaLetra.substring(2,3))
 
-                val sumaNumeros = (ano-(diaMes+diaAno))+semanaAno
+                val sumaNumeros = (ano-(diaMes+diaAno))
 
                 val keyNormal = "$diaMes$diaLetra$diaParte1$diaAno$diaParte2$sumaNumeros$diaParte3"
 

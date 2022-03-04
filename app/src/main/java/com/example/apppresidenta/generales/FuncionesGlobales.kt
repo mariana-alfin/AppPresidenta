@@ -48,8 +48,6 @@ class FuncionesGlobales {
             editor.remove("SESION_ACTIVA")
             editor.remove("MONTO_SEMANAL")
             editor.remove("FECHA_PAGO_CONCILIACION")
-            //Eliminacion del token para notificaciones
-            editor.remove(activity.getString(R.string.token))
             //DEL SMS
             editor.remove("CODIGO_VERIFICADOR")
             editor.apply()
