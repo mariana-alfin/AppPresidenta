@@ -4,8 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.obtenerTokenNotificaciones
+import com.example.apppresidenta.generales.TemaConfiguracion
 import com.example.apppresidenta.navegacion.Navegacion
-import com.example.apppresidenta.utils.GeneralUtils.Companion.obtenerTokenNotificaciones
 
 class SplashActivity : AppCompatActivity() {
 

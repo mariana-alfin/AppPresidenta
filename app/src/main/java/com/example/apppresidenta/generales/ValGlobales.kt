@@ -1,9 +1,13 @@
 package com.example.apppresidenta.generales
 
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 
 
 class ValGlobales {
@@ -46,6 +50,54 @@ class ValGlobales {
                 false
                 // No hay conexión a Internet en este momento
             }
+        }
+
+        /**FUNCIONES QUE ESTABAN EN EL ARCHIVO PermisosUtils.kt**/
+
+//        private fun versionAndroidPreguntarPermisos() =
+//            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+
+        /**REVISAR AJUSTE DE QUITAR IF DE LA VERSION**/
+        private fun validaPermisos(contexto: Context, permisos: Array<String>): Boolean {
+            //if (versionAndroidPreguntarPermisos()) {
+                for (permiso in permisos) {
+                    if (ActivityCompat.checkSelfPermission(
+                            contexto,
+                            permiso
+                        ) != PackageManager.PERMISSION_GRANTED
+                    )
+                        return true
+                }
+            //}
+            return false
+        }
+
+        fun preguntarPorPermisos(
+            contexto: Context,
+            permisos: Array<String>,
+            actividad: Activity,
+            codigoSolicitud: Int
+        ): Boolean {
+            if (validaPermisos(contexto, permisos)) {
+                if (solicitudPermisos(contexto, permisos)) {
+                    ActivityCompat.requestPermissions(actividad, permisos, codigoSolicitud)
+                    return false
+                } else {
+                    ActivityCompat.requestPermissions(actividad, permisos, codigoSolicitud)
+                    return false
+                }
+            } else {
+                return true
+            }
+        }
+
+        private fun solicitudPermisos(contexto: Context, permisos: Array<String>): Boolean {
+            for (permiso in permisos) {
+                if ((contexto as Activity).shouldShowRequestPermissionRationale(permiso)) {
+                    return true
+                }
+            }
+            return false
         }
 
     }

@@ -15,11 +15,11 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.creacionComplementosApp
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.encriptacion
 import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.navegacion.Navegacion
-import com.example.apppresidenta.utils.GeneralUtils
-import com.example.apppresidenta.utils.GeneralUtils.Companion.encriptacion
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -278,7 +278,7 @@ class NIPActivity : AppCompatActivity() {
 
                         //Si el login es correcto se inscribe a los temas de las notificaciones de firebase
                         //y se crean los canales para las notificaciones
-                        GeneralUtils.creacionComplementosApp(this)
+                        creacionComplementosApp(this)
 
                         val inicio = Intent(this, Navegacion::class.java)
                         startActivity(inicio)

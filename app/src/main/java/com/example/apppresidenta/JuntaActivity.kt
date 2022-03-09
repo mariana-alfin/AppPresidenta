@@ -21,12 +21,12 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.eliminaVariableSesion
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.eliminarFotos
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.obtenerCadenaB64DeImagen
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
 import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.generales.ValGlobales
-import com.example.apppresidenta.utils.GeneralUtils.Companion.eliminaVariableSesion
-import com.example.apppresidenta.utils.GeneralUtils.Companion.eliminarFotos
-import com.example.apppresidenta.utils.GeneralUtils.Companion.obtenerCadenaB64DeImagen
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject

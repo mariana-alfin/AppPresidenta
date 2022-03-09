@@ -15,8 +15,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.encriptacion
 import com.example.apppresidenta.generales.LoadingScreen
-import com.example.apppresidenta.utils.GeneralUtils
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -99,7 +99,7 @@ class RecuperarNIPActivity : AppCompatActivity() {
         Log.d("Token","Token firebase: $token")
 
         //Se encripta el nip para enviar al WS
-        val nipEncriptado = GeneralUtils.encriptacion(this, nip, idCliente!!, 1)!!
+        val nipEncriptado = encriptacion(this, nip, idCliente!!, 1)!!
 
         Log.d("Token","Nip encriptado: $nipEncriptado $nip")
 

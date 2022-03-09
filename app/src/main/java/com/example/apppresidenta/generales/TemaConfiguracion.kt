@@ -1,9 +1,10 @@
-package com.example.apppresidenta
+package com.example.apppresidenta.generales
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.apppresidenta.R
 
 object TemaConfiguracion {
 

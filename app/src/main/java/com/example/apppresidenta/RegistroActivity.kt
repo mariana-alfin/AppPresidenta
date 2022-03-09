@@ -19,9 +19,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.example.apppresidenta.generales.AppSignatureHelper
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.envioSms
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.validaIntentosSms
 import com.example.apppresidenta.generales.ReceptorSMS
-import com.example.apppresidenta.utils.GeneralUtils
-import com.example.apppresidenta.utils.GeneralUtils.Companion.validaIntentosSms
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import java.util.*
 import java.util.regex.Matcher
@@ -225,7 +225,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
         //SOLO PARA PRUEBAS
         findViewById<TextView>(R.id.txtCodigoP).text = codigo.toString()
 
-        GeneralUtils.envioSms(this,numeroCelular,codigo.toString(),appSignature)
+        envioSms(this,this,numeroCelular,codigo.toString(),appSignature)
     }
     fun reenviarCodigo(numeroCelular: String,appSignature: String){
         //ENVIA NUEVAMENTE EL CODIGO

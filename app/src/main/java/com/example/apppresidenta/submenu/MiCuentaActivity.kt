@@ -20,11 +20,11 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.encriptacion
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.setMaxLength
 import com.example.apppresidenta.generales.FuncionesGlobales.Companion.toDp
 import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.generales.ValGlobales
-import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.json.JSONObject
@@ -128,7 +128,7 @@ class MiCuentaActivity : AppCompatActivity() {
         Log.d("Token","Token firebase: $token")
 
         //Se encripta el nip para enviar al WS
-        val nipEncriptado = GeneralUtils.encriptacion(this, nipCaptura, idCliente!!, 1)!!
+        val nipEncriptado = encriptacion(this, nipCaptura, idCliente!!, 1)!!
 
         Log.d("Token","Nip encriptado: $nipEncriptado $nipCaptura")
 

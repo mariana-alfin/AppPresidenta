@@ -9,6 +9,7 @@ import android.content.IntentSender.SendIntentException
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Build
 import android.os.Looper
 import android.provider.Settings
@@ -17,8 +18,12 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
-import com.example.apppresidenta.utils.GeneralUtils
-import com.example.apppresidenta.utils.PermisosUtils
+import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.ASK_FOR_PERMISSION_GPS
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.guardarVariableSesion
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.mostrarAlert
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.mostrarAlertActivacionGPS
+import com.example.apppresidenta.generales.ValGlobales.Companion.preguntarPorPermisos
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -57,7 +62,7 @@ open class UbicacionActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun solicitarUsoUbicacion(actividad: AppCompatActivity){
-        if(PermisosUtils.preguntarPorPermisos(this, permisosAValidar,actividad, GeneralUtils.ASK_FOR_PERMISSION_GPS)){
+        if(preguntarPorPermisos(this, permisosAValidar,actividad, ASK_FOR_PERMISSION_GPS)){
             clienteAjustes = LocationServices.getSettingsClient(this) //Se le debe asignar un contexto al cliente de ajustes para poder usarlo
             activarGPS()
         }
@@ -65,13 +70,24 @@ open class UbicacionActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == GeneralUtils.ASK_FOR_PERMISSION_GPS) {
+        if (requestCode == ASK_FOR_PERMISSION_GPS) {
             if (grantResults.size == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                 grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 clienteAjustes = LocationServices.getSettingsClient(this) //Se le debe asignar un contexto al cliente de ajustes para poder usarlo
                 activarGPS()
             } else {
-                GeneralUtils.mostrarAlertActivarPermisos(this, packageName)
+                //mostrarAlertActivarPermisos(this, packageName)
+                val alert = mostrarAlert(this,"error",false,getString(R.string.permisos_denegados)
+                    ,getString(R.string.mensaje_permisos_denegados),true)
+                alert.setPositiveButton(android.R.string.ok) { _, _ ->
+                    val intent = Intent()
+                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    val uri = Uri.fromParts("package", packageName, null)
+                    intent.data = uri
+                    this.startActivity(intent)
+                }
+                alert.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
+                alert.show()
             }
         }
     }
@@ -116,8 +132,12 @@ open class UbicacionActivity : AppCompatActivity() {
                 , Toast.LENGTH_LONG).show()
 
             //Se guarda en variables de sesion la ubicacion mas actual
-            GeneralUtils.registrarVariableSesion(this@UbicacionActivity, "LATITUD", (ultimaUbicacion.latitude).toString())
-            GeneralUtils.registrarVariableSesion(this@UbicacionActivity, "LONGITUD", (ultimaUbicacion.longitude).toString())
+//            registrarVariableSesion(this@UbicacionActivity, "LATITUD", (ultimaUbicacion.latitude).toString())
+//            registrarVariableSesion(this@UbicacionActivity, "LONGITUD", (ultimaUbicacion.longitude).toString())
+            guardarVariableSesion(
+                this@UbicacionActivity, "String", "LATITUD", (ultimaUbicacion.latitude).toString())
+            guardarVariableSesion(
+                this@UbicacionActivity, "String", "LONGITUD", (ultimaUbicacion.longitude).toString())
         }
     }
 
@@ -169,7 +189,21 @@ open class UbicacionActivity : AppCompatActivity() {
         }
         else if(resultCode != Activity.RESULT_OK && requestCode == SOLICITUD_PERMISO_UBICACION){
             //En caso de rechazar el activar la ubicacion se muestra un mensaje y lo saca de la actividad
-            GeneralUtils.mostrarAlertActivacionGPS(this,this)
+            //mostrarAlertActivacionGPS(this,this)
+            val alert = mostrarAlert(
+                this,
+                "advertencia",
+                false,
+                "Advertencia",
+                getString(R.string.estatus_gps),
+                true
+            )
+            alert.setCancelable(false)
+            alert.setPositiveButton(android.R.string.ok) { _, _ ->
+                //En caso de que el usuario no acepte prender la ubicacion se cierra la actividad de la junta
+                this.finish()
+            }
+            alert.show()
         }
     }
 }

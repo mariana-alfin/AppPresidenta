@@ -1,8 +1,10 @@
 package com.example.apppresidenta.submenu
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -18,8 +20,11 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.enviarMensajeWhatsApp
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.llamarContacto
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.mostrarAlert
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.validarAplicacionInstalada
 import com.example.apppresidenta.generales.ValGlobales
-import com.example.apppresidenta.utils.GeneralUtils
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -81,7 +86,7 @@ class DetalleClienteActivity : AppCompatActivity() {
     private fun detalleCliente(credit_id: Int) {
         /**************   MD  ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
 
-        val alertError = FuncionesGlobales.mostrarAlert(this,"error",true,"Detalle Cliente",getString(R.string.error),false)
+        val alertError = mostrarAlert(this,"error",true,"Detalle Cliente",getString(R.string.error),false)
         val jsonParametros = JSONObject()
         jsonParametros.put("credit_id", credit_id)
 
@@ -151,7 +156,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtNombreCliente).text = nombre
         findViewById<TextView>(R.id.txtDireccionCliente).text = direccion
 
-        findViewById<ImageView>(R.id.imaCel).setOnClickListener{ GeneralUtils.llamarContacto(this, telefono) }
+        findViewById<ImageView>(R.id.imaCel).setOnClickListener{ llamarContacto(this, telefono) }
         findViewById<ImageView>(R.id.imaWhats).setOnClickListener{ validacionesEnvioWhats(telefono,getString(R.string.mensaje_whats) +" "+ nombre) }
 
         //SE OBTIENE LA TABLA
@@ -293,12 +298,23 @@ class DetalleClienteActivity : AppCompatActivity() {
         mostrarFormato(true)
     }
     private fun validacionesEnvioWhats(telefono : String, nombreclienta : String) {
-        if (!GeneralUtils.validarAplicacionInstalada(getString(R.string.packagename_whats), this))
+        if (!validarAplicacionInstalada(getString(R.string.packagename_whats), this))
         {
-            GeneralUtils.mostrarAlertInstalarApp(this, getString(R.string.packagename_whats))
+            //mostrarAlertInstalarApp(this, getString(R.string.packagename_whats))
+            val alert = mostrarAlert(
+                this, "advertencia", false, "Advertencia",getString(R.string.instalacion_app), true
+            )
+            alert.setPositiveButton(android.R.string.ok) { _, _ ->
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(
+                    this?.getString(R.string.play_store) + getString(R.string.packagename_whats))
+                this?.startActivity(i)
+            }
+            alert.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            alert.show()
             return
         }
-        GeneralUtils.enviarMensajeWhatsApp(this, getString(R.string.mensaje_whats) + " " + nombreclienta, telefono)
+        enviarMensajeWhatsApp(this, getString(R.string.mensaje_whats) + " " + nombreclienta, telefono)
     }
     /*
     private fun mostrarDatos() {

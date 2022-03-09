@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.*
@@ -19,12 +20,12 @@ import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.R
 import com.example.apppresidenta.databinding.MiGrupoFragmentBinding
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.enviarMensajeWhatsApp
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.llamarContacto
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.mostrarAlert
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.validarAplicacionInstalada
 import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.submenu.DetalleClienteActivity
-import com.example.apppresidenta.utils.GeneralUtils.Companion.enviarMensajeWhatsApp
-import com.example.apppresidenta.utils.GeneralUtils.Companion.llamarContacto
-import com.example.apppresidenta.utils.GeneralUtils.Companion.mostrarAlertInstalarApp
-import com.example.apppresidenta.utils.GeneralUtils.Companion.validarAplicacionInstalada
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import org.json.JSONArray
 import org.json.JSONObject
@@ -90,7 +91,7 @@ class MiGrupoFragment : Fragment() {
 
     private fun datosDelGrupo() {
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
-        val alertError = FuncionesGlobales.mostrarAlert(requireActivity(),"error",true,"Mi Grupo",getString(R.string.error),false)
+        val alertError = mostrarAlert(requireActivity(),"error",true,"Mi Grupo",getString(R.string.error),false)
         try {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val prestamo = prefs.getInt("CREDITO_ID", 0)
@@ -360,7 +361,17 @@ class MiGrupoFragment : Fragment() {
     private fun validacionesEnvioWhats(telefono: String, nombreclienta: String) {
 
         if (!validarAplicacionInstalada(getString(R.string.packagename_whats), context)) {
-            mostrarAlertInstalarApp(context, getString(R.string.packagename_whats))
+            //mostrarAlertInstalarApp(context, getString(R.string.packagename_whats))
+            val alert = mostrarAlert(requireActivity(),"advertencia",false,"Advertencia"
+                ,getString(R.string.instalacion_app),true)
+            alert.setPositiveButton(android.R.string.ok) { _, _ ->
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(
+                    context?.getString(R.string.play_store) + getString(R.string.packagename_whats))
+                context?.startActivity(i)
+            }
+            alert.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            alert.show()
             return
         }
 

@@ -14,11 +14,11 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.apppresidenta.generales.FuncionesGlobales
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.creacionComplementosApp
+import com.example.apppresidenta.generales.FuncionesGlobales.Companion.encriptacion
 import com.example.apppresidenta.generales.LoadingScreen
 import com.example.apppresidenta.generales.ValGlobales
 import com.example.apppresidenta.navegacion.Navegacion
-import com.example.apppresidenta.utils.GeneralUtils
-import com.example.apppresidenta.utils.GeneralUtils.Companion.creacionComplementosApp
 import org.json.JSONObject
 import org.json.JSONTokener
 
@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
         Log.d("Token","Token firebase: $token")
 
         //Se encripta el nip para enviar al WS
-        val nipEncriptado = GeneralUtils.encriptacion(this, nip, idCliente, 1)!!
+        val nipEncriptado = encriptacion(this, nip, idCliente, 1)!!
 
         Log.d("Token","Nip encriptado: $nipEncriptado $nip")
 
