@@ -162,17 +162,24 @@ class LoginActivity : AppCompatActivity() {
             },
             Response.ErrorListener { error ->
                 val responseError = String(error.networkResponse.data)
-                val dataError = JSONObject(responseError)
+                var mensaje = getString(R.string.error)
                 try {
+                    val dataError = JSONObject(responseError)
                     val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                     val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                     val codigo = error.networkResponse.statusCode
                     if(codigo == 422){
                         alerError.setMessage("Credenciales invalidas. Favor de verificarlo")
                       //  alerError.setMessage(jResul.toString() + " parametros "+jsonParametros)
+                    }else{
+                        mensaje =  jsonData.getString("message")
                     }
                     //alerError.setMessage(jResul.toString() + " parametros "+jsonParametros)
-                }catch (e: Exception){ }
+                }catch (e: Exception){
+                    val codigo = error.networkResponse.statusCode
+                    mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                    alerError.setMessage(mensaje)
+                }
                 alerError.show()
                 LoadingScreen.hideLoading()
             })

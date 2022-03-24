@@ -259,13 +259,17 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                     },
                     Response.ErrorListener { error ->
                         val codigoError = error.networkResponse.statusCode
-                        if (codigoError == 422) {
-                            alertError.setMessage("El ID de Crédito no se encontro.")
-                        } else {
-                            alertError.setMessage("Error: $codigoError \n${getString(R.string.errorServidor)}")
+                        try {
+                            if (codigoError == 422) {
+                                alertError.setMessage("El ID de Crédito no se encontro.")
+                            } else {
+                                alertError.setMessage("Error: $codigoError \n${getString(R.string.errorServidor)}")
+                            }
+                        } catch (e: Exception) {
+                            val codigo = error.networkResponse.statusCode
+                            alertError.setMessage("Error: $codigo \n${getString(R.string.errorServidor)}")
                         }
                         alertError.show()
-
                     }
                 ) {
                     override fun getHeaders(): Map<String, String> {

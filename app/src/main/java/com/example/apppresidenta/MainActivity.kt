@@ -169,13 +169,14 @@ class MainActivity : AppCompatActivity() {
             Response.ErrorListener { error ->
                 //val errorD = VolleyError(String(error.networkResponse.data))
                 val responseError = String(error.networkResponse.data)
-                val dataError = JSONObject(responseError)
+                var mensaje = getString(R.string.error)
                 try {
+                    val dataError = JSONObject(responseError)
                     val jsonData =
                         JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                     val code = jsonData.getInt("code")
                     val message = jsonData.getString("message")
-                    var mensaje = getString(R.string.error)
+                     mensaje = getString(R.string.error)
                     val jResul =
                         JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                     val esCell_phone = jsonData.getString("results").contains("cell_phone")
@@ -199,6 +200,9 @@ class MainActivity : AppCompatActivity() {
 
                 } catch (e: Exception) {
                     //findViewById<TextView>(R.id.txtPruebas).text = e.toString()
+                    val codigo = error.networkResponse.statusCode
+                    mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                    alerError.setMessage(mensaje)
                 }
                 LoadingScreen.hideLoading()
             }) {
