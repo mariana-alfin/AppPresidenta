@@ -156,7 +156,7 @@ class FuncionesGlobales {
         ).toInt()
         //SE GENERA UNA FUNCION PARA MOSTRAR ALERT'S PERSONALIZADOS
         fun mostrarAlert(activity: Activity, tipo: String,esPersonalizado: Boolean, titulo: String, mensaje: String, ejecutaAccion: Boolean): AlertDialog.Builder {
-            val dialog = AlertDialog.Builder(activity, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
+            val dialog = AlertDialog.Builder(activity, R.style.MyAlertDialog)
             dialog.setTitle(titulo)
             if(mensaje != "na"){
                 dialog.setMessage(mensaje)

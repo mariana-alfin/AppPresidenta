@@ -36,6 +36,7 @@
             android:gravity="left"
             android:text="Pago semanal"
             android:textSize="20sp"
+            android:fontFamily="@font/montserrat_extra_bold_italic"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

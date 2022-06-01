@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
@@ -39,7 +40,7 @@ class MiCuentaActivity : AppCompatActivity() {
         FuncionesGlobales.guardarPestanaSesion(this, "true")
         /*SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF'>Mi Cuenta</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF' face='montserrat_extra_bold_italic'>Mi Cuenta</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -49,6 +50,7 @@ class MiCuentaActivity : AppCompatActivity() {
 
     }
     private fun ingresarNip(esObligatorio: Boolean) {
+        val tipoLetra = ResourcesCompat.getFont(this, R.font.montserrat_medium_italic)
         val context = this
         val constraintLayout = ConstraintLayout(context)
         val layoutParams = ConstraintLayout.LayoutParams(
@@ -71,6 +73,7 @@ class MiCuentaActivity : AppCompatActivity() {
         )
         textInputLayout.layoutParams = layoutParams
         textInputLayout.hint = "NIP a 4 dígitos."
+        textInputLayout.typeface = tipoLetra
         textInputLayout.counterMaxLength = 4
         textInputLayout.id = View.generateViewId()
         textInputLayout.tag = "textInputLayoutTag"
@@ -82,6 +85,7 @@ class MiCuentaActivity : AppCompatActivity() {
         input.inputType = InputType.TYPE_CLASS_NUMBER
         input.transformationMethod = PasswordTransformationMethod.getInstance()
         input.gravity = Gravity.CENTER
+        input.typeface = tipoLetra
         textInputLayout.addView(input)
 
         val constraintSet = ConstraintSet()
@@ -94,7 +98,7 @@ class MiCuentaActivity : AppCompatActivity() {
                 if(!esObligatorio){
                     alert.setMessage("Para continuar, es necesario que indiques tu NIP actual")
                 }else{
-                    alert.setMessage(HtmlCompat.fromHtml("<font color='#D63031'>Para continuar, es necesario que indiques tu NIP actual</font>", HtmlCompat.FROM_HTML_MODE_LEGACY))
+                    alert.setMessage(HtmlCompat.fromHtml("<font color='#D63031' face='montserrat_medium_italic'>Para continuar, es necesario que indiques tu NIP actual</font>", HtmlCompat.FROM_HTML_MODE_LEGACY))
                     input.error = "El NIP es requerido"
                 }
         alert.setView(constraintLayout) // .setView(input)

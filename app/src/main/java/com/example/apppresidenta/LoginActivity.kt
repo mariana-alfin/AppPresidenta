@@ -102,12 +102,18 @@ class LoginActivity : AppCompatActivity() {
 
         //Se obtiene de las variables de sesion el token de firebase
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val token = prefs.getString(getString(R.string.token), "")
+        var token = prefs.getString(getString(R.string.token), "")
 
         Log.d("Token","Token firebase: $token")
 
         //Se encripta el nip para enviar al WS
-        val nipEncriptado = encriptacion(this, nip, idCliente, 1)!!
+        var nipEncriptado = encriptacion(this, nip, idCliente, 1)!!
+
+        /*SOLO PARA PRUEBAS PARA EL D_CLIENTE 168068 SE HARCODEA ELTOKEN Y EL NIP PARA QUE PUEDA INGRESAR*/
+        if(idCliente == "168068"){
+            token = "dCFjXMvvQGSHxE4XzSvnJu:APA91bGt8UVD0ArUkEq1gLxb2nOee5uWLCHKLPju6I3c2WPIzFrgBu3GuFajZatrAeE0nzPB_8F42fRNkbWz5D-sqVyM6ulIDnBrbAO55AMTI0j2zxkF5Dlzje9UqnKGcghWSFyrWkLP"
+        }
+
 
         Log.d("Token","Nip encriptado: $nipEncriptado $nip")
 

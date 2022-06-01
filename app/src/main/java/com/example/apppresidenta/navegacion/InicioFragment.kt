@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
@@ -101,6 +102,8 @@ class InicioFragment : Fragment() {
     //MD AGREGA EL MENU DE OPCIONES A LA VISTA
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_inicio, menu)
+        (activity as AppCompatActivity).supportActionBar?.title = HtmlCompat.fromHtml("<font face='montserrat_extra_bold_italic'>Inicio</font>",
+        HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -278,7 +281,7 @@ class InicioFragment : Fragment() {
     }
     private fun solicitarSoporte() {
         val builder = MaterialAlertDialogBuilder(requireActivity())
-        builder.setTitle(HtmlCompat.fromHtml("<font color='#1F2C49' size='20'>DESCRIBE TU PROBLEMA</font>", HtmlCompat.FROM_HTML_MODE_LEGACY))
+        builder.setTitle(HtmlCompat.fromHtml("<font color='#1F2C49' size='20' face='montserrat_medium_italic'>DESCRIBE TU PROBLEMA</font>", HtmlCompat.FROM_HTML_MODE_LEGACY))
         builder.setIcon(R.drawable.ic_soporte)
         val constraintLayout = getEditTextLayout(requireActivity())
         builder.setView(constraintLayout)
@@ -387,6 +390,7 @@ class InicioFragment : Fragment() {
     }
     // MD MUESTRA EL INPUT PARA AGREGAR EL MENSAJE EN EL DIALOG
     fun getEditTextLayout(context:Context): ConstraintLayout {
+        val tipoLetra = ResourcesCompat.getFont(requireActivity(), R.font.montserrat_medium_italic)
         val constraintLayout = ConstraintLayout(context)
         val layoutParams = ConstraintLayout.LayoutParams(
             ConstraintLayout.LayoutParams.MATCH_PARENT,
@@ -408,13 +412,13 @@ class InicioFragment : Fragment() {
         textInputLayout.counterMaxLength = 150
         textInputLayout.id = View.generateViewId()
         textInputLayout.tag = "textInputLayoutTag"
-
+        textInputLayout.typeface = tipoLetra
 
         val textInputEditText = TextInputEditText(context)
         textInputEditText.id = View.generateViewId()
         textInputEditText.tag = "textInputEditTextTag"
         textInputEditText.setMaxLength(150)//maximo largo del mensaje
-
+        textInputEditText.typeface = tipoLetra
         textInputLayout.addView(textInputEditText)
 
         val constraintSet = ConstraintSet()

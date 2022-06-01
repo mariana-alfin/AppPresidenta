@@ -15,6 +15,8 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -55,7 +57,8 @@ class DetalleClienteActivity : AppCompatActivity() {
         }
         /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Detalle Cliente"
+        //supportActionBar?.title = "Detalle Cliente"
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF' face='montserrat_extra_bold_italic'>Detalle Cliente</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -161,6 +164,8 @@ class DetalleClienteActivity : AppCompatActivity() {
 
         //SE OBTIENE LA TABLA
         val tabla = findViewById<TableLayout>(R.id.tblDetalle)
+        val tipoLetra = ResourcesCompat.getFont(this, R.font.montserrat_medium_italic)
+        val tipoLetraTr = ResourcesCompat.getFont(this, R.font.montserrat_semi_bold_italic)
         val fTr = 18F
         //ENCABEZADO
         val trEn = TableRow(this)
@@ -170,7 +175,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtRo.gravity = Gravity.CENTER
         //txtRo.maxWidth = 50
         txtRo.setTextColor(Color.WHITE)
-        txtRo.setTypeface(null, Typeface.BOLD_ITALIC)
+        txtRo.typeface = ResourcesCompat.getFont(this, R.font.montserrat_medium_italic)
         txtRo.textSize = 20F
         trEn.gravity = Gravity.CENTER
         trEn.setBackgroundResource(R.drawable.redondo_verde)
@@ -184,7 +189,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         prest.text = "Prestamo"
         prest.setPadding(25, 20, 25, 20)
         prest.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        prest.setTypeface(null, Typeface.BOLD)
+        prest.typeface = tipoLetra
         prest.textSize = fTr
         trP.addView(prest)
 
@@ -192,7 +197,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtPrestamo.text = FuncionesGlobales.convertPesos(jsonResults.getDouble("credit_amount"),0)
         txtPrestamo.setPadding(25, 20, 25, 20)
         txtPrestamo.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        txtPrestamo.setTypeface(null, Typeface.BOLD)
+        txtPrestamo.typeface = tipoLetraTr
         txtPrestamo.textSize = fTr
         trP.addView(txtPrestamo)
         trP.gravity = Gravity.CENTER
@@ -205,7 +210,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         Mp.text = "Monto a Pagar"
         Mp.setPadding(25, 20, 25, 20)
         Mp.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        Mp.setTypeface(null, Typeface.BOLD)
+        Mp.typeface = tipoLetra
         Mp.textSize = fTr
         trMp.addView(Mp)
 
@@ -213,7 +218,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtMp.text = FuncionesGlobales.convertPesos(jsonResults.getDouble("pays_total"),0)
         txtMp.setPadding(25, 20, 25, 20)
         txtMp.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        txtMp.setTypeface(null, Typeface.BOLD)
+        txtMp.typeface = tipoLetraTr
         txtMp.textSize = fTr
         trMp.addView(txtMp)
         trMp.gravity = Gravity.CENTER
@@ -226,7 +231,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         mtop.text = "Monto Pagado"
         mtop.setPadding(25, 20, 25, 20)
         mtop.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        mtop.setTypeface(null, Typeface.BOLD)
+        mtop.typeface = tipoLetra
         mtop.textSize = fTr
         trMtop.addView(mtop)
 
@@ -234,7 +239,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtMtoP.text = FuncionesGlobales.convertPesos(jsonResults.getDouble("payments"),0)
         txtMtoP.setPadding(25, 20, 25, 20)
         txtMtoP.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        txtMtoP.setTypeface(null, Typeface.BOLD)
+        txtMtoP.typeface = tipoLetraTr
         txtMtoP.textSize = fTr
         trMtop.addView(txtMtoP)
         trMtop.gravity = Gravity.CENTER
@@ -247,7 +252,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         sv.text = "Saldo vencido"
         sv.setPadding(25, 20, 25, 20)
         sv.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        sv.setTypeface(null, Typeface.BOLD)
+        sv.typeface = tipoLetra
         sv.textSize = fTr
         trSV.addView(sv)
 
@@ -256,7 +261,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtSV.text = FuncionesGlobales.convertPesos(saldoVencido,0)
         txtSV.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
         txtSV.setPadding(25, 20, 25, 20)
-        txtSV.setTypeface(null, Typeface.BOLD)
+        txtSV.typeface = tipoLetraTr
         txtSV.textSize = fTr
         txtSV.gravity = Gravity.CENTER
         trSV.addView(txtSV)
@@ -270,7 +275,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtda.setPadding(25, 20, 25, 20)
         txtda.gravity = Gravity.LEFT
         txtda.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        txtda.setTypeface(null, Typeface.BOLD)
+        txtda.typeface = tipoLetra
         txtda.textSize = fTr
         trDA.addView(txtda)
 
@@ -279,7 +284,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         txtDa.text = "$dias_atraso"
         txtDa.setPadding(25, 20, 25, 20)
         txtDa.setTextColor(ContextCompat.getColor(this,R.color.Azul1))
-        txtDa.setTypeface(null, Typeface.BOLD)
+        txtDa.typeface = tipoLetraTr
         txtDa.textSize = fTr
         txtDa.gravity = Gravity.CENTER
 

@@ -28,7 +28,7 @@ class Navegacion : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(
-                R.id.navHome, R.id.navMiGrupo, R.id.navigation_notifications
+                R.id.navHome, R.id.navMiGrupo, R.id.navigation_notifications,R.id.navBonos
             )
         )
 
@@ -61,11 +61,11 @@ class Navegacion : AppCompatActivity() {
           /*  R.id.iCalculadora -> {
                 startActivity(FuncionesGlobales.redireccionarOpcion(this, "CALCULADORA"))
                 true
-            }*/
+            }
             R.id.iBonificaciones -> {
                 startActivity(FuncionesGlobales.redireccionarOpcion(this, "MIS_BONIFICACIONES"))
                 true
-            }
+            }*/
             R.id.iHistorial -> {
                 startActivity(FuncionesGlobales.redireccionarOpcion(this, "MI_HISTORIAL"))
                 true

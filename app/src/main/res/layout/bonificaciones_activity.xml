@@ -142,6 +142,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text="Semanas"
+                                android:fontFamily="@font/montserrat_semi_bold"
                                 android:textColor="@color/white" />
 
                             <TextView
@@ -151,6 +152,7 @@
                                 android:layout_weight="1"
                                 android:gravity="center"
                                 android:text="Pago \n Semanal"
+                                android:fontFamily="@font/montserrat_semi_bold"
                                 android:textColor="@color/white" />
 
                             <TextView
@@ -166,16 +168,17 @@
                         <TableRow>
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@drawable/borde_verde_b"
                                 android:text="7 pagadas"
-                                android:textColor="@color/Azul3" />
+                                android:textColor="@color/Azul3"
+                                android:fontFamily="@font/montserrat_semi_bold_italic"/>
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -184,7 +187,7 @@
                                 android:textColor="@color/Azul3" />
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -196,7 +199,7 @@
                         <TableRow>
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -205,7 +208,7 @@
                                 android:textColor="@color/Azul3" />
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -214,7 +217,7 @@
                                 android:textColor="@color/Azul3" />
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -226,7 +229,7 @@
                         <TableRow>
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -236,7 +239,7 @@
                                 android:textColor="@color/Azul3" />
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -245,7 +248,7 @@
                                 android:textColor="@color/Azul3" />
 
                             <TextView
-                                style="@style/txtWriteMonospace"
+                                style="@style/txtWriteMontserrat"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"

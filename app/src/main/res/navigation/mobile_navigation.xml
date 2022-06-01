@@ -22,4 +22,10 @@
         android:name="com.example.apppresidenta.navegacion.PagosFragment"
         android:label="@string/titlePagosFragment"
         tools:layout="@layout/pagos_fragment" />
+
+    <fragment
+        android:id="@+id/navBonos"
+        android:name="com.example.apppresidenta.navegacion.BonosFragment"
+        android:label="@string/titleBonos"
+        tools:layout="@layout/bonos_fragment" />
 </navigation>

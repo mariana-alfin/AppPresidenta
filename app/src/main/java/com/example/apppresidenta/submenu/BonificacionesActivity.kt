@@ -10,6 +10,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import com.example.apppresidenta.R
 import com.example.apppresidenta.generales.FuncionesGlobales
@@ -23,7 +24,7 @@ class BonificacionesActivity : AppCompatActivity() {
         FuncionesGlobales.guardarPestanaSesion(this, "true")
         /*SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF'>Mis Bonificaciones</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF' face='montserrat_extra_bold_italic'>Mis Bonificaciones</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
         //supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF'>Bienvenida</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -40,7 +41,7 @@ class BonificacionesActivity : AppCompatActivity() {
         //ENCABEZADO
         val fontTh = 18F
         val fontTr = 17F
-        val tipoLetra = Typeface.MONOSPACE
+
         val trEn = TableRow(this)
         trEn.setPadding(0, 20, 0, 20)
 
@@ -49,7 +50,9 @@ class BonificacionesActivity : AppCompatActivity() {
         e0.text = "_"
         e0.alpha = 0.0F
         trEn.addView(e0)
-
+        //val tipoLetra = Typeface.MONOSPACE
+        val tipoLetra = ResourcesCompat.getFont(this, R.font.montserrat_medium_italic)
+        val tipoLetraTr = ResourcesCompat.getFont(this, R.font.montserrat_semi_bold_italic)
         val fecha = TextView(this)
         fecha.text = "FECHA"
         fecha.gravity = Gravity.CENTER
@@ -102,7 +105,7 @@ class BonificacionesActivity : AppCompatActivity() {
             fec.textSize = fontTr
             fec.text = "1$i/10/2021"
             fec.gravity = Gravity.CENTER
-            fec.typeface = tipoLetra
+            fec.typeface = tipoLetraTr
             tr.addView(fec)
 
             val e = TextView(this)
@@ -121,7 +124,7 @@ class BonificacionesActivity : AppCompatActivity() {
             }
 
             stats.gravity = Gravity.CENTER
-            stats.typeface = tipoLetra
+            stats.typeface = tipoLetraTr
             tr.addView(stats)
 
             //tr.setBackgroundResource(R.drawable.borde_azul_b)

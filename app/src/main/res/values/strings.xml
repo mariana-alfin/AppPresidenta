@@ -4,6 +4,8 @@
     <string name="titleHome">Inicio</string>
     <string name="titleGpo">Mi Grupo </string>
     <string name="titlePagos">Pagos</string>
+    <string name="titleBonos">Bonificación</string>
+    <string name="titleMBonos">Mis Bonificaciones</string>
     <string name="titlePagosFragment">Calendario de Pagos</string>
     <string name="ingresar">     Ingresar       </string>
     <string name="usuario">Usuario</string>

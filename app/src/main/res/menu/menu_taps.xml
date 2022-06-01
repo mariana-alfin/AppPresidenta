@@ -16,4 +16,8 @@
         android:icon="@drawable/ic_pagos"
         android:title="@string/titlePagos" />
 
+    <item
+        android:id="@+id/navBonos"
+        android:icon="@drawable/ic_bonos_tab"
+        android:title="@string/titleBonos" />
 </menu>

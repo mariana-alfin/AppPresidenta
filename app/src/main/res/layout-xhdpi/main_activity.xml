@@ -20,13 +20,12 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/bannerprueba" />
+            app:srcCompat="@drawable/banner_" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relativeLayout"
@@ -153,6 +152,7 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center_horizontal"
                 android:text="REGISTRAR"
+                android:fontFamily="@font/montserrat_extra_bold_italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.52"
                 app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +165,9 @@
                 android:layout_marginTop="12dp"
                 android:gravity="center_horizontal"
                 android:text="¿Aún no formas parte de este plan de recompensas?"
+                style="@style/textVerde"
                 android:textColor="@color/white"
+                android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
@@ -177,7 +179,9 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:text="MAS INFORMACION"
+                style="@style/textVerde"
                 android:textColor="@color/Verde1"
+                android:textSize="13sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.522"
@@ -194,6 +198,7 @@
                 android:layout_marginBottom="10dp"
                 android:text="Al registrarte estas aceptando nuestra Política de privacidad y nuestros Términos y Condiciones"
                 android:textColor="@color/white"
+                style="@style/textVerde"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

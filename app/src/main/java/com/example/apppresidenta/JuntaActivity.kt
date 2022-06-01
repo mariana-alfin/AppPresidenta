@@ -16,6 +16,8 @@ import android.view.View
 import android.widget.*
 import android.widget.TableLayout.generateViewId
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
@@ -79,7 +81,8 @@ class JuntaActivity : CameraBaseActivity() {
 
         /*Se agrega logo y titulo del la actividad*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "SEMANA $semana"
+        //supportActionBar?.title = "SEMANA $semana"
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF' face='montserrat_extra_bold_italic'>SEMANA $semana</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -306,6 +309,8 @@ class JuntaActivity : CameraBaseActivity() {
         //ENCABEZADO
         val fontTh = 17F
         val fontTr = 14F
+        val tipoLetra = ResourcesCompat.getFont(this, R.font.montserrat_medium_italic)
+        val tipoLetraTr = ResourcesCompat.getFont(this, R.font.montserrat_semi_bold_italic)
         val trEn = TableRow(this)
         trEn.setPadding(0, 20, 0, 20)
         val cliente = TextView(this)
@@ -313,7 +318,7 @@ class JuntaActivity : CameraBaseActivity() {
         //cliente.setPadding(0, 20, 20, 20)
         cliente.gravity = Gravity.CENTER
         cliente.setTextColor(Color.WHITE)
-        cliente.setTypeface(null, Typeface.BOLD_ITALIC)
+        cliente.typeface = tipoLetra
         cliente.textSize = fontTh
         cliente.maxWidth = 130
         trEn.addView(cliente)
@@ -323,7 +328,7 @@ class JuntaActivity : CameraBaseActivity() {
         //cuota.setPadding(0, 20, 20, 20)
         cuota.gravity = Gravity.CENTER
         cuota.setTextColor(Color.WHITE)
-        cuota.setTypeface(null, Typeface.BOLD_ITALIC)
+        cuota.typeface = tipoLetra
         cuota.textSize = fontTh
         trEn.addView(cuota)
 
@@ -332,7 +337,7 @@ class JuntaActivity : CameraBaseActivity() {
         //pago.setPadding(0, 20, 0, 20)
         pago.gravity = Gravity.CENTER
         pago.setTextColor(Color.WHITE)
-        pago.setTypeface(null, Typeface.BOLD_ITALIC)
+        pago.typeface = tipoLetra
         pago.textSize = fontTh
         trEn.addView(pago)
 
@@ -341,7 +346,7 @@ class JuntaActivity : CameraBaseActivity() {
         //sol.setPadding(0, 20, 0, 20)
         sol.gravity = Gravity.CENTER
         sol.setTextColor(Color.WHITE)
-        sol.setTypeface(null, Typeface.BOLD_ITALIC)
+        sol.typeface = tipoLetra
         sol.textSize = fontTh
         trEn.addView(sol)
 
@@ -350,7 +355,7 @@ class JuntaActivity : CameraBaseActivity() {
         so.alpha = 0.0F //MD HACE COMPLETAMENTE OPACO UN ELEMENTO
         so.gravity = Gravity.CENTER
         so.setTextColor(ContextCompat.getColor(this, R.color.Verde2))
-        so.setTypeface(null, Typeface.BOLD_ITALIC)
+        so.typeface = tipoLetra
         so.textSize = fontTh
         trEn.addView(so)
 
@@ -415,12 +420,14 @@ class JuntaActivity : CameraBaseActivity() {
             cliente.textSize = (fontTr - 1)
             //cliente.maxWidth = 230
             cliente.maxWidth = witCte
+            cliente.typeface = tipoLetraTr
 
             val couta = TextView(this)
             val mCuota = cte.getDouble("pay")
             couta.text = FuncionesGlobales.convertPesos(mCuota,0)
             couta.setTextColor(colorAzul)
             couta.textSize = fontTr
+            cuota.typeface = tipoLetraTr
 
             val pago = EditText(this)
             val idtxtPago = cte.getInt("credit_id")
@@ -437,12 +444,13 @@ class JuntaActivity : CameraBaseActivity() {
             pago.maxWidth = witPgo
             pago.setMaxLength(7)
             pago.background.setColorFilter(colorAzul, PorterDuff.Mode.SRC_ATOP)
+            pago.typeface = tipoLetraTr
 
             val lS = LinearLayout(this)
             val sol = TextView(this)
             val idT = generateViewId()
             sol.id = idT
-            sol.setTypeface(null, Typeface.BOLD)
+            sol.typeface = tipoLetraTr
             sol.textSize = (fontTr + 1)
             sol.setTextColor(ContextCompat.getColor(this, R.color.Verde5))
             sol.setPadding(15, 0, 0, 0)

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
@@ -32,7 +33,8 @@ class HistorialActivity : AppCompatActivity() {
 
         /*MD SE AGREGA LOGO Y TITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Mi Historial"
+        //supportActionBar?.title = "Mi Historial"
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF' face='montserrat_extra_bold_italic'>Mi Historial</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -180,29 +182,31 @@ class HistorialActivity : AppCompatActivity() {
         val fontTh = 16F
         val fontTr = 14F
         val trEn = TableRow(this)
+        val tipoLetra = ResourcesCompat.getFont(this, R.font.montserrat_medium_italic)
+        val tipoLetraTr = ResourcesCompat.getFont(this, R.font.montserrat_semi_bold_italic)
         trEn.setPadding(0, 20, 0, 20)
         val cliente = TextView(this)
         cliente.text = "CICLO"
         cliente.gravity = Gravity.RIGHT
         cliente.setTextColor(Color.WHITE)
-        cliente.setTypeface(null, Typeface.BOLD_ITALIC)
         cliente.textSize = fontTh
         cliente.maxWidth = 130
+        cliente.typeface = tipoLetra
         trEn.addView(cliente)
 
         val cuota = TextView(this)
         cuota.text = "  "
         cuota.setTextColor(Color.WHITE)
-        cuota.setTypeface(null, Typeface.BOLD_ITALIC)
         cuota.textSize = fontTh
+        cuota.typeface = tipoLetra
         trEn.addView(cuota)
 
         val cuot = TextView(this)
         cuot.text = "GRUPO"
         cuot.gravity = Gravity.CENTER
         cuot.setTextColor(Color.WHITE)
-        cuot.setTypeface(null, Typeface.BOLD_ITALIC)
         cuot.textSize = fontTh
+        cuot.typeface = tipoLetra
         trEn.addView(cuot)
 
         trEn.setBackgroundResource(R.drawable.redondo_verde)
@@ -238,6 +242,7 @@ class HistorialActivity : AppCompatActivity() {
                 .replace(".-", "-").uppercase()
             ciclo.text = "Del $fInicio \nal  $fFin "
             ciclo.gravity = Gravity.RIGHT
+            ciclo.typeface = tipoLetraTr
 
             val grupo = TextView(this)
             grupo.text = cte.getString("group_name")+"  \n "+HtmlCompat.fromHtml("<font color='#FDCB6E'>  $idCredito</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -245,6 +250,7 @@ class HistorialActivity : AppCompatActivity() {
             //"${cte.getString("group_name")} \n $credit"
             grupo.setTextColor(colorAzul)
             grupo.textSize = fontTr
+            grupo.typeface = tipoLetraTr
 
             val esp = TextView(this)
             esp.text = "    "

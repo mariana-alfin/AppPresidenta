@@ -9,6 +9,8 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
@@ -193,8 +195,11 @@ class PagosFragment : Fragment() {
         //MD SE OBTIENE LA TABLA
         val tabla = binding.tblPagos
         val trEn = TableRow(activity)
-        val fontTh = 18F
+        val fontTh = 17F
         val fontTr = 16F
+        val tipoLetra = ResourcesCompat.getFont(requireActivity(), R.font.montserrat_medium_italic)
+        val tipoLetraTr = ResourcesCompat.getFont(requireActivity(), R.font.montserrat_semi_bold_italic)
+
         trEn.setBackgroundResource(R.drawable.redondo_verde)
         trEn.setPadding(0, 20, 0, 20)
 
@@ -202,7 +207,7 @@ class PagosFragment : Fragment() {
         txtM.text = "______"
         txtM.alpha = 0.0F //MD HACE COMPLETAMENTE OPACO UN ELEMENTO
         txtM.setTextColor(resources.getColor(R.color.Verde2))
-        txtM.setTypeface(null, Typeface.BOLD_ITALIC)
+        txtM.typeface = tipoLetra
         txtM.textSize = fontTh
         trEn.addView(txtM)
 
@@ -210,23 +215,23 @@ class PagosFragment : Fragment() {
         tS.text = "Fecha"
         tS.gravity = Gravity.CENTER
         tS.setTextColor(Color.WHITE)
-        tS.setTypeface(null, Typeface.BOLD_ITALIC)
+        tS.typeface = tipoLetra
         tS.textSize = fontTh
         trEn.addView(tS)
 
 
         val tF = TextView(activity)
-        tF.text = "   Estado   "
+        tF.text = "  Estado  "
         tF.gravity = Gravity.CENTER
         tF.setTextColor(Color.WHITE)
-        tF.setTypeface(null, Typeface.BOLD_ITALIC)
+        tF.typeface = tipoLetra
         tF.textSize = fontTh
         trEn.addView(tF)
 
         val tRP = TextView(activity)
         tRP.text = "Seguimiento"
         tRP.setTextColor(Color.WHITE)
-        tRP.setTypeface(null, Typeface.BOLD_ITALIC)
+        tRP.typeface = tipoLetra
         tRP.textSize = fontTh
         trEn.addView(tRP)
 
@@ -253,18 +258,21 @@ class PagosFragment : Fragment() {
             txtS.setTextColor(resources.getColor(R.color.Azul1))
             txtS.setPadding(5, 10, 5, 10)
             txtS.textSize = fontTr
+            txtS.typeface = tipoLetraTr
             txtS.gravity = Gravity.CENTER
 
             val txtF = TextView(activity)
             txtF.setTextColor(resources.getColor(R.color.Azul1))
             txtF.textSize = fontTr
             txtF.gravity = Gravity.LEFT
+            txtF.typeface = tipoLetraTr
             txtF.maxWidth = 380
 
             val txtEs = TextView(activity)
             txtEs.setTextColor(resources.getColor(R.color.Verde1))
             txtEs.textSize = fontTr
             txtEs.gravity = Gravity.CENTER
+            txtEs.typeface = tipoLetraTr
             txtEs.maxWidth = 380
 
             val lC = LinearLayout(activity)
@@ -606,6 +614,8 @@ class PagosFragment : Fragment() {
     //MD AGREGA EL MENU DE OPCIONES A LA VISTA
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
+        (activity as AppCompatActivity).supportActionBar?.title = HtmlCompat.fromHtml("<font face='montserrat_extra_bold_italic'>Calendario de Pagos</font>",
+            HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
     override fun onDestroyView() {

@@ -12,6 +12,9 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.TypefaceCompat
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
@@ -73,7 +76,9 @@ class MiGrupoFragment : Fragment() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
         val grupo = prefs.getString("NOMBRE_GPO", "--")
         /*Se agrega logo y titulo del la actividad*/
-        (activity as AppCompatActivity).supportActionBar?.title = "$grupo"
+        //(activity as AppCompatActivity).supportActionBar?.title = "$grupo"
+        (activity as AppCompatActivity).supportActionBar?.title = HtmlCompat.fromHtml("<font face='montserrat_extra_bold_italic'>$grupo</font>",
+            HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
     override fun onDestroyView() {
@@ -177,8 +182,6 @@ class MiGrupoFragment : Fragment() {
         val tabla = binding.tblMiGpo
         //MD ENCABEZADO DE LA TABLA
         val trEn = TableRow(activity)
-        var fontTh = 18F
-        val fontTr = 15F
 
         /**     VARIABLES PARA TAMAÑOS      **/
         //MD SE OBTIENE LA DENSIDAD DEL DISPOSITIVO PARA CAMBIAR LOS TAMAÑOS
@@ -205,31 +208,34 @@ class MiGrupoFragment : Fragment() {
 
         trEn.setBackgroundResource(R.drawable.redondo_verde)
         trEn.setPadding(20, 20, 10, 20)
-
+        val fontTh = 17F
+        val fontTr = 14F
         val colorTH = Color.WHITE
-        val tipoLetra = Typeface.MONOSPACE
+        //val tipoLetra = ResourcesCompat.getFont(requireActivity(), R.font.montserrat_medium_italic)
+        val tipoLetra = ResourcesCompat.getFont(requireActivity(), R.font.montserrat_medium_italic)
+        val tipoLetraTr = ResourcesCompat.getFont(requireActivity(), R.font.montserrat_italic)
 
         val linea = LinearLayout(activity)
         val txtN = TextView(activity)
-        txtN.text = "Integrantes".uppercase()
+        txtN.text = "Integrantes"//.uppercase()
         txtN.gravity = Gravity.CENTER
         txtN.maxWidth = 500
         txtN.setTextColor(colorTH)
-        txtN.setTypeface(null, Typeface.BOLD_ITALIC)
+        //txtN.setTypeface(null, Typeface.BOLD_ITALIC)
         txtN.textSize = fontTh
 
         linea.addView(txtN)
         trEn.addView(linea)
 
         val txtP = TextView(activity)
-        txtP.text = "Pago".uppercase()
+        txtP.text = "Pago"//.uppercase()
         txtP.setTextColor(colorTH)
-        txtP.setTypeface(null, Typeface.BOLD_ITALIC)
+       // txtP.setTypeface(null, Typeface.BOLD_ITALIC)
         txtP.textSize = fontTh
         trEn.addView(txtP)
 
         val txt = TextView(activity)
-        txt.text = "___"
+        txt.text = "__"
         txt.alpha = 0.0F
         txt.setTextColor(colorTH)
         txt.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -237,7 +243,7 @@ class MiGrupoFragment : Fragment() {
         trEn.addView(txt)
 
         val txtL = TextView(activity)
-        txtL.text = "Contacto".uppercase()
+        txtL.text = "Contacto"//.uppercase()
         txtL.gravity = Gravity.CENTER
         txtL.setTextColor(colorTH)
         txtL.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -303,12 +309,13 @@ class MiGrupoFragment : Fragment() {
             txtN.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             txtN.gravity = Gravity.LEFT
             txtN.maxWidth = witCte
+            txtN.typeface = tipoLetraTr
 
             val txtP = TextView(activity)
             txtP.setTextColor(colorTr)
             txtP.textSize = fontTr
             txtP.gravity = Gravity.CENTER
-
+            txtP.typeface = ResourcesCompat.getFont(requireActivity(), R.font.montserrat_semi_bold_italic)
             val linea2 = LinearLayout(activity)
             val call = ImageView(activity)
             call.setPadding(0,0,30,0)

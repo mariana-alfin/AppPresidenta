@@ -16,6 +16,8 @@ import android.view.View
 import android.widget.*
 import android.widget.TableLayout.generateViewId
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.preference.PreferenceManager
 import com.android.volley.Response
@@ -81,8 +83,10 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
 
         /*MD SE AGREGA LOGO, TITULO Y SUBTITULO DEL LA ACTIVIDAD*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = FuncionesGlobales.convertPesos(saldoConciliar,2)
-        supportActionBar?.subtitle = "Saldo por Conciliar"
+        //supportActionBar?.title = FuncionesGlobales.convertPesos(saldoConciliar,2)
+        //supportActionBar?.subtitle = "Saldo por Conciliar"
+        supportActionBar?.title = HtmlCompat.fromHtml("<font color='#FFFFFF' face='montserrat_medium_italic'>${FuncionesGlobales.convertPesos(saldoConciliar,2)}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
+        supportActionBar?.subtitle = HtmlCompat.fromHtml("<font color='#FFFFFF' face='montserrat_extra_bold_italic'>Saldo por Conciliar</font>", HtmlCompat.FROM_HTML_MODE_LEGACY);
         supportActionBar?.setLogo(R.mipmap.icono_app)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayUseLogoEnabled(true)
@@ -300,13 +304,15 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         //ENCABEZADO
         val fontTh = 16F
         val fontTr = 13.5F
+        val tipoLetra = ResourcesCompat.getFont(this, R.font.montserrat_medium_italic)
+        val tipoLetraTr = ResourcesCompat.getFont(this, R.font.montserrat_semi_bold_italic)
         val trEn = TableRow(this)
         trEn.setPadding(0, 20, 0, 20)
         val cliente = TextView(this)
         cliente.text = "Cliente"
         cliente.gravity = Gravity.CENTER
         cliente.setTextColor(Color.WHITE)
-        cliente.setTypeface(null, Typeface.BOLD_ITALIC)
+        cliente.typeface = tipoLetra
         cliente.textSize = fontTh
         cliente.maxWidth = 130
         trEn.addView(cliente)
@@ -315,7 +321,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         cuota.text = "Cuota"
         cuota.gravity = Gravity.CENTER
         cuota.setTextColor(Color.WHITE)
-        cuota.setTypeface(null, Typeface.BOLD_ITALIC)
+        cuota.typeface = tipoLetra
         cuota.textSize = fontTh
         trEn.addView(cuota)
 
@@ -323,7 +329,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         pago.text = "Pago"
         pago.gravity = Gravity.CENTER
         pago.setTextColor(Color.WHITE)
-        pago.setTypeface(null, Typeface.BOLD_ITALIC)
+        pago.typeface = tipoLetra
         pago.textSize = fontTh
         trEn.addView(pago)
 
@@ -331,7 +337,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         sol.text = "Solidario"
         sol.gravity = Gravity.CENTER
         sol.setTextColor(Color.WHITE)
-        sol.setTypeface(null, Typeface.BOLD_ITALIC)
+        sol.typeface = tipoLetra
         sol.textSize = fontTh
         trEn.addView(sol)
 
@@ -339,7 +345,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         so.text = "______"
         so.gravity = Gravity.CENTER
         so.setTextColor(ContextCompat.getColor(this, R.color.Verde2))
-        so.setTypeface(null, Typeface.BOLD_ITALIC)
+        so.typeface = tipoLetra
         so.textSize = fontTh
         trEn.addView(so)
 
@@ -403,12 +409,14 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             cliente.textSize = (fontTr - 1)
             //cliente.maxWidth = 230
             cliente.maxWidth = witCte
+            cliente.typeface = tipoLetraTr
 
             val couta = TextView(this)
             val mCuota = cte.getDouble("pay")
             couta.text = FuncionesGlobales.convertPesos(mCuota,2)
             couta.setTextColor(colorAzul)
             couta.textSize = fontTr
+            cuota.typeface = tipoLetraTr
 
             val pago = EditText(this)
             val idtxtPago = cte.getInt("credit_id")
@@ -424,12 +432,13 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
             pago.setMaxLength(7)
             pago.background.setColorFilter(colorAzul, PorterDuff.Mode.SRC_ATOP)
             pago.doAfterTextChanged { sumaPagos() }
+            pago.typeface = tipoLetraTr
 
             val lS = LinearLayout(this)
             val sol = TextView(this)
             val idT = generateViewId()
             sol.id = idT
-            sol.setTypeface(null, Typeface.BOLD)
+            sol.typeface = tipoLetraTr
             sol.textSize = (fontTr + 1)
             sol.setTextColor(ContextCompat.getColor(this, R.color.Verde5))
             sol.setPadding(15, 0, 0, 0)

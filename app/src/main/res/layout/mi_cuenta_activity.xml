@@ -139,7 +139,49 @@
                             android:focusableInTouchMode="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <RelativeLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center">
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:hint="CONTRASEÑA"
+                            android:orientation="horizontal"
+                            android:textColorHint="@color/Azul3"
+                            app:boxStrokeWidth="2dp"
+                            app:startIconDrawable="@drawable/ic_lock"
+                            app:startIconTint="@color/Azul3">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/textBackTitulos"
+                                android:id="@+id/txtNips"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:text="****"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageButton
+                            android:id="@+id/btnEditarNip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@android:color/transparent"
+                            android:padding="30dp"
+                            android:elevation="@dimen/elevationCajas"
+                            android:src="@drawable/ic_editar" />
+
+                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -214,49 +256,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
-                    <RelativeLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:hint="NIP"
-                            android:orientation="horizontal"
-                            android:textColorHint="@color/Azul3"
-                            app:boxStrokeWidth="2dp"
-                            app:startIconDrawable="@drawable/ic_lock"
-                            app:startIconTint="@color/Azul3">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                style="@style/textBackTitulos"
-                                android:id="@+id/txtNips"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:enabled="false"
-                                android:text="****"
-                                android:focusable="false"
-                                android:focusableInTouchMode="false"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <ImageButton
-                            android:id="@+id/btnEditarNip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:background="@android:color/transparent"
-                            android:padding="30dp"
-                            android:elevation="@dimen/elevationCajas"
-                            android:src="@drawable/ic_editar" />
-
-                    </RelativeLayout>
 
                     <!-- <com.google.android.material.textfield.TextInputLayout
                          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
