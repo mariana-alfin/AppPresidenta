@@ -2,6 +2,7 @@ package com.example.apppresidenta
 
 import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -54,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun recuperarNip() {
         val inicio = Intent(this, MainActivity::class.java)
-        inicio.putExtra("recuperarNip",true)
+        inicio.putExtra("recuperarNip", true)
         startActivity(inicio)
         finish()
     }
@@ -91,31 +92,39 @@ class LoginActivity : AppCompatActivity() {
             if (continua) {
                 loginWS(idCliente, nip)
             } else {
-                FuncionesGlobales.mostrarAlert(this,"error",true,"Iniciar Sesión",respuesta,false).show()
+                FuncionesGlobales.mostrarAlert(this,
+                    "error",
+                    true,
+                    "Iniciar Sesión",
+                    respuesta,
+                    false).show()
             }
         }
     }
+
     fun loginWS(idCliente: String, nip: String) {
-        LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
+        LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
-        val alerError = FuncionesGlobales.mostrarAlert(this,"error",true,"Iniciar Sesión",getString(R.string.error),false)
+        val alerError = FuncionesGlobales.mostrarAlert(this,
+            "error",
+            true,
+            "Iniciar Sesión",
+            getString(R.string.error),
+            false)
 
         //Se obtiene de las variables de sesion el token de firebase
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        var token = prefs.getString(getString(R.string.token), "")
+        val token = prefs.getString(getString(R.string.token), "")
 
-        Log.d("Token","Token firebase: $token")
+        Log.d("Token", "Token firebase: $token")
 
         //Se encripta el nip para enviar al WS
         var nipEncriptado = encriptacion(this, nip, idCliente, 1)!!
 
         /*SOLO PARA PRUEBAS PARA EL D_CLIENTE 168068 SE HARCODEA ELTOKEN Y EL NIP PARA QUE PUEDA INGRESAR*/
-        if(idCliente == "168068"){
+        /*if(idCliente == "168068"){
             token = "dCFjXMvvQGSHxE4XzSvnJu:APA91bGt8UVD0ArUkEq1gLxb2nOee5uWLCHKLPju6I3c2WPIzFrgBu3GuFajZatrAeE0nzPB_8F42fRNkbWz5D-sqVyM6ulIDnBrbAO55AMTI0j2zxkF5Dlzje9UqnKGcghWSFyrWkLP"
-        }
-
-
-        Log.d("Token","Nip encriptado: $nipEncriptado $nip")
+        }*/
 
         var json = ""
         val valSolicitud = "{" +
@@ -132,6 +141,7 @@ class LoginActivity : AppCompatActivity() {
             jsonParametros,
             Response.Listener { response ->
                 try {
+                    //findViewById<TextView>(R.id.textView).text = response.toString()
                     //Obtiene su respuesta json
                     val jsonData = JSONTokener(response.getString("data")).nextValue() as JSONObject
                     if (jsonData.getInt("code") == 200)//si la peticion fue correcta se continua con el login
@@ -140,10 +150,22 @@ class LoginActivity : AppCompatActivity() {
                         val jsonResults =
                             JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         //se guarda en sesion el numero de prestamo
-                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
-                        FuncionesGlobales.guardarVariableSesion(this,"String","NOMBRE_GPO",jsonResults.getString("group_name"))
-                        FuncionesGlobales.guardarVariableSesion(this,"String","PRESIDENTA",jsonResults.getString("customer_name"))
-                        FuncionesGlobales.guardarVariableSesion(this,"String","ID_PRESIDENTA",idCliente)
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "Int",
+                            "CREDITO_ID",
+                            jsonResults.getString("credit_id"))
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "String",
+                            "NOMBRE_GPO",
+                            jsonResults.getString("group_name"))
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "String",
+                            "PRESIDENTA",
+                            jsonResults.getString("customer_name"))
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "String",
+                            "ID_PRESIDENTA",
+                            idCliente)
                         /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
                         y este se registra/actualiza en nuestro servidor junto con el numero imei*/
                         //GeneralUtils.obtenerTokenNotificaciones(this, idCliente, numeroCelular)
@@ -161,35 +183,72 @@ class LoginActivity : AppCompatActivity() {
                         alerError.show()
                         LoadingScreen.hideLoading()
                     }
+
                 } catch (e: Exception) {
                     LoadingScreen.hideLoading()
                     alerError.show()
                 }
             },
             Response.ErrorListener { error ->
-                val responseError = String(error.networkResponse.data)
                 var mensaje = getString(R.string.error)
                 try {
+                    val responseError = String(error.networkResponse.data)
                     val dataError = JSONObject(responseError)
-                    val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
-                    val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                    val jsonData =
+                        JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                     val codigo = error.networkResponse.statusCode
-                    if(codigo == 422){
-                        alerError.setMessage("Credenciales invalidas. Favor de verificarlo")
-                      //  alerError.setMessage(jResul.toString() + " parametros "+jsonParametros)
-                    }else{
-                        mensaje =  jsonData.getString("message")
+                    if (codigo == 422) {
+                            val es_token = jsonData.getString("results").contains("token")
+                            //SE TIENE QUE VALIDAR SI EL LAS CREDENCIALES SON INCORRECTAS O SI EL ToKEN ES DIFERENTE PARA ACTUALIZARLO
+                            if (es_token) {
+                                val jResul =
+                                    JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                                //SE OBTIENE EL NUMERO CELULAR PARA EL ENVIO DEL CODIGO POR SMS
+                                val numeroCelularEnvio = jResul.getString("phone_number")
+                                //SE INDICA AL USUARIO QUE DEEBE ACTUALIZAR SU DISPOSITIVO PARA CONTINUAR
+                                val advertencia = FuncionesGlobales.mostrarAlert(this,
+                                    "advertencia",
+                                    true,
+                                    "Iniciar Sesión",
+                                    "Hemos detectado que has cambiado de dispositivo o has desinstalado la aplicación, quieres actualizar a este dispositivo.",
+                                    true)
+                                advertencia.setPositiveButton("Sí") { _, _ ->
+                                    val registro = Intent(this, RegistroActivity::class.java)
+                                    registro.putExtra("celular", numeroCelularEnvio)
+                                    registro.putExtra("idCliente", idCliente)
+                                    registro.putExtra("recuperarNip", true)
+                                    startActivity(registro)
+                                    finish()
+                                }
+                                advertencia.setNegativeButton("No") { dialog, _ -> dialog.dismiss() }
+                                advertencia.show()
+
+                            } else {
+                                mensaje = "Credenciales invalidas. Favor de verificarlo"
+                                alerError.setMessage(mensaje)
+                                alerError.show()
+                            }
+                    } else {
+                        mensaje = jsonData.getString("message")
+                        alerError.setMessage(mensaje)
+                        alerError.show()
                     }
-                    //alerError.setMessage(jResul.toString() + " parametros "+jsonParametros)
-                }catch (e: Exception){
-                    val codigo = error.networkResponse.statusCode
-                    mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
-                    alerError.setMessage(mensaje)
+
+                } catch (e: Exception) {
+                    try {
+                        val codigo = error.networkResponse.statusCode
+                        mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                        alerError.setMessage(mensaje)
+                        alerError.show()
+                    } catch (e: Exception) {
+                        alerError.setMessage(getString(R.string.errorServidor))
+                        alerError.show()
+                    }
+
                 }
-                alerError.show()
+
                 LoadingScreen.hideLoading()
-            })
-        {
+            }) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Content-Type"] = getString(R.string.content_type)
@@ -204,15 +263,21 @@ class LoginActivity : AppCompatActivity() {
             //primero borramos el cache y enviamos despues la peticion
             queue.cache.clear()
             queue.add(request)
-        }catch(e: Exception){
+        } catch (e: Exception) {
             alerError.show()
         }
         /*******  FIN ENVIO   *******/
     }
+
     private fun iniciarSesionWS(idCliente: String, nip: String) {
-        LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
+        LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
         /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
-        val alerError = FuncionesGlobales.mostrarAlert(this,"error",true,"Iniciar Sesión",getString(R.string.error),false)
+        val alerError = FuncionesGlobales.mostrarAlert(this,
+            "error",
+            true,
+            "Iniciar Sesión",
+            getString(R.string.error),
+            false)
 
         val jsonParametros = JSONObject()
         jsonParametros.put("customer_id", "164492")
@@ -234,7 +299,10 @@ class LoginActivity : AppCompatActivity() {
                         val jsonResults =
                             JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                         //se guarda en sesion el numero de prestamo
-                        FuncionesGlobales.guardarVariableSesion(this,"Int","CREDITO_ID",jsonResults.getString("credit_id"))
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "Int",
+                            "CREDITO_ID",
+                            jsonResults.getString("credit_id"))
 
                         val inicio = Intent(this, Navegacion::class.java)
                         startActivity(inicio)
@@ -253,25 +321,27 @@ class LoginActivity : AppCompatActivity() {
                 val responseError = String(error.networkResponse.data)
                 val dataError = JSONObject(responseError)
                 try {
-                    val jsonData = JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                    val jsonData =
+                        JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                     var mensaje: String
-                    val jResul = JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                    val jResul =
+                        JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                     val esCell_phone = jsonData.getString("results").contains("cell_phone")
                     val esCustomer_id = jsonData.getString("results").contains("customer_id")
 
-                    if(esCell_phone){
+                    if (esCell_phone) {
                         mensaje = jResul.getString("cell_phone")
-                    } else if(esCustomer_id){
+                    } else if (esCustomer_id) {
                         mensaje = jResul.getString("customer_id")
-                    }else{
+                    } else {
                         mensaje = getString(R.string.error)
                     }
                     alerError.setMessage(mensaje)
-                }catch (e: Exception){ }
+                } catch (e: Exception) {
+                }
                 alerError.show()
                 LoadingScreen.hideLoading()
-            })
-        {
+            }) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
                 headers["Content-Type"] = getString(R.string.content_type)
@@ -286,18 +356,19 @@ class LoginActivity : AppCompatActivity() {
             //primero borramos el cache y enviamos despues la peticion
             queue.cache.clear()
             queue.add(request)
-        }catch(e: Exception){
+        } catch (e: Exception) {
             alerError.show()
         }
         /*******  FIN ENVIO   *******/
     }
+
     private fun iniciarSesionWSO(idCliente: String, nip: String) {
         //SE ENVIAN LOS DATOS PARA SU VALIDACION
         //SI SON VALIDOS SE INICIA SESION
         val inicio = Intent(this, Navegacion::class.java)
         startActivity(inicio)
         finish()
-        LoadingScreen.displayLoadingWithText(this,"Validando información...",false)
+        LoadingScreen.displayLoadingWithText(this, "Validando información...", false)
         /*   /**************     ENVIO DE DATOS AL WS PARA GENERAR LA SOLICITUD Y GUARDA LA RESPUESTA EN SESION   **************/
 
            val dialogNo = AlertDialog.Builder(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
@@ -407,7 +478,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun realizarRegistro() {
         val registro = Intent(this, MainActivity::class.java)
-        registro.putExtra("recuperarNip",false)
+        registro.putExtra("recuperarNip", false)
         startActivity(registro)
         finish()
     }

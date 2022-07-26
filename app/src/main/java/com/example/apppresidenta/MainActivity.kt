@@ -279,9 +279,10 @@ class MainActivity : AppCompatActivity() {
             },
             Response.ErrorListener { error ->
                 //val errorD = VolleyError(String(error.networkResponse.data))
-                val responseError = String(error.networkResponse.data)
-                val dataError = JSONObject(responseError)
-                try {
+
+              /*  try {
+                    val responseError = String(error.networkResponse.data)
+                    val dataError = JSONObject(responseError)
                     val jsonData =
                         JSONTokener(dataError.getString("error")).nextValue() as JSONObject
                     val code = jsonData.getInt("code")
@@ -307,7 +308,42 @@ class MainActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     //findViewById<TextView>(R.id.txtPruebas).text = e.toString()
                 }
-                LoadingScreen.hideLoading()
+                LoadingScreen.hideLoading()*/
+                var mensaje = getString(R.string.error)
+                try{
+                    val responseError = String(error.networkResponse.data)
+                    val dataError = JSONObject(responseError)
+                    val jsonData =
+                        JSONTokener(dataError.getString("error")).nextValue() as JSONObject
+                    val code = jsonData.getInt("code")
+                    val message = jsonData.getString("message")
+                    var mensaje = getString(R.string.error)
+                    val jResul =
+                        JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
+                    val esCell_phone = jsonData.getString("results").contains("cell_phone")
+                    val esCustomer_id = jsonData.getString("results").contains("customer_id")
+
+                    if (esCell_phone) {
+                        mensaje = jResul.getString("cell_phone")
+                    } else if (esCustomer_id) {
+                        mensaje = jResul.getString("customer_id")
+                    } else {
+                        mensaje = message
+                    }
+                    alerError.setMessage(mensaje)
+                    alerError.show()
+                }catch (e:Exception){
+                    try {
+                        val codigo = error.networkResponse.statusCode
+                        mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                        alerError.setMessage(mensaje)
+                        alerError.show()
+                    }catch (e:Exception){
+                        alerError.setMessage(getString(R.string.errorServidor))
+                        alerError.show()
+                    }
+                    LoadingScreen.hideLoading()
+                }
             }) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()

@@ -37,6 +37,7 @@
 
     <string name="urlPagosConciliar">https://api.micartera.test.alfin.com.mx/api/group-payments</string>
     <string name="urlGuardarJuntaConciliacion">https://api.micartera.test.alfin.com.mx/api/group-task-concilied</string>
+    <string name="urlBonificaciones">https://api.micartera.test.alfin.com.mx/api/get-bonus-pay</string>
 
     <!--headers peticion -->
     <string name="content_type">application/json</string>
@@ -93,7 +94,8 @@
 
     <!--Strings para Envio Sms-->
     <string name="idApp">1000</string>
-    <string name="url_envio_sms">http://34.133.226.228:90/Servicios.svc/rest/ConfirmacionSms</string>
+    <string name="url_envio_smsOld">http://34.133.226.228:90/Servicios.svc/rest/ConfirmacionSms</string>
+    <string name="url_envio_sms">http://34.133.226.228:90/Servicios.svc/rest/EnvioSms</string>
     <!--Strings para Envio Sms-->
 
     <!--Mensaje para error envio sms-->

@@ -13,6 +13,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.text.Editable
 import android.text.InputFilter
 import android.util.Base64
 import android.util.Log
@@ -86,6 +87,7 @@ class FuncionesGlobales {
             editor.remove("CODIGO_VERIFICADOR")
             editor.apply()
         }
+
         fun cerrarSesion(activity: AppCompatActivity): Intent {
             //SE ELIMINAN TODAS LAS KEYS GUARDADAS AL MOMENTO
             eliminaSesion(activity)
@@ -94,17 +96,23 @@ class FuncionesGlobales {
             val inicio = Intent(activity, LoginActivity::class.java)
             return inicio
         }
-        fun guardarVariableSesion(context: Context, tipoVal: String, variable: String, valorVariable: String) {
+
+        fun guardarVariableSesion(
+            context: Context,
+            tipoVal: String,
+            variable: String,
+            valorVariable: String,
+        ) {
             //SE GUARDA EN SESION LA VARIABLE Y EL VALOR RECIVIDOS
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val editor = prefs.edit()
-           if(tipoVal == "Float"){
-               editor.putFloat(variable,valorVariable.toFloat())
-           }else if(tipoVal == "Int"){
-               editor.putInt(variable,valorVariable.toInt())
-           }else if(tipoVal == "String"){
-               editor.putString(variable,valorVariable)
-           }
+            if (tipoVal == "Float") {
+                editor.putFloat(variable, valorVariable.toFloat())
+            } else if (tipoVal == "Int") {
+                editor.putInt(variable, valorVariable.toInt())
+            } else if (tipoVal == "String") {
+                editor.putString(variable, valorVariable)
+            }
             //editor.putFloat("MONTO_SEMANAL",jsonResults.getDouble("pay").toFloat())
             editor.apply()
         }
@@ -147,18 +155,28 @@ class FuncionesGlobales {
             val fechaDate: Date = formatoEntrada.parse(fecha)
             return formatoSalida.format(fechaDate)
         }
+
         //LIMITA EL MAX NUM CARACTERES DE UN EDITEXT
         fun EditText.setMaxLength(maxLength: Int) {
             filters = arrayOf<InputFilter>(InputFilter.LengthFilter(maxLength))
         }
+
         fun Int.toDp(context: Context): Int = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), context.resources.displayMetrics
         ).toInt()
+
         //SE GENERA UNA FUNCION PARA MOSTRAR ALERT'S PERSONALIZADOS
-        fun mostrarAlert(activity: Activity, tipo: String,esPersonalizado: Boolean, titulo: String, mensaje: String, ejecutaAccion: Boolean): AlertDialog.Builder {
+        fun mostrarAlert(
+            activity: Activity,
+            tipo: String,
+            esPersonalizado: Boolean,
+            titulo: String,
+            mensaje: String,
+            ejecutaAccion: Boolean,
+        ): AlertDialog.Builder {
             val dialog = AlertDialog.Builder(activity, R.style.MyAlertDialog)
             dialog.setTitle(titulo)
-            if(mensaje != "na"){
+            if (mensaje != "na") {
                 dialog.setMessage(mensaje)
             }
             when (tipo) { //DE ACUERDO AL TIPO DE ALERT SE AGREEGA EL ICONO A MOSTAR
@@ -174,14 +192,18 @@ class FuncionesGlobales {
                 "correcto" -> {
                     dialog.setIcon(R.drawable.ic_correcto)
                 }
+                "info" -> {
+                    dialog.setIcon(R.drawable.ic_info)
+                }
             }
-            if(!ejecutaAccion){//SI NO SE VA A EJECUTAR ALGUNA ACCION SE AGREGA QU EL BOTON CANCELE EL ALERT DE LO CONTRARO EN SU IMPLEMENTACION SE AGREGAN LAS FUNCIONES
+            if (!ejecutaAccion) {//SI NO SE VA A EJECUTAR ALGUNA ACCION SE AGREGA QU EL BOTON CANCELE EL ALERT DE LO CONTRARO EN SU IMPLEMENTACION SE AGREGAN LAS FUNCIONES
                 dialog.setPositiveButton("Aceptar") { dialog, which ->
                     dialog.cancel()
                 }
             }
             return dialog
         }
+
         fun convertPesos(monto: Double, numDecimales: Int): String {
             /** MD SE GENERA FUNCION PARA DAR FORMATO DE PESOS
              * RECIVE EL MONTO Y EL NUMERO DE DECIMALES A MOSTRAR
@@ -205,7 +227,7 @@ class FuncionesGlobales {
             }
         }
 
-        fun mostrarAlertInstalarApp(contexto: Context?, packageName: String){
+        fun mostrarAlertInstalarApp(contexto: Context?, packageName: String) {
             val alert = android.app.AlertDialog.Builder(contexto)
             alert.setMessage(R.string.instalacion_app)
             alert.setPositiveButton(android.R.string.ok) { _, _ ->
@@ -233,7 +255,7 @@ class FuncionesGlobales {
             alert.show()
         }
 
-        fun mostrarAlertActivacionGPS(contexto: Context?,actividad: Activity) {
+        fun mostrarAlertActivacionGPS(contexto: Context?, actividad: Activity) {
             val alert = android.app.AlertDialog.Builder(contexto)
             alert.setMessage(contexto?.getString(R.string.estatus_gps))
             alert.setPositiveButton(android.R.string.ok) { _, _ ->
@@ -245,12 +267,12 @@ class FuncionesGlobales {
 
         fun enviarMensajeWhatsApp(context: Context?, message: String, number: String) {
             val sendIntent = Intent(Intent.ACTION_VIEW)
-            val uri = "https://wa.me/52"+number+"/?text="+message
+            val uri = "https://wa.me/52" + number + "/?text=" + message
             sendIntent.setData(Uri.parse(uri))
             context?.startActivity(sendIntent)
         }
 
-        fun llamarContacto(context: Context?, telefono : String) {
+        fun llamarContacto(context: Context?, telefono: String) {
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:+52$telefono")
             context?.startActivity(intent)
@@ -262,8 +284,8 @@ class FuncionesGlobales {
                     Log.d("Installations", "Installation auth token: " + task.result)
 
                     //En cuanto se obtiene el token para envio de notificaciones se guarda en una variable de sesion
-                    guardarVariableSesion(contexto!!,"String",
-                        contexto.getString(R.string.token),task.result)
+                    guardarVariableSesion(contexto!!, "String",
+                        contexto.getString(R.string.token), task.result)
 //                    registrarVariableSesion(
 //                        contexto,
 //                        contexto!!.getString(R.string.token),
@@ -276,7 +298,7 @@ class FuncionesGlobales {
             })
         }
 
-        fun creacionComplementosApp(contexto: Context?){
+        fun creacionComplementosApp(contexto: Context?) {
 
             //Se crean los canales de notificaciones
             crearCanalesNotificaciones(contexto)
@@ -339,51 +361,63 @@ class FuncionesGlobales {
 
         /*Funciones para notificaciones (registro de token, temas, canales de notificaciones)*/
         private fun crearCanalesNotificaciones(contexto: Context?) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val importancia = NotificationManager.IMPORTANCE_HIGH
 
                 val canalRecordatorios = NotificationChannel(
                     canalIDRecordatorios,
-                    nombreCanalRecordatorio,importancia).apply {
+                    nombreCanalRecordatorio, importancia).apply {
                     lightColor = Color.RED
                     enableLights(true)
                 }
 
                 val canalGeneral = NotificationChannel(
                     canalIDGeneral,
-                    nombreCanalGeneral,importancia).apply {
+                    nombreCanalGeneral, importancia).apply {
                     lightColor = Color.RED
                     enableLights(true)
                 }
 
-                val manager = contexto!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                val manager =
+                    contexto!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
                 manager.createNotificationChannel(canalRecordatorios)
                 manager.createNotificationChannel(canalGeneral)
             }
         }
 
-        private fun registrarTema(){
-            FirebaseMessaging.getInstance().subscribeToTopic("Generales").addOnCompleteListener(OnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d("Suscripcion", "Suscripcion al tema, todo ok")
-                } else {
-                    Log.e("Suscripcion", "No fue posible suscribir al tema")
-                }
-            })
+        private fun registrarTema() {
+            FirebaseMessaging.getInstance().subscribeToTopic("Generales")
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Suscripcion", "Suscripcion al tema, todo ok")
+                    } else {
+                        Log.e("Suscripcion", "No fue posible suscribir al tema")
+                    }
+                })
         }
 
         private fun obtenerIdDispositivo(contexto: Context?):
-                String = Settings.Secure.getString(contexto!!.contentResolver, Settings.Secure.ANDROID_ID)
+                String =
+            Settings.Secure.getString(contexto!!.contentResolver, Settings.Secure.ANDROID_ID)
 
-        fun envioSms(activity: AppCompatActivity,contexto: Context?, numeroCelular: String, codigo: String, appSignature: String){
+        fun envioSms(
+            activity: AppCompatActivity,
+            contexto: Context?,
+            numeroCelular: String,
+            codigo: String,
+            appSignature: String,
+        ) {
 
-            val alert = mostrarAlert(activity,"error",true,"Error"
-                ,contexto!!.getString(R.string.error_sms),true)
+            val alert = mostrarAlert(activity,
+                "error",
+                true,
+                "Error",
+                contexto!!.getString(R.string.error_sms),
+                true)
             alert.setPositiveButton(android.R.string.ok) { _, _ ->
                 //En caso de que el sms no se pueda enviar desde el servidor.
-                val intent = Intent(contexto,LoginActivity::class.java)
+                val intent = Intent(contexto, LoginActivity::class.java)
                 contexto.startActivity(intent)
             }
             alert.setCancelable(false)
@@ -403,7 +437,7 @@ class FuncionesGlobales {
                 { response ->
                     try {
                         //Obtiene su respuesta json
-                        Log.d("Envio SMS","Respuesta: $response")
+                        Log.d("Envio SMS", "Respuesta: $response")
                         /*FuncionesGlobales.mostrarAlert(
                             (contexto as Activity),
                             "correcto",
@@ -414,7 +448,7 @@ class FuncionesGlobales {
                         ).show()*/
                         Toast.makeText(contexto, "Mensaje Enviado", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
-                        Log.e("Envio SMS","Ocurrio un error en el envio sms: $e")
+                        Log.e("Envio SMS", "Ocurrio un error en el envio sms: $e")
                     }
                 },
                 { error ->
@@ -422,16 +456,15 @@ class FuncionesGlobales {
                         val responseError = String(error.networkResponse.data)
                         val dataError = JSONObject(responseError)
                         val messageError = dataError.getString("message")
-                        Log.d("Envio SMS","Respuesta error: $dataError")
+                        Log.d("Envio SMS", "Respuesta error: $dataError")
                         //Toast.makeText(contexto, messageError, Toast.LENGTH_SHORT).show()
                         alert.show()
-                    }catch (e: Exception){
-                        Log.e("Envio SMS","Ocurrio un error en el envio sms: $e")
+                    } catch (e: Exception) {
+                        Log.e("Envio SMS", "Ocurrio un error en el envio sms: $e")
                         alert.show()
                         //Toast.makeText(contexto, "Ocurrio un error en el envio de SMS, favor de intetarlo nuevamente.", Toast.LENGTH_LONG).show()
                     }
-                })
-            {
+                }) {
                 override fun getHeaders(): Map<String, String> {
                     val headers = HashMap<String, String>()
                     headers["Content-Type"] = contexto!!.getString(R.string.content_type)
@@ -469,8 +502,8 @@ class FuncionesGlobales {
                 //primero borramos el cache y enviamos despues la peticion
                 queue.cache.clear()
                 queue.add(request)
-            }catch(e: Exception){
-                Log.e("Envio SMS","Ocurrio un error en el envio sms: $e")
+            } catch (e: Exception) {
+                Log.e("Envio SMS", "Ocurrio un error en el envio sms: $e")
             }
         }
 
@@ -485,9 +518,14 @@ class FuncionesGlobales {
 //            alert.show()
 //        }
 
-        fun encriptacion(contexto: Context?,textoEncriptar: String,idCliente: String,opcion: Int): String? {
+        fun encriptacion(
+            contexto: Context?,
+            textoEncriptar: String,
+            idCliente: String,
+            opcion: Int,
+        ): String? {
             val aesKey: Key = SecretKeySpec(
-                obtenerKeyEncriptacion(contexto,idCliente,opcion).toByteArray(), "AES")
+                obtenerKeyEncriptacion(contexto, idCliente, opcion).toByteArray(), "AES")
             val cipher = Cipher.getInstance("AES")
             cipher.init(Cipher.ENCRYPT_MODE, aesKey)
             val encriptado = cipher.doFinal(textoEncriptar.toByteArray())
@@ -495,12 +533,14 @@ class FuncionesGlobales {
             //return Base64.encodeBytes(encrypted)
         }
 
-        private fun obtenerKeyEncriptacion(contexto: Context?,idCliente: String,opcion: Int):String
-        {
+        private fun obtenerKeyEncriptacion(
+            contexto: Context?,
+            idCliente: String,
+            opcion: Int,
+        ): String {
             var keyCompartida = ""
 
-            if (opcion == 1)
-            {
+            if (opcion == 1) {
                 val packagename = contexto!!.applicationContext.packageName;
 
                 val packageNamePartes = packagename.split(".")
@@ -513,10 +553,8 @@ class FuncionesGlobales {
                         "${idCliente}-" +
                         packageNamePartes[2]
 
-                Log.d("Encriptacion","$keyCompartida ${keyCompartida.substring(0,32)}")
-            }
-            else
-            {
+                Log.d("Encriptacion", "$keyCompartida ${keyCompartida.substring(0, 32)}")
+            } else {
                 val tz: TimeZone = TimeZone.getTimeZone("GMT-06:00")
                 val calendario: Calendar = Calendar.getInstance(tz)
 
@@ -540,23 +578,23 @@ class FuncionesGlobales {
                 val diaParte2 = convertirCadenaToHex(diaLetra.substring(1, 2))
                 val diaParte3 = convertirCadenaToHex(diaLetra.substring(2, 3))
 
-                val sumaNumeros = (ano-(diaMes+diaAno))
+                val sumaNumeros = (ano - (diaMes + diaAno))
 
                 val keyNormal = "$diaMes$diaLetra$diaParte1$diaAno$diaParte2$sumaNumeros$diaParte3"
 
                 val keyAlreves = keyNormal.reversed()
 
-                val divisorKey = keyNormal.length/2
+                val divisorKey = keyNormal.length / 2
 
-                keyCompartida = "${keyNormal.substring(0,divisorKey)}-" +
-                        "${keyNormal.substring(divisorKey,keyNormal.length)}" +
-                        "${keyAlreves.substring(divisorKey,keyNormal.length)}-" +
-                        "${keyAlreves.substring(0,divisorKey)}"
+                keyCompartida = "${keyNormal.substring(0, divisorKey)}-" +
+                        "${keyNormal.substring(divisorKey, keyNormal.length)}" +
+                        "${keyAlreves.substring(divisorKey, keyNormal.length)}-" +
+                        "${keyAlreves.substring(0, divisorKey)}"
 
-                Log.d("Encriptacion","$keyCompartida ${keyCompartida.substring(0,32)}")
+                Log.d("Encriptacion", "$keyCompartida ${keyCompartida.substring(0, 32)}")
             }
 
-            return keyCompartida.substring(0,32)
+            return keyCompartida.substring(0, 32)
         }
 
         private fun convertirCadenaToHex(cadena: String): String? {
@@ -568,41 +606,39 @@ class FuncionesGlobales {
             return cadenaHex
         }
 
-        fun validaIntentosSms(contexto: Context?) : Boolean{
+        fun validaIntentosSms(contexto: Context?): Boolean {
             val prefs = PreferenceManager.getDefaultSharedPreferences(contexto)
 
             var intentos = prefs.getString("INTENTOS", "0")!!.toInt()
 
-            if (prefs.getString("FECHA_ACTUAL", "") == ""){
+            if (prefs.getString("FECHA_ACTUAL", "") == "") {
 //                registrarVariableSesion(
 //                    contexto,
 //                    "FECHA_ACTUAL",
 //                    validaFechaActual()
 //                )
-                guardarVariableSesion(contexto!!,"String",
-                    "FECHA_ACTUAL",validaFechaActual())
-            }
-            else if(prefs.getString("FECHA_ACTUAL", "") != validaFechaActual())
-            {
+                guardarVariableSesion(contexto!!, "String",
+                    "FECHA_ACTUAL", validaFechaActual())
+            } else if (prefs.getString("FECHA_ACTUAL", "") != validaFechaActual()) {
 //                registrarVariableSesion(
 //                    contexto,
 //                    "FECHA_ACTUAL",
 //                    validaFechaActual()
 //                )
-                guardarVariableSesion(contexto!!,"String",
-                    "FECHA_ACTUAL",validaFechaActual())
+                guardarVariableSesion(contexto!!, "String",
+                    "FECHA_ACTUAL", validaFechaActual())
                 intentos = 0
             }
 
             intentos += 1
 //            registrarVariableSesion(contexto, "INTENTOS", intentos.toString())
-            guardarVariableSesion(contexto!!,"String",
-                "INTENTOS",intentos.toString())
+            guardarVariableSesion(contexto!!, "String",
+                "INTENTOS", intentos.toString())
 
             return intentos <= 3
         }
 
-        fun validaFechaActual() : String{
+        fun validaFechaActual(): String {
             val tz: TimeZone = TimeZone.getTimeZone("GMT-06:00")
             val calendario: Calendar = Calendar.getInstance(tz)
 
@@ -613,7 +649,7 @@ class FuncionesGlobales {
             return "$diaActual-$mesActual-$anoActual"
         }
 
-        fun asignarNombreFoto(contexto: Context?) : String{
+        fun asignarNombreFoto(contexto: Context?): String {
             val prefs = PreferenceManager.getDefaultSharedPreferences(contexto)
             val prestamo = prefs.getInt("CREDITO_ID", 0)
             val tz: TimeZone = TimeZone.getTimeZone("GMT-06:00")
@@ -628,7 +664,7 @@ class FuncionesGlobales {
 
         fun obtenerCadenaB64DeImagen(ruta: String): String? {
             val imagenExtension = ruta.split(".").last()
-            if( extensionImagenes.indexOf(imagenExtension) >= 0 ){
+            if (extensionImagenes.indexOf(imagenExtension) >= 0) {
                 val bitmap = BitmapFactory.decodeFile(ruta)
                 if (bitmap != null) return codificaBase64aBitmap(bitmap)
             }
@@ -663,8 +699,7 @@ class FuncionesGlobales {
 //        }
 
         /*Funcion para registrar variables de sesion*/
-        fun eliminaVariableSesion(contexto: Context?,nombreVariable: String)
-        {
+        fun eliminaVariableSesion(contexto: Context?, nombreVariable: String) {
             val preferencias = PreferenceManager.getDefaultSharedPreferences(contexto)
             val editor = preferencias.edit()
             editor.remove(nombreVariable)

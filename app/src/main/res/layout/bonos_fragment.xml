@@ -20,6 +20,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/cargando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:indeterminate="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtCargando"
+            style="@style/textVerde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Espere un momento \n Cargando información ..."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cargando"
+            app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
             android:id="@+id/lbl"
@@ -79,6 +102,7 @@
                     app:startIconTint="@color/Verde5">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtPagoSemanal"
                         style="@style/txtSubBonAzul"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -102,6 +126,7 @@
                     app:startIconTint="@color/Azul3">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtReserva"
                         style="@style/txtSubBonVerde"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -165,6 +190,7 @@
                     <TableRow>
 
                         <TextView
+                            android:id="@+id/txtSemanasPagadas"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -175,6 +201,7 @@
                             android:fontFamily="@font/montserrat_semi_bold_italic"/>
 
                         <TextView
+                            android:id="@+id/txtPagoSemanalPagado"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -184,6 +211,7 @@
                             android:textColor="@color/Azul3" />
 
                         <TextView
+                            android:id="@+id/txtReservaPagada"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -196,6 +224,7 @@
                     <TableRow>
 
                         <TextView
+                            android:id="@+id/txtSemanasPorPagar"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -205,6 +234,7 @@
                             android:textColor="@color/Azul3" />
 
                         <TextView
+                            android:id="@+id/txtPagoSemanalPorPagar"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -214,6 +244,7 @@
                             android:textColor="@color/Azul3" />
 
                         <TextView
+                            android:id="@+id/txtReservaPorPagar"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -236,6 +267,7 @@
                             android:textColor="@color/Azul3"/>
 
                         <TextView
+                            android:id="@+id/txtTotalPagoSemanal"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -245,6 +277,7 @@
                             android:textColor="@color/Azul3" />
 
                         <TextView
+                            android:id="@+id/txtTotalReserva"
                             style="@style/txtWriteMontserrat"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -255,7 +288,6 @@
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
-
             <TableLayout
                 android:id="@+id/tblBonificaciones"
                 android:layout_width="wrap_content"

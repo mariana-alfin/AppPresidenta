@@ -165,6 +165,8 @@ class InicioFragment : Fragment() {
                                 /*MD SE GUARDA EN SESSION EL MONTO PAGO DEL CREDITO PARA LA VISTA DE PAGOS*/
                                 FuncionesGlobales.guardarVariableSesion(requireActivity(),"Float","MONTO_SEMANAL",jsonResults.getString("pay"))
                                 FuncionesGlobales.guardarVariableSesion(requireActivity(),"String","FECHA_PAGO_CONCILIACION",jsonResults.getString("next_pay_date"))
+                                /*MD SE AGREGA QUE GUARDE EL NUMERO DE PAGO ACTUAL PARA LA TABLA DE BONIFICACIONES*/
+                                FuncionesGlobales.guardarVariableSesion(requireActivity(),"Int","NO_PAGO_ACTUAL",jsonResults.getString("period"))
 
                                 /*****************/
                                 //txtFPago.text = FuncionesGlobales.convertFecha(jsonResults.getString("next_pay_date"),"dd/MM/yyyy")
