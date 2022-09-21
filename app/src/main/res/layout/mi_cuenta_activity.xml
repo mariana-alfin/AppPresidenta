@@ -258,7 +258,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <!-- <com.google.android.material.textfield.TextInputLayout
+                    <!-- <mx.google.android.material.textfield.TextInputLayout
                          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
@@ -269,13 +269,13 @@
                          app:startIconDrawable="@drawable/ic_direccion"
                          app:startIconTint="@color/Verde3">
 
-                         <com.google.android.material.textfield.TextInputEditText
+                         <mx.google.android.material.textfield.TextInputEditText
                              style="@style/textBackTitulos"
                              android:layout_width="match_parent"
                              android:layout_height="wrap_content"
                              android:enabled="false"
                              android:text="C Flores 23 Col. Palmas Hidalgo" />
-                     </com.google.android.material.textfield.TextInputLayout>-->
+                     </mx.google.android.material.textfield.TextInputLayout>-->
                 </LinearLayout>
             </LinearLayout>
             <!--<LinearLayout
@@ -297,20 +297,20 @@
                     android:defaultFocusHighlightEnabled="true"
                     android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <mx.google.android.material.textfield.TextInputLayout
                         android:id="@+id/filledTextField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:hint="Número cliente">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <mx.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="174263"
                             style="@style/textAzul"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
+                    </mx.google.android.material.textfield.TextInputLayout>
+                    <mx.google.android.material.textfield.TextInputLayout
                         android:id="@+id/outlinedTextField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -320,7 +320,7 @@
                         app:boxBackgroundColor="@color/Naranja"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <mx.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:allowClickWhenDisabled="true"
@@ -328,14 +328,14 @@
                             android:text="GUPCS840325MDFZRR06"
                             style="@style/textAzul"/>
 
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
+                    </mx.google.android.material.textfield.TextInputLayout>
+                    <mx.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tip_main_user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <mx.google.android.material.textfield.TextInputEditText
                             android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -343,8 +343,8 @@
                             android:enabled="false"
                             android:text="5538792978"/>
 
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
+                    </mx.google.android.material.textfield.TextInputLayout>
+                    <mx.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -355,15 +355,15 @@
                         android:hint="CLABE/NO. TARJETA"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <mx.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:text="0226478965845845"
                             style="@style/textAzul"/>
 
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
+                    </mx.google.android.material.textfield.TextInputLayout>
+                    <mx.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -375,13 +375,13 @@
                         android:hint="DOMICILIO"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <mx.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="C Flores 23 Col. Palmas Hidalgo"
                             style="@style/textAzul"/>
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                    </mx.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
             </LinearLayout>

@@ -62,6 +62,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22772343549:android:3b74f3eb2e55cbd33ed494",
+        "android_client_info": {
+          "package_name": "presidentalfin.com.mx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22772343549-t2g96b3ns5ujs7t1ov0ojhtotnsmpec7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEFDZ5GWJnGwveRUnrQ5jWTEVjnRZ9lFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22772343549-t2g96b3ns5ujs7t1ov0ojhtotnsmpec7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

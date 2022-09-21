@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.apppresidenta">
+    package="presidentalfin.com.mx">
     <!--
     ETIQUETA USADA PARA PODER ACCEDER EN ANDROID 11 A EL PAQUETE DE WHATS APP
     Y VALIDAR SI ESTA INSTALADO
@@ -33,7 +33,7 @@
             android:name=".submenu.RecuperarNIPActivity"
             android:exported="false" />
         <activity
-            android:name=".DetalleJuntaActivity"
+            android:name="presidentalfin.com.mx.DetalleJuntaActivity"
             android:exported="false" />
         <activity
             android:name=".submenu.MiCuentaActivity"
@@ -89,7 +89,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.apppresidenta"
+            android:authorities="presidentalfin.com.mx"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
