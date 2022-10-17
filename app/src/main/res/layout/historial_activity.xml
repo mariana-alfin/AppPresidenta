@@ -26,6 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0">
+
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/cargando"
                 android:layout_width="wrap_content"
@@ -85,6 +86,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtPresidenta" />
+
             <TextView
                 android:id="@+id/txtHistorico"
                 style="@style/textVerde"
@@ -95,6 +97,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tlbHistorial" />
+
             <TextView
                 android:id="@+id/txt"
                 style="@style/textAzul"

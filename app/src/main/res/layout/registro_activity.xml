@@ -133,6 +133,7 @@
             app:layout_constraintTop_toBottomOf="@+id/btnVCodigo"
             app:layout_constraintVertical_bias="0.04"
             app:strokeWidth="0.2dp" />
+
         <Button
             android:id="@+id/btnReenvCodigo2"
             style="?attr/materialButtonOutlinedStyle"
@@ -151,6 +152,7 @@
             app:layout_constraintVertical_bias="0.04"
             app:strokeColor="@color/Verde3"
             app:strokeWidth="1.5dp" />
+
         <TextView
             android:id="@+id/txtCodigoP"
             android:layout_width="wrap_content"

@@ -10,8 +10,6 @@
         android:width="1dp"
         android:color="@color/Verde2" />
     <!-- Color de fondo de la vista -->
-    <solid
-        android:color="@color/Verde2" >
-    </solid>
+    <solid android:color="@color/Verde2"></solid>
 
 </shape>

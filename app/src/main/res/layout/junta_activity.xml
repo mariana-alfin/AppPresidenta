@@ -28,19 +28,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-<!--
-            <TextView
-                android:id="@+id/txtTitle"
-                style="@style/textAzul"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:gravity="left"
-                android:text="Ingresa los pagos de los integrantes"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
--->
+            <!--
+                        <TextView
+                            android:id="@+id/txtTitle"
+                            style="@style/textAzul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="0dp"
+                            android:gravity="left"
+                            android:text="Ingresa los pagos de los integrantes"
+                            android:textSize="20sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+            -->
 
 
             <TextView
@@ -94,6 +94,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/txtCargando"
                 style="@style/textVerde"

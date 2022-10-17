@@ -5,7 +5,7 @@
         android:id="@+id/iAyuda"
         android:title="Tomar Foto"
         android:icon="@drawable/ic_help_24"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/iCuenta"
         android:title="Mi Cuenta" />
@@ -17,8 +17,8 @@
         android:title="Calculadora" />-->
     <item
         android:id="@+id/iHistorial"
-        android:title="Mi Historial"/>
+        android:title="Mi Historial" />
     <item
         android:id="@+id/iSesion"
-        android:title="Cerrar sesión"/>
+        android:title="Cerrar sesión" />
 </menu>

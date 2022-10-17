@@ -111,7 +111,7 @@
                             android:enabled="false"
                             android:text="174262"
                             android:focusable="false"
-                            android:focusableInTouchMode="false"/>
+                            android:focusableInTouchMode="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -136,11 +136,10 @@
                             android:enabled="false"
                             android:text="174263"
                             android:focusable="false"
-                            android:focusableInTouchMode="false"/>
+                            android:focusableInTouchMode="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <RelativeLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:tools="http://schemas.android.com/tools"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,7 +166,7 @@
                                 android:enabled="false"
                                 android:text="****"
                                 android:focusable="false"
-                                android:focusableInTouchMode="false"/>
+                                android:focusableInTouchMode="false" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -232,7 +231,7 @@
                             android:enabled="false"
                             android:text="5538792978"
                             android:focusable="false"
-                            android:focusableInTouchMode="false"/>
+                            android:focusableInTouchMode="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -254,11 +253,11 @@
                             android:enabled="false"
                             android:text="0226478965845845"
                             android:focusable="false"
-                            android:focusableInTouchMode="false"/>
+                            android:focusableInTouchMode="false" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <!-- <mx.google.android.material.textfield.TextInputLayout
+                    <!-- <presidentasalfin.google.android.material.textfield.TextInputLayout
                          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                          android:layout_width="match_parent"
                          android:layout_height="wrap_content"
@@ -269,13 +268,13 @@
                          app:startIconDrawable="@drawable/ic_direccion"
                          app:startIconTint="@color/Verde3">
 
-                         <mx.google.android.material.textfield.TextInputEditText
+                         <presidentasalfin.google.android.material.textfield.TextInputEditText
                              style="@style/textBackTitulos"
                              android:layout_width="match_parent"
                              android:layout_height="wrap_content"
                              android:enabled="false"
                              android:text="C Flores 23 Col. Palmas Hidalgo" />
-                     </mx.google.android.material.textfield.TextInputLayout>-->
+                     </presidentasalfin.google.android.material.textfield.TextInputLayout>-->
                 </LinearLayout>
             </LinearLayout>
             <!--<LinearLayout
@@ -297,20 +296,20 @@
                     android:defaultFocusHighlightEnabled="true"
                     android:orientation="vertical">
 
-                    <mx.google.android.material.textfield.TextInputLayout
+                    <presidentasalfin.google.android.material.textfield.TextInputLayout
                         android:id="@+id/filledTextField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:hint="Número cliente">
 
-                        <mx.google.android.material.textfield.TextInputEditText
+                        <presidentasalfin.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="174263"
                             style="@style/textAzul"/>
-                    </mx.google.android.material.textfield.TextInputLayout>
-                    <mx.google.android.material.textfield.TextInputLayout
+                    </presidentasalfin.google.android.material.textfield.TextInputLayout>
+                    <presidentasalfin.google.android.material.textfield.TextInputLayout
                         android:id="@+id/outlinedTextField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -320,7 +319,7 @@
                         app:boxBackgroundColor="@color/Naranja"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                        <mx.google.android.material.textfield.TextInputEditText
+                        <presidentasalfin.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:allowClickWhenDisabled="true"
@@ -328,14 +327,14 @@
                             android:text="GUPCS840325MDFZRR06"
                             style="@style/textAzul"/>
 
-                    </mx.google.android.material.textfield.TextInputLayout>
-                    <mx.google.android.material.textfield.TextInputLayout
+                    </presidentasalfin.google.android.material.textfield.TextInputLayout>
+                    <presidentasalfin.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tip_main_user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp">
 
-                        <mx.google.android.material.textfield.TextInputEditText
+                        <presidentasalfin.google.android.material.textfield.TextInputEditText
                             android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -343,8 +342,8 @@
                             android:enabled="false"
                             android:text="5538792978"/>
 
-                    </mx.google.android.material.textfield.TextInputLayout>
-                    <mx.google.android.material.textfield.TextInputLayout
+                    </presidentasalfin.google.android.material.textfield.TextInputLayout>
+                    <presidentasalfin.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -355,15 +354,15 @@
                         android:hint="CLABE/NO. TARJETA"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                        <mx.google.android.material.textfield.TextInputEditText
+                        <presidentasalfin.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:text="0226478965845845"
                             style="@style/textAzul"/>
 
-                    </mx.google.android.material.textfield.TextInputLayout>
-                    <mx.google.android.material.textfield.TextInputLayout
+                    </presidentasalfin.google.android.material.textfield.TextInputLayout>
+                    <presidentasalfin.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
@@ -375,13 +374,13 @@
                         android:hint="DOMICILIO"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-                        <mx.google.android.material.textfield.TextInputEditText
+                        <presidentasalfin.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="C Flores 23 Col. Palmas Hidalgo"
                             style="@style/textAzul"/>
 
-                    </mx.google.android.material.textfield.TextInputLayout>
+                    </presidentasalfin.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
             </LinearLayout>

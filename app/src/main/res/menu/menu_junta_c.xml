@@ -6,5 +6,5 @@
         android:title="Copiar montos"
         android:icon="@drawable/copy"
         android:elevation="@dimen/elevationTitle"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

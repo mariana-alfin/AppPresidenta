@@ -12,8 +12,8 @@
         android:title="Mi Cuenta" />
     <item
         android:id="@+id/iHistorial"
-        android:title="Mi Historial"/>
+        android:title="Mi Historial" />
     <item
         android:id="@+id/iSesion"
-        android:title="Cerrar sesión"/>
+        android:title="Cerrar sesión" />
 </menu>

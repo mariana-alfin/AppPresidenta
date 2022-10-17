@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navHome"
-        android:name="presidentalfin.com.mx.navegacion.InicioFragment"
+        android:name="mx.com.presidentasalfin.navegacion.InicioFragment"
         android:label="@string/titleHome"
         tools:layout="@layout/inicio_fragment" />
 
     <fragment
         android:id="@+id/navMiGrupo"
-        android:name="presidentalfin.com.mx.navegacion.MiGrupoFragment"
+        android:name="mx.com.presidentasalfin.navegacion.MiGrupoFragment"
         android:label="@string/titleGpo"
         tools:layout="@layout/mi_grupo_fragment" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="presidentalfin.com.mx.navegacion.PagosFragment"
+        android:name="mx.com.presidentasalfin.navegacion.PagosFragment"
         android:label="@string/titlePagosFragment"
         tools:layout="@layout/pagos_fragment" />
 
     <fragment
         android:id="@+id/navBonos"
-        android:name="presidentalfin.com.mx.navegacion.BonosFragment"
+        android:name="mx.com.presidentasalfin.navegacion.BonosFragment"
         android:label="@string/titleBonos"
         tools:layout="@layout/bonos_fragment" />
 </navigation>

@@ -1,14 +1,15 @@
 //Se modifica la forma en que se llaman los plugins para poder usar el plugin de google-services
-apply plugin:'com.android.application'
-apply plugin:'kotlin-android'
-apply plugin:'kotlin-android-extensions'
-apply plugin:'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "presidentalfin.com.mx"
+        applicationId "mx.com.presidentasalfin"
         minSdk 23
         targetSdk 31
         versionCode 1
@@ -61,7 +62,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     //Dependecia para guarda en sesion
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
     //Dependencias Firebase Cloud Messaging
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
@@ -69,4 +70,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    /*USO DE CRASHLYTICS*/
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
 }

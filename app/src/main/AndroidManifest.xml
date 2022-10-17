@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="presidentalfin.com.mx">
+    package="mx.com.presidentasalfin">
     <!--
     ETIQUETA USADA PARA PODER ACCEDER EN ANDROID 11 A EL PAQUETE DE WHATS APP
     Y VALIDAR SI ESTA INSTALADO
@@ -27,56 +27,56 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppPresidenta">
         <activity
-            android:name=".submenu.BonificacionesActivity"
+            android:name="mx.com.presidentasalfin.submenu.BonificacionesActivity"
             android:exported="false" />
         <activity
-            android:name=".submenu.RecuperarNIPActivity"
+            android:name="mx.com.presidentasalfin.submenu.RecuperarNIPActivity"
             android:exported="false" />
         <activity
-            android:name="presidentalfin.com.mx.DetalleJuntaActivity"
+            android:name="mx.com.presidentasalfin.DetalleJuntaActivity"
             android:exported="false" />
         <activity
-            android:name=".submenu.MiCuentaActivity"
+            android:name="mx.com.presidentasalfin.submenu.MiCuentaActivity"
             android:exported="false" />
         <activity
-            android:name=".NIPActivity"
+            android:name="mx.com.presidentasalfin.NIPActivity"
             android:exported="false" />
         <activity
-            android:name=".RegistroActivity"
+            android:name="mx.com.presidentasalfin.RegistroActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name="mx.com.presidentasalfin.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".JuntaConciliacionActivity"
+            android:name="mx.com.presidentasalfin.JuntaConciliacionActivity"
             android:exported="false" />
         <activity
-            android:name=".JuntaActivity"
+            android:name="mx.com.presidentasalfin.JuntaActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".submenu.DetalleClienteActivity"
+            android:name="mx.com.presidentasalfin.submenu.DetalleClienteActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".submenu.HistorialActivity"
+            android:name="mx.com.presidentasalfin.submenu.HistorialActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".submenu.CalculadoraActivity"
+            android:name="mx.com.presidentasalfin.submenu.CalculadoraActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".navegacion.Navegacion"
+            android:name="mx.com.presidentasalfin.navegacion.Navegacion"
             android:exported="false"
             android:label="@string/title_activity_navegacion"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="mx.com.presidentasalfin.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SplashActivity"
+            android:name="mx.com.presidentasalfin.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -89,7 +89,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="presidentalfin.com.mx"
+            android:authorities="mx.com.presidentasalfin"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -97,7 +97,7 @@
                 android:resource="@xml/provider_paths" />
         </provider> <!-- ETIQUETA USADA PARA LA CONFIGURACION Y RECEPCION DE NOTIFICACIONES CON FIREBASE -->
         <service
-            android:name=".NotificacionesActivity"
+            android:name="mx.com.presidentasalfin.NotificacionesActivity"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

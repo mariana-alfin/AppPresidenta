@@ -54,7 +54,7 @@
                 android:textSize="20sp"
                 android:maxWidth="300dp"
                 android:gravity="center"
-                android:layout_gravity ="center"
+                android:layout_gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtNombreCliente" />

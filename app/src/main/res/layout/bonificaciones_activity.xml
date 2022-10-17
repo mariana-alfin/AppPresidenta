@@ -175,7 +175,7 @@
                                 android:background="@drawable/borde_verde_b"
                                 android:text="7 pagadas"
                                 android:textColor="@color/Azul3"
-                                android:fontFamily="@font/montserrat_semi_bold_italic"/>
+                                android:fontFamily="@font/montserrat_semi_bold_italic" />
 
                             <TextView
                                 style="@style/txtWriteMontserrat"

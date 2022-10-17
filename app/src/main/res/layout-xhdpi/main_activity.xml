@@ -37,43 +37,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-           <!--<EditText
-                android:id="@+id/txtUsuario"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:backgroundTint="@color/Verde1"
-                android:ems="10"
-                android:gravity="left"
-                android:hint="Id de Cliente"
-                android:inputType="number"
-                android:maxLength="15"
-                android:paddingLeft="50dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-               <EditText
-                android:id="@+id/txtCelular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:backgroundTint="@color/Verde1"
-                android:ems="10"
-                android:gravity="left"
-                android:hint="Número de celular"
-                android:inputType="number"
-                android:maxLength="10"
-                android:paddingLeft="50dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtUsuario" />
-                -->
+            <!--<EditText
+                 android:id="@+id/txtUsuario"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="32dp"
+                 android:backgroundTint="@color/Verde1"
+                 android:ems="10"
+                 android:gravity="left"
+                 android:hint="Id de Cliente"
+                 android:inputType="number"
+                 android:maxLength="15"
+                 android:paddingLeft="50dp"
+                 android:textColor="@color/white"
+                 android:textColorHint="@color/white"
+                 android:textSize="20sp"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="parent" />
+                <EditText
+                 android:id="@+id/txtCelular"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="28dp"
+                 android:backgroundTint="@color/Verde1"
+                 android:ems="10"
+                 android:gravity="left"
+                 android:hint="Número de celular"
+                 android:inputType="number"
+                 android:maxLength="10"
+                 android:paddingLeft="50dp"
+                 android:textColor="@color/white"
+                 android:textColorHint="@color/white"
+                 android:textSize="20sp"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/txtUsuario" />
+                 -->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tUsuario"
@@ -104,8 +104,9 @@
                     android:maxLength="15"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tCelular"
                 android:layout_width="match_parent"
@@ -141,8 +142,7 @@
                     android:textSize="18sp"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:inputType="number"
-                    />
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
