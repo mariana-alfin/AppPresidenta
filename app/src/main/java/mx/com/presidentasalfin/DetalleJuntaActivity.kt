@@ -103,7 +103,8 @@ class DetalleJuntaActivity : AppCompatActivity() {
 
             val request = object : JsonObjectRequest(
                 Method.POST,
-                getString(R.string.urlDatosJuntasPgo),
+                //getString(R.string.urlDatosJuntasPgo),
+                getString(R.string.url)+getString(R.string.metDatosJuntasPgo),
                 jsonParametros,
                 Response.Listener { response ->
                     try {

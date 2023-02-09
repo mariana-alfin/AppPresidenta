@@ -126,7 +126,8 @@ class MainActivity : AppCompatActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlValicionLogin),
+            //getString(R.string.urlValicionLogin),
+            getString(R.string.url)+getString(R.string.metValicionLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {
@@ -246,7 +247,7 @@ class MainActivity : AppCompatActivity() {
         val request = object : JsonObjectRequest(
             Method.POST,
             //getString(R.string.urlLogin),
-            getString(R.string.urlValicionLogin),
+            getString(R.string.url)+getString(R.string.metValicionLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {
@@ -267,7 +268,7 @@ class MainActivity : AppCompatActivity() {
 
                         /*SI LA PETICION RETORNA UN SUCCESS YA ESTA REGISTRADO POR LO TANTO PODEMOS CONTINUAR CON LA RECUPERACION DEL NIP*/
                         enviarARegistro(numeroCelular, idCliente, true)
-
+                        LoadingScreen.hideLoading()
                     } else {
                         alerError.show()
                         LoadingScreen.hideLoading()
@@ -345,6 +346,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     LoadingScreen.hideLoading()
                 }
+                LoadingScreen.hideLoading()
             }) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
@@ -398,7 +400,8 @@ class MainActivity : AppCompatActivity() {
         val request = object : JsonObjectRequest(
             Method.POST,
             //getString(R.string.urlApi) + getString(R.string.metodoLogin),
-            getString(R.string.urlLogin),
+            //getString(R.string.urlLogin),
+            getString(R.string.url)+getString(R.string.metLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {
@@ -533,7 +536,8 @@ class MainActivity : AppCompatActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlLogin),
+            //getString(R.string.urlLogin),
+            getString(R.string.url)+getString(R.string.metLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {

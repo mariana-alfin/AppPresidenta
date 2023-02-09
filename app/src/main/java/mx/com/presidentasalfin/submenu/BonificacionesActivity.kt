@@ -37,7 +37,6 @@ class BonificacionesActivity : AppCompatActivity() {
 
     @SuppressLint("ResourceAsColor")
     private fun mostrarDatos() {
-
         //SE OBTIENE LA TABLA
         val tabla = findViewById<TableLayout>(R.id.tblBonificaciones)
         tabla.removeAllViews()

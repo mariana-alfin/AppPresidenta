@@ -7,6 +7,12 @@
     -->
     <queries>
         <package android:name="com.whatsapp" />
+        <!-- se agrega para la camara -->
+        <!--
+        intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent
+        -->
     </queries>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,6 +23,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- ETIQUETA USADA PARA PODER MOSTRAR LAS NOTIFICACIONES FLOTANTE EN PRIMER PLANO -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <!-- se agrega para la camara 2da opcion-->
+    <uses-feature android:name="android.hardware.camera.any" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +34,9 @@
         android:roundIcon="@mipmap/icono_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppPresidenta">
+        <activity
+            android:name=".generales.CamaraActivity"
+            android:exported="false" />
         <activity
             android:name="mx.com.presidentasalfin.submenu.BonificacionesActivity"
             android:exported="false" />

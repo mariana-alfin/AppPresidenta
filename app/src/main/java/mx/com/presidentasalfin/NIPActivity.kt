@@ -162,7 +162,8 @@ class NIPActivity : AppCompatActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlActualizarNip),
+            //getString(R.string.urlActualizarNip),
+            getString(R.string.url)+getString(R.string.metActualizarNip),
             jsonParametros,
             Response.Listener { response ->
                 try {
@@ -274,7 +275,8 @@ class NIPActivity : AppCompatActivity() {
             false)
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlLogin),
+            //getString(R.string.urlLogin),
+            getString(R.string.url)+getString(R.string.metLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {
@@ -516,7 +518,8 @@ class NIPActivity : AppCompatActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlRegistroCliente),
+            //getString(R.string.urlRegistroCliente),
+            getString(R.string.url)+getString(R.string.metRegistroCliente),
             jsonParametros,
             Response.Listener { response ->
                 try {

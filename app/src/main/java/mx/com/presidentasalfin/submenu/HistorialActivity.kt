@@ -109,7 +109,8 @@ class HistorialActivity : AppCompatActivity() {
                 @SuppressLint("SetTextI18n") //<-- MD SE AGREGA PARA ADMITIR UNA VARIEDAD DE CONFIGURACIONES REGIONALES SIN TENER QUE MODIFICAR CÓDIGO EN LA CONCATENACION DE CADENAS
                 object : JsonObjectRequest(
                     Method.POST,
-                    getString(R.string.urlHistorialGrupo),
+                    //getString(R.string.urlHistorialGrupo),
+                    getString(R.string.url)+getString(R.string.metHistorialGrupo),
                     jsonParametros,
                     Response.Listener { response ->
                         try {

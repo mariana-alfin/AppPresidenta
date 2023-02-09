@@ -40,6 +40,7 @@ class RecuperarNIPActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        finish()
         return false
     }
 
@@ -125,7 +126,8 @@ class RecuperarNIPActivity : AppCompatActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlActualizarNip),
+            //getString(R.string.urlActualizarNip),
+            getString(R.string.url)+getString(R.string.metActualizarNip),
             jsonParametros,
             Response.Listener { response ->
                 try {

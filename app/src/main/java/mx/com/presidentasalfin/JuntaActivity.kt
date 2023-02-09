@@ -1,6 +1,7 @@
 package mx.com.presidentasalfin
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -30,6 +31,7 @@ import mx.com.presidentasalfin.generales.FuncionesGlobales.Companion.setMaxLengt
 import mx.com.presidentasalfin.generales.LoadingScreen
 import mx.com.presidentasalfin.generales.ValGlobales
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import mx.com.presidentasalfin.generales.*
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -79,6 +81,14 @@ class JuntaActivity : CameraBaseActivity() {
         //findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: ${if (fecha.contains(".")) fecha.replace('.','-') else fecha}   "
         findViewById<TextView>(R.id.txtDatosPago).text = "  Fecha de pago: $fecha"
         findViewById<Button>(R.id.btnGuardar).setOnClickListener { guardarJunta() }
+        findViewById<Button>(R.id.btnCam).setOnClickListener {
+            try{
+                val intent = Intent(this, CamaraActivity::class.java)
+                startActivity(intent)
+            }catch (e: Exception){
+
+            }
+        }
 
         /*Se agrega logo y titulo del la actividad*/
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -107,6 +117,7 @@ class JuntaActivity : CameraBaseActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        finish()
         return false
     }
 
@@ -178,6 +189,7 @@ class JuntaActivity : CameraBaseActivity() {
         //findViewById<TextView>(R.id.txtTitle).visibility = valor
         findViewById<TextView>(R.id.txtDatosPago).visibility = valor
         findViewById<Button>(R.id.btnGuardar).visibility = valor
+        //findViewById<Button>(R.id.btnCam).visibility = valor
     }
 
     //MD FUNCION PARA CAMBIAR EL SELECT POR EL TEXTO DEL SOLIDARIO
@@ -258,7 +270,8 @@ class JuntaActivity : CameraBaseActivity() {
                 @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
                 object : JsonObjectRequest(
                     Method.POST,
-                    getString(R.string.urlMiembrosGrupo),
+                    //getString(R.string.urlMiembrosGrupo),
+                    getString(R.string.url)+getString(R.string.metMiembrosGrupo),
                     jsonParametros,
                     Response.Listener { response ->
                         try {
@@ -417,10 +430,12 @@ class JuntaActivity : CameraBaseActivity() {
             val idCk = generateViewId()
             chk.id = idCk
             chk.gravity = Gravity.RIGHT
+            chk.textSize = (fontTr - 2)
+            l.setPadding(20, 0, 0, 0)
             val colorAzul = ContextCompat.getColor(this, R.color.Azul1)
             val cliente = TextView(this)
             cliente.setTextColor(colorAzul)
-            cliente.textSize = (fontTr - 1)
+            cliente.textSize = (fontTr - 2)
             //cliente.maxWidth = 230
             cliente.maxWidth = witCte
             cliente.typeface = tipoLetraTr
@@ -456,7 +471,7 @@ class JuntaActivity : CameraBaseActivity() {
             sol.typeface = tipoLetraTr
             sol.textSize = (fontTr + 1)
             sol.setTextColor(ContextCompat.getColor(this, R.color.Verde5))
-            sol.setPadding(15, 0, 0, 0)
+            sol.setPadding(10, 0, 0, 0)
             sol.gravity = Gravity.CENTER
 
             val checlSol = ImageView(this)
@@ -655,6 +670,7 @@ class JuntaActivity : CameraBaseActivity() {
         JSJunta = "$valSolicitud $clientesString $valGeoreferencia }"
         val jsonJunta = JSONObject(JSJunta)
         //findViewById<TextView>(R.id.txtJson).text = jsonJunta.toString()
+        //findViewById<TextView>(R.id.txtJson).text = rutaFotoActual
         //Log.e("MyActivity", jsonJunta.toString());
         enviarJunta(jsonJunta)
     }
@@ -674,7 +690,8 @@ class JuntaActivity : CameraBaseActivity() {
         try {
             val request = object : JsonObjectRequest(
                 Method.POST,
-                getString(R.string.urlGuardarJunta),
+                //getString(R.string.urlGuardarJunta),
+                getString(R.string.url)+getString(R.string.metGuardarJunta),
                 jsonJunta,// <- MD SE ENVIA DIRECTAMENTE EL JSON GENERADO CON LOS DATOS DE LA JUNTA
                 Response.Listener { response ->
                     try {

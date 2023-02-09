@@ -230,6 +230,7 @@ class RegistroActivity : AppCompatActivity(), ReceptorSMS.OTPReceiveListener {
             registraNip.putExtra("recuperarNip", recuperarNip)
             registraNip.putExtra("idCliente", idCliente)
             startActivity(registraNip)
+            finish()
         } else {
             Toast.makeText(applicationContext, respuesta, Toast.LENGTH_SHORT).show()
         }

@@ -42,6 +42,7 @@ import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 import mx.com.presidentasalfin.R
+import javax.crypto.spec.IvParameterSpec
 
 
 /* MD SE GENERA ARCHIVO CON FUNCIONES GLOBALES PARA MANDAR ALLAR EN TODO EL PROYECTO*/
@@ -419,6 +420,7 @@ class FuncionesGlobales {
                 //En caso de que el sms no se pueda enviar desde el servidor.
                 val intent = Intent(contexto, LoginActivity::class.java)
                 contexto.startActivity(intent)
+                activity.finish()
             }
             alert.setCancelable(false)
 
@@ -458,6 +460,7 @@ class FuncionesGlobales {
                         val messageError = dataError.getString("message")
                         Log.d("Envio SMS", "Respuesta error: $dataError")
                         //Toast.makeText(contexto, messageError, Toast.LENGTH_SHORT).show()
+                        //alert.setMessage(messageError.toString())
                         alert.show()
                     } catch (e: Exception) {
                         Log.e("Envio SMS", "Ocurrio un error en el envio sms: $e")
@@ -467,6 +470,12 @@ class FuncionesGlobales {
                 }) {
                 override fun getHeaders(): Map<String, String> {
                     val headers = HashMap<String, String>()
+                    val encabezadosServicios: List<String?> = encriptacionN(contexto,"1000:4ppPr3s1d3nt4s@@",2)
+                    headers["Content-Type"] = contexto!!.getString(R.string.content_type)
+                    headers["Authorization"] = encabezadosServicios.elementAtOrNull(0)!!
+                    headers["Access"] = encabezadosServicios.elementAtOrNull(1)!!
+                    return headers
+                   /* val headers = HashMap<String, String>()
                     headers["Content-Type"] = contexto!!.getString(R.string.content_type)
                     headers["Authorization"] = "${
                         encriptacion(
@@ -494,7 +503,7 @@ class FuncionesGlobales {
                             2
                         )
                     }"
-                    return headers
+                    return headers*/
                 }
             }
             try {
@@ -532,7 +541,36 @@ class FuncionesGlobales {
             return Base64.encodeToString(encriptado, Base64.DEFAULT)
             //return Base64.encodeBytes(encrypted)
         }
+        fun encriptacionN(
+            contexto: Context?,
+            textoEncriptar: String,
+            opcion: Int
+        ): List<String?> {
+            val inicial = 100000;
+            val final = 1000000;
+            val cadenaIV = textoEncriptar + "_" + (inicial..final).random()
+            val secretKeySpec =
+                SecretKeySpec(obtenerKeyEncriptacion(contexto,"", opcion).toByteArray(), "AES")
+            val iv = ByteArray(32)
+//            Log.d("Encriptacion Random", "${cadenaIV}")
+            val charArray = cadenaIV.toCharArray()
+            for (i in charArray.indices) {
+                iv[i] = charArray[i].code.toByte()
+            }
+            val ivParameterSpec = IvParameterSpec(iv)
 
+            val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec)
+
+            val encryptedValue = cipher.doFinal(textoEncriptar.toByteArray())
+
+//            Log.d("Encriptacion IV", "${Base64.encodeToString(iv, Base64.DEFAULT)}")
+
+            return listOf(
+                Base64.encodeToString(encryptedValue, Base64.DEFAULT),
+                Base64.encodeToString(iv, Base64.DEFAULT)
+            )
+        }
         private fun obtenerKeyEncriptacion(
             contexto: Context?,
             idCliente: String,

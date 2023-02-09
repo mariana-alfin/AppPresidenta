@@ -115,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
 
         //Se obtiene de las variables de sesion el token de firebase
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        val token = prefs.getString(getString(R.string.token), "")
+        var token = prefs.getString(getString(R.string.token), "")
 
         Log.d("Token", "Token firebase: $token")
 
@@ -126,7 +126,10 @@ class LoginActivity : AppCompatActivity() {
         /*if(idCliente == "168068"){
             token = "dCFjXMvvQGSHxE4XzSvnJu:APA91bGt8UVD0ArUkEq1gLxb2nOee5uWLCHKLPju6I3c2WPIzFrgBu3GuFajZatrAeE0nzPB_8F42fRNkbWz5D-sqVyM6ulIDnBrbAO55AMTI0j2zxkF5Dlzje9UqnKGcghWSFyrWkLP"
         }*/
-
+        /*PARA REALIZAR PRUEBAS SE HARCODEA EL TOKEN Y EL NIP DEL ID_CLIENTE 174848 PARA QUE PUEDA INGRESAR DESDE CUALQUIER TELEFONO*/
+        if(idCliente == "174848"){
+            token = "eGcvW6NCTMmiQrNPRK2pbY:APA91bHnvO3w3kV_cBEbxggqCbKtljNsqf3_SU7hfnl8um_t6_2n8JYqBcpoz0-9pjEXT0OXPmJv1uCFOAq9D2VaYmD320d3wG2pVraN-VjHErfJZ9LvupII_KbHorjwuXygJokU_4Rw"
+        }
         var json = ""
         val valSolicitud = "{" +
                 " \"customer_id\" :$idCliente," +
@@ -138,7 +141,8 @@ class LoginActivity : AppCompatActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlLogin),
+            //getString(R.string.urlLogin),
+            getString(R.string.url) + getString(R.string.metLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {
@@ -167,6 +171,10 @@ class LoginActivity : AppCompatActivity() {
                             "String",
                             "ID_PRESIDENTA",
                             idCliente)
+                        FuncionesGlobales.guardarVariableSesion(this,
+                            "String",
+                            getString(R.string.token),
+                            token!!)
                         /*Si el logueo es exitoso se trata de obtener el token para envio de notificacion de Firebase
                         y este se registra/actualiza en nuestro servidor junto con el numero imei*/
                         //GeneralUtils.obtenerTokenNotificaciones(this, idCliente, numeroCelular)
@@ -288,7 +296,8 @@ class LoginActivity : AppCompatActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlLogin),
+            //getString(R.string.urlLogin),
+            getString(R.string.url) + getString(R.string.metLogin),
             jsonParametros,
             Response.Listener { response ->
                 try {

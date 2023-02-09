@@ -114,6 +114,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        finish()
         return false
     }
 
@@ -253,7 +254,8 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
                 @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
                 object : JsonObjectRequest(
                     Method.POST,
-                    getString(R.string.urlMiembrosGrupo),
+                    //getString(R.string.urlMiembrosGrupo),
+                    getString(R.string.url)+getString(R.string.metMiembrosGrupo),
                     jsonParametros,
                     Response.Listener { response ->
                         try {
@@ -492,6 +494,7 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
         if (!esCopia) {
             mostrarFormato(true)
         } else {
+            sumaPagos()
             Toast.makeText(this, "Montos copiados correctamente", Toast.LENGTH_SHORT).show()
         }
 
@@ -685,7 +688,8 @@ class JuntaConciliacionActivity : CameraBaseActivity() {
 
         val request = object : JsonObjectRequest(
             Method.POST,
-            getString(R.string.urlGuardarJuntaConciliacion),
+            //getString(R.string.urlGuardarJuntaConciliacion),
+            getString(R.string.url)+getString(R.string.metGuardarJuntaConciliacion),
             jsonJuntaC,
             Response.Listener { response ->
                 try {

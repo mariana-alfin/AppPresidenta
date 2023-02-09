@@ -52,6 +52,7 @@ class CalculadoraActivity : AppCompatActivity(), OnItemSelectedListener {
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        finish()
         return false
     }
 

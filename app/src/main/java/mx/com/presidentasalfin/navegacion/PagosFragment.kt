@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -113,8 +114,8 @@ class PagosFragment : Fragment() {
                 @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
                 object : JsonObjectRequest(
                     Method.POST,
-                    getString(R.string.urlPagosGrupo),
-                    //getString(R.string.urlDatosCredito),
+                    //getString(R.string.urlPagosGrupo),
+                    getString(R.string.url)+getString(R.string.metPagosGrupo),
                     jsonParametros,
                     Response.Listener { response ->
                         try {
@@ -155,15 +156,24 @@ class PagosFragment : Fragment() {
                             }
 
                         } catch (e: Exception) {
-                            val codigo = error.networkResponse.statusCode
-                            mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
-
+                            /*val codigo = error.networkResponse.statusCode
+                            mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"*/
+                            try {
+                                val codigo = error.networkResponse.statusCode
+                                mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                                alertError.setMessage(mensaje)
+                                alertError.show()
+                            } catch (e: Exception) {
+                                mensaje = getString(R.string.errorServidor)
+                                alertError.setMessage(getString(R.string.errorServidor))
+                                alertError.show()
+                            }
                         }
                         progressBar = binding.cargando
                         progressBar.visibility = View.INVISIBLE
                         binding.txtCargando.text = mensaje
-                        alertError.setMessage(mensaje)
-                        alertError.show()
+                       /* alertError.setMessage(mensaje)
+                        alertError.show()*/
                     }
                 ) {
                     override fun getHeaders(): Map<String, String> {
@@ -220,7 +230,7 @@ class PagosFragment : Fragment() {
 
 
         val tF = TextView(activity)
-        tF.text = "  Estado  "
+        tF.text = "  Estado "
         tF.gravity = Gravity.CENTER
         tF.setTextColor(Color.WHITE)
         tF.typeface = tipoLetra
@@ -230,6 +240,7 @@ class PagosFragment : Fragment() {
         val tRP = TextView(activity)
         tRP.text = "Seguimiento"
         tRP.setTextColor(Color.WHITE)
+        tRP.setPadding(0, 0, 5, 0)
         tRP.typeface = tipoLetra
         tRP.textSize = fontTh
         trEn.addView(tRP)
@@ -344,7 +355,8 @@ class PagosFragment : Fragment() {
                 @SuppressLint("SetTextI18n") //<--MD SE AGREGA PARA ADMITIR UNA VARIEDAD DE CONFIGURACIONES REGIONALES SIN TENER QUE MODIFICAR CÓDIGO EN LA CONCATENACION DE CADENAS
                 object : JsonObjectRequest(
                     Method.POST,
-                    getString(R.string.urlJuntasPgo),
+                    //getString(R.string.urlJuntasPgo),
+                    getString(R.string.url)+getString(R.string.metJuntasPgo),
                     jsonParametros,
                     Response.Listener { response ->
                         try {
@@ -355,8 +367,9 @@ class PagosFragment : Fragment() {
                                 val jsonResults =
                                     JSONTokener(jsonData.getString("results")).nextValue() as JSONObject
                                 verJuntas(fechaPago, jsonResults.getJSONArray("tasks"))
-
                             } else {
+                                //FuncionesGlobales.mostrarAlert(this,jsonData.toString(),Toast.LENGTH_SHORT).show()
+                                //alertError.setMessage(jsonData.toString())
                                 alertError.show()
                                 LoadingScreen.hideLoading()
                             }
@@ -387,15 +400,25 @@ class PagosFragment : Fragment() {
                                 message
                             }
                         } catch (e: Exception) {
-                            val codigo = error.networkResponse.statusCode
-                            mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                           /* val codigo = error.networkResponse.statusCode
+                            mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"*/
+                            try {
+                                val codigo = error.networkResponse.statusCode
+                                mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                                alertError.setMessage(mensaje)
+                                alertError.show()
+                            } catch (e: Exception) {
+                                mensaje = getString(R.string.errorServidor)
+                                alertError.setMessage(getString(R.string.errorServidor))
+                                alertError.show()
+                            }
 
                         }
                         progressBar = binding.cargando
                         progressBar.visibility = View.INVISIBLE
                         binding.txtCargando.text = mensaje
-                        alertError.setMessage(mensaje)
-                        alertError.show()
+                        /*alertError.setMessage(mensaje)
+                        alertError.show()*/
                         LoadingScreen.hideLoading()
                     }
                 ) {
@@ -408,6 +431,13 @@ class PagosFragment : Fragment() {
                         return headers
                     }
                 }
+            // Volley request policy, only one time request to avoid duplicate transaction
+            request.retryPolicy = DefaultRetryPolicy(
+                180000,//ESPERA DE 3 MINUTOS
+                // 0 means no retry
+                0, // DefaultRetryPolicy.DEFAULT_MAX_RETRIES = 2
+                1f // DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            )
             val queue = Volley.newRequestQueue(activity)
             //MD PRIMERO BORRAMOS EL CACHE Y ENVIAMOS DESPUES LA PETICION
             queue.cache.clear()
@@ -517,10 +547,12 @@ class PagosFragment : Fragment() {
             jsonParametros.put("credit_id", prestamo)
             jsonParametros.put("payment_date", null)
             jsonParametros.put("payment_status", 0)//1 PARA PRUEBAS
+            //jsonParametros.put("payment_status", 1)//1 PARA PRUEBAS
 
             val request = object : JsonObjectRequest(
                 Method.POST,
-                getString(R.string.urlPagosConciliar),
+                //getString(R.string.urlPagosConciliar),
+                getString(R.string.url)+getString(R.string.metPagosConciliar),
                 jsonParametros,
                 Response.Listener { response ->
                     try {
@@ -540,7 +572,7 @@ class PagosFragment : Fragment() {
                             }
                             if (saldoConciliar != 0.0) {//MD SOLO SI EL SALDO A CONCILIAR ES MAYOR A 0 SE MUESTRA
                                 binding.txtSaldoConciliar.text =
-                                    "Saldo por Conciliar ${
+                                    "Saldo Conciliar ${
                                         FuncionesGlobales.convertPesos(saldoConciliar,
                                             2)
                                     }"

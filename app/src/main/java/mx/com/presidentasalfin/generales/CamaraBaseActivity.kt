@@ -42,7 +42,6 @@ open class CameraBaseActivity : UbicacionActivity() {
             abrirCamara(this)
         }
     }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -93,9 +92,9 @@ open class CameraBaseActivity : UbicacionActivity() {
 
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-        if (intent.resolveActivity(packageManager) != null) {
+        //if (intent.resolveActivity(packageManager) != null) {
             startActivityForResult(intent, PHOTO_CODE)
-        }
+        //}
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

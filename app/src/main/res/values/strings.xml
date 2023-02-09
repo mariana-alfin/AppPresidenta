@@ -20,11 +20,11 @@
     <string name="rexNIP">[0-9]{4}+</string>
 
     <!--url -->
+    <!--
     <string name="urlLogin">https://api.micartera.test.alfin.com.mx/api/user-nip-validate</string>
     <string name="urlValicionLogin">https://api.micartera.test.alfin.com.mx/api/customer-validations</string>
     <string name="urlRegistroCliente">https://api.micartera.test.alfin.com.mx/api/user-app-register</string>
     <string name="urlActualizarNip">https://api.micartera.test.alfin.com.mx/api/user-nip-update</string>
-
     <string name="urlDatosCredito">https://api.micartera.test.alfin.com.mx/api/credit-group-status</string>
     <string name="urlMiembrosGrupo">https://api.micartera.test.alfin.com.mx/api/group-members-pays</string>
     <string name="urlPagosGrupo">https://api.micartera.test.alfin.com.mx/api/group-pays</string>
@@ -34,10 +34,33 @@
     <string name="urlHistorialGrupo">https://api.micartera.test.alfin.com.mx/api/group-credits</string>
     <string name="urlJuntasPgo">https://api.micartera.test.alfin.com.mx/api/group-task-show</string>
     <string name="urlDatosJuntasPgo">https://api.micartera.test.alfin.com.mx/api/group-task-members</string>
-
     <string name="urlPagosConciliar">https://api.micartera.test.alfin.com.mx/api/group-payments</string>
     <string name="urlGuardarJuntaConciliacion">https://api.micartera.test.alfin.com.mx/api/group-task-concilied</string>
     <string name="urlBonificaciones">https://api.micartera.test.alfin.com.mx/api/get-bonus-pay</string>
+    -->
+    <string name="url">https://api.micartera.test.alfin.com.mx/</string>
+    <string name="metLogin">api/user-nip-validate</string>
+    <string name="metValicionLogin">api/customer-validations</string>
+    <string name="metRegistroCliente">api/user-app-register</string>
+    <string name="metActualizarNip">api/user-nip-update</string>
+    <string name="metDatosCredito">api/credit-group-status</string>
+    <string name="metMiembrosGrupo">api/group-members-pays</string>
+    <string name="metPagosGrupo">api/group-pays</string>
+    <string name="metDetalleCliente">api/customer-credit-status</string>
+    <string name="metGuardarJunta">api/group-task-create</string>
+    <string name="metEnviarEmail">api/group-help-sendmail</string>
+    <string name="metHistorialGrupo">api/group-credits</string>
+    <string name="metJuntasPgo">api/group-task-show</string>
+    <string name="metDatosJuntasPgo">api/group-task-members</string>
+    <string name="metPagosConciliar">api/group-payments</string>
+    <string name="metGuardarJuntaConciliacion">api/group-task-concilied</string>
+    <string name="metBonificaciones">api/get-bonus-pay</string>
+    <!--Strings para Envio Sms-->
+    <string name="idApp">1000</string>
+    <string name="url_envio_smsOld">http://34.133.226.228:90/Servicios.svc/rest/ConfirmacionSms</string>
+    <!--<string name="url_envio_sms">http://34.133.226.228:90/Servicios.svc/rest/EnvioSms</string> URL DE SMS DESARROLLO-->
+    <string name="url_envio_sms">http://servicios.kasli.com.mx/Servicios.svc/rest/EnvioSms</string> <!--URL SMS CON DOMINIO-->
+    <!--Strings para Envio Sms-->
 
     <!--headers peticion -->
     <string name="content_type">application/json</string>
@@ -92,11 +115,6 @@
     <string name="tokenPruebas">asdfasdfwfwefsdfsd</string>
     <!--Strings para Registro de Token Firebase-->
 
-    <!--Strings para Envio Sms-->
-    <string name="idApp">1000</string>
-    <string name="url_envio_smsOld">http://34.133.226.228:90/Servicios.svc/rest/ConfirmacionSms</string>
-    <string name="url_envio_sms">http://34.133.226.228:90/Servicios.svc/rest/EnvioSms</string>
-    <!--Strings para Envio Sms-->
 
     <!--Mensaje para error envio sms-->
     <string name="error_sms">Ocurrio un error, favor de intentarlo más tarde.</string>

@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.TextView
@@ -70,7 +71,9 @@ class InicioFragment : Fragment() {
                 progressBar = binding.cargando
                 progressBar.visibility = View.INVISIBLE
             }
-
+            val prefs = PreferenceManager.getDefaultSharedPreferences(activity as AppCompatActivity)
+            val token = prefs.getString(getString(R.string.token), "")
+            Log.d("Token", "Token firebase: $token")
             return root
         } catch (e: Exception) {
             val root: View = binding.root
@@ -144,7 +147,8 @@ class InicioFragment : Fragment() {
                 @SuppressLint("SetTextI18n") //<-- MD SE AGREGA PARA ADMITIR UNA VARIEDAD DE CONFIGURACIONES REGIONALES SIN TENER QUE MODIFICAR CÓDIGO EN LA CONCATENACION DE CADENAS
                 object : JsonObjectRequest(
                     Method.POST,
-                    getString(R.string.urlDatosCredito),
+                    //getString(R.string.urlDatosCredito),
+                    getString(R.string.url)+getString(R.string.metDatosCredito),
                     jsonParametros,
                     Response.Listener { response ->
                         try {
@@ -235,15 +239,25 @@ class InicioFragment : Fragment() {
                             }
 
                         } catch (e: Exception) {
-                            val codigo = error.networkResponse.statusCode
-                            mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                            try {
+                                val codigo = error.networkResponse.statusCode
+                                mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"
+                                alertError.setMessage(mensaje)
+                                alertError.show()
+                            } catch (e: Exception) {
+                                mensaje = getString(R.string.errorServidor)
+                                alertError.setMessage(getString(R.string.errorServidor))
+                                alertError.show()
+                            }
+                          /*  val codigo = error.networkResponse.statusCode
+                            mensaje = "Error: $codigo \n${getString(R.string.errorServidor)}"*/
 
                         }
                         progressBar = binding.cargando
                         progressBar.visibility = View.INVISIBLE
                         binding.txtCargando.text = mensaje
-                        alertError.setMessage(mensaje)
-                        alertError.show()
+                       /* alertError.setMessage(mensaje)
+                        alertError.show()*/
                     }
                 ) {
                     override fun getHeaders(): Map<String, String> {
@@ -370,7 +384,8 @@ class InicioFragment : Fragment() {
 
             val request = object : JsonObjectRequest(
                 Method.POST,
-                getString(R.string.urlEnviarEmail),
+                //getString(R.string.urlEnviarEmail),
+                getString(R.string.url)+getString(R.string.metEnviarEmail),
                 jsonParametros,
                 Response.Listener { response ->
                     try {

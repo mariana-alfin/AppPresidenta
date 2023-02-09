@@ -91,7 +91,8 @@ class BonosFragment : Fragment() {
                 @SuppressLint("SetTextI18n") //<-- se agrega para admitir una variedad de configuraciones regionales sin tener que modificar código en la concatenacion de cadenas
                 object : JsonObjectRequest(
                     Method.POST,
-                    getString(R.string.urlBonificaciones),
+                    //getString(R.string.urlBonificaciones),
+                    getString(R.string.url)+getString(R.string.metBonificaciones),
                     jsonParametros,
                     Response.Listener { response ->
                         try {

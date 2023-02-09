@@ -26,10 +26,10 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import mx.com.presidentasalfin.R
 
+
 open class UbicacionActivity : AppCompatActivity() {
 
-    private val permisosAValidar = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION)
+    private val permisosAValidar = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     private var manejadorUbicacion: LocationManager? = null
     lateinit var clienteUbicacionFusionada: FusedLocationProviderClient
 
@@ -57,36 +57,26 @@ open class UbicacionActivity : AppCompatActivity() {
     }
 
 
+
     @RequiresApi(Build.VERSION_CODES.M)
-    fun solicitarUsoUbicacion(actividad: AppCompatActivity) {
-        if (preguntarPorPermisos(this, permisosAValidar, actividad, ASK_FOR_PERMISSION_GPS)) {
-            clienteAjustes =
-                LocationServices.getSettingsClient(this) //Se le debe asignar un contexto al cliente de ajustes para poder usarlo
+    fun solicitarUsoUbicacion(actividad: AppCompatActivity){
+        if(preguntarPorPermisos(this, permisosAValidar,actividad, ASK_FOR_PERMISSION_GPS)){
+            clienteAjustes = LocationServices.getSettingsClient(this) //Se le debe asignar un contexto al cliente de ajustes para poder usarlo
             activarGPS()
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == ASK_FOR_PERMISSION_GPS) {
             if (grantResults.size == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                grantResults[1] == PackageManager.PERMISSION_GRANTED
-            ) {
-                clienteAjustes =
-                    LocationServices.getSettingsClient(this) //Se le debe asignar un contexto al cliente de ajustes para poder usarlo
+                grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                clienteAjustes = LocationServices.getSettingsClient(this) //Se le debe asignar un contexto al cliente de ajustes para poder usarlo
                 activarGPS()
             } else {
                 //mostrarAlertActivarPermisos(this, packageName)
-                val alert = mostrarAlert(this,
-                    "error",
-                    false,
-                    getString(R.string.permisos_denegados),
-                    getString(R.string.mensaje_permisos_denegados),
-                    true)
+                val alert = mostrarAlert(this,"error",false,getString(R.string.permisos_denegados)
+                    ,getString(R.string.mensaje_permisos_denegados),true)
                 alert.setPositiveButton(android.R.string.ok) { _, _ ->
                     val intent = Intent()
                     intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -108,7 +98,7 @@ open class UbicacionActivity : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    fun obtenerUbicacion() {
+    fun obtenerUbicacion(){
 
         clienteUbicacionFusionada = LocationServices.getFusedLocationProviderClient(this)
 
@@ -128,16 +118,16 @@ open class UbicacionActivity : AppCompatActivity() {
         clienteUbicacionFusionada = LocationServices.getFusedLocationProviderClient(this)
         clienteUbicacionFusionada.requestLocationUpdates(
             solicitudUbicacion, mLocationCallback,
-            Looper.myLooper()
+            Looper.myLooper()!!
         )
     }
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             val ultimaUbicacion: Location = locationResult.lastLocation
-            Toast.makeText(this@UbicacionActivity,
-                "Ubicacion actual: Lat: ${ultimaUbicacion.latitude} , Lon: ${ultimaUbicacion.longitude}",
-                Toast.LENGTH_LONG).show()
+            /*Toast.makeText(this@UbicacionActivity
+                , "Ubicacion actual: Lat: ${ultimaUbicacion.latitude} , Lon: ${ultimaUbicacion.longitude}"
+                , Toast.LENGTH_LONG).show()*/
 
             //Se guarda en variables de sesion la ubicacion mas actual
 //            registrarVariableSesion(this@UbicacionActivity, "LATITUD", (ultimaUbicacion.latitude).toString())
@@ -145,10 +135,7 @@ open class UbicacionActivity : AppCompatActivity() {
             guardarVariableSesion(
                 this@UbicacionActivity, "String", "LATITUD", (ultimaUbicacion.latitude).toString())
             guardarVariableSesion(
-                this@UbicacionActivity,
-                "String",
-                "LONGITUD",
-                (ultimaUbicacion.longitude).toString())
+                this@UbicacionActivity, "String", "LONGITUD", (ultimaUbicacion.longitude).toString())
         }
     }
 
@@ -158,7 +145,7 @@ open class UbicacionActivity : AppCompatActivity() {
             obtenerUbicacion()
         } else {
             clienteAjustes!!
-                .checkLocationSettings(solicitudConfiguracionUbicacion)
+                .checkLocationSettings(solicitudConfiguracionUbicacion!!)
                 .addOnSuccessListener(this as Activity) {
                     // GPS ya esta habilitado
                     obtenerUbicacion()
@@ -197,7 +184,8 @@ open class UbicacionActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == SOLICITUD_PERMISO_UBICACION) {
             //El usuario acepta prender del GPS
             obtenerUbicacion() //Se obtiene la ubicacion
-        } else if (resultCode != Activity.RESULT_OK && requestCode == SOLICITUD_PERMISO_UBICACION) {
+        }
+        else if(resultCode != Activity.RESULT_OK && requestCode == SOLICITUD_PERMISO_UBICACION){
             //En caso de rechazar el activar la ubicacion se muestra un mensaje y lo saca de la actividad
             //mostrarAlertActivacionGPS(this,this)
             val alert = mostrarAlert(
