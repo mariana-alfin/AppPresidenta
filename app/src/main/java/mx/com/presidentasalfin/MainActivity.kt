@@ -2,7 +2,9 @@ package mx.com.presidentasalfin
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.KeyEvent
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -43,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             findViewById<Button>(R.id.btnLogin).setOnClickListener { validarFormulario(false) }
         }
+        /*Se agrega el hipervinculo*/
+        val textView = findViewById<View>(R.id.textView6) as TextView
+        textView.isClickable = true
+        textView.movementMethod = LinkMovementMethod.getInstance()
     }
 
     //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA

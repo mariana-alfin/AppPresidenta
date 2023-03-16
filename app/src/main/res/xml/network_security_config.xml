@@ -8,6 +8,7 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">api.micartera.test.alfin.com.mx</domain><!--SERVICIOS PRESIDENTAS-->
         <!-- <domain includeSubdomains="true">34.133.226.228</domain>  SERVICIOS CENTRALIZADOS-->
+        <domain includeSubdomains="true">www.alfin.mx</domain><!--SERVICIOS CENTRALIZADOS CON DOMINIO-->
         <domain includeSubdomains="true">servicios.kasli.com.mx</domain><!--SERVICIOS CENTRALIZADOS CON DOMINIO-->
         <domain includeSubdomains="true">play.google.com</domain>
     </domain-config>

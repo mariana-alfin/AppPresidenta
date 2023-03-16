@@ -123,4 +123,6 @@
     <!--String para configuracion del tema oscuro-->
     <string name="configuracion_tema_llave" translatable="false">theme</string>
     <!--Fin para configuracion del tema oscuro-->
+    <string name="hyperlink"> Acerca de <a href="http://www.alfin.mx/site/index.php/es/">Política de privacidad</a> y nuestros Términos y Condiciones </string>
+    <string name="hyperlinkMain">Al registrarte estas aceptando nuestra <a href="http://www.alfin.mx/site/index.php/es/">Política de privacidad</a> y nuestros Términos y Condiciones</string>
 </resources>

@@ -4,11 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable-xhdpi/ic_shutter.xml" value="0.285" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable/ic_check.xml" value="0.1305" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable/ic_no_ckeck.xml" value="0.285" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable/ic_shutter.xml" value="0.285" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable/ic_shutter_focused.xml" value="0.1305" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable/ic_shutter_normal.xml" value="0.1305" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable/ic_shutter_pressed.xml" value="0.1305" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/drawable/ic_switch.xml" value="0.285" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout-hdpi/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout-mdpi/activity_main.xml" value="0.844731977818854" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout-xhdpi/activity_main.xml" value="0.55" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout-xhdpi/main_activity.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout-xxhdpi/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout-xxxhdpi/activity_main.xml" value="0.275" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout/activity_camara.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout/activity_main.xml" value="0.865530303030303" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout/detalle_junta_activity.xml" value="0.25729166666666664" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout/inicio2_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/App-Presidentas-SinError/app/src/main/res/layout/inicio_fragment.xml" value="0.36666666666666664" />

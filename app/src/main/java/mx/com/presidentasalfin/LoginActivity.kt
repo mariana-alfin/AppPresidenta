@@ -1,10 +1,14 @@
 package mx.com.presidentasalfin
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -21,6 +25,7 @@ import mx.com.presidentasalfin.generales.ValGlobales
 import mx.com.presidentasalfin.navegacion.Navegacion
 import org.json.JSONObject
 import org.json.JSONTokener
+
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +46,10 @@ class LoginActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.txtNoCliente).requestFocus()
         findViewById<TextView>(R.id.txtOlvida).paintFlags = Paint.UNDERLINE_TEXT_FLAG
         findViewById<TextView>(R.id.txtOlvida).setOnClickListener { recuperarNip() }
+        /*Se agrega el hipervinculo*/
+        val textView = findViewById<View>(R.id.textView6) as TextView
+        textView.isClickable = true
+        textView.movementMethod = LinkMovementMethod.getInstance()
     }
 
     //MD FUNCION QUE EJECUTA UNA ACTCION DE ACUERDO ALA TECLA PRECIONADA
